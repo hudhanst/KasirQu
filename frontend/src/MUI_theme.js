@@ -56,7 +56,10 @@ export const MUI_theme_light = createMuiTheme({
         navbar: {
             background: initialMUIState.color.navBackground_lg,
             color: initialMUIState.color.navColor_lg,
-        }
+        },
+        navbartext:{
+            color: initialMUIState.color.navColor_lg,
+        },
     }
 })
 
@@ -78,7 +81,10 @@ export const MUI_theme_dark = createMuiTheme({
         navbar: {
             background: initialMUIState.color.navBackground_dr,
             color: initialMUIState.color.navColor_dr,
-        }
+        },
+        navbartext:{
+            color: initialMUIState.color.navColor_dr,
+        },
     }
 })
 ////// END-THEME

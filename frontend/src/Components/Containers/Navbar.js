@@ -9,12 +9,13 @@ import NavFlatNavbar from './navFlatNavbar'
 const Navbar = (props) => {
   const MinWindowWidth = useMediaQuery(`(min-width:${initialMUIState.units.minWidth_first}px)`)
   // const MinWindowWidth = true
+  // console.log(props.isDarkMode)
   return (
     <Fragment>
       {
         MinWindowWidth ?
-          <NavSideNavbar /> :
-          <NavFlatNavbar />
+          <NavSideNavbar isDarkMode={props.isDarkMode} /> :
+          <NavFlatNavbar isDarkMode={props.isDarkMode} />
       }
     </Fragment>
   )

@@ -1,11 +1,12 @@
-// import {
-//     USER_LOADING,
-//     USER_LOADED,
-//     USER_EXPIRED,
-//     LOGIN_SUCCESS,
-//     LOGIN_FAIL,
-//     LOGOUT_SUCCESS,
-// } from '../Actions/Type.Actions'
+import {
+    DARKMODE_CONFIG,
+    // USER_LOADING,
+    // USER_LOADED,
+    // USER_EXPIRED,
+    // LOGIN_SUCCESS,
+    // LOGIN_FAIL,
+    // LOGOUT_SUCCESS,
+} from '../Actions/Type.Actions'
 
 const initialState = {
     // token: localStorage.getItem('token'),
@@ -14,10 +15,17 @@ const initialState = {
     isAuth: true,
     isUserLoading: false,
     User: null,
+    isDarkMode: localStorage.getItem('KasirQU_isDarkMode')
 }
 
 export default function (state = initialState, action) {
     switch (action.type) {
+        case DARKMODE_CONFIG:
+            localStorage.setItem('KasirQU_isDarkMode', action.payload)
+            return {
+                ...state,
+                isDarkMode: action.payload,
+            }
         default:
             return state
     }

@@ -5,6 +5,8 @@ import { AppBar, Toolbar, IconButton, Link, Button, Drawer, List, ListItem, List
 import { useTheme } from "@material-ui/core/styles"
 import { MUI_st_navFlatNavbar_logo, MUI_st_navFlatNavbar_logo_IMG } from '../../MUI_theme'
 
+import ToggleLightNight from './Toggle_LightNight'
+
 import MenuIcon from '@material-ui/icons/Menu'
 import HomeTwoToneIcon from '@material-ui/icons/HomeTwoTone'
 import ShoppingCartTwoToneIcon from '@material-ui/icons/ShoppingCartTwoTone'
@@ -77,7 +79,7 @@ const NavFlatNavbar = (props) => {
                         <Link style={MUI_st_navFlatNavbar_logo}>
                             <img src={logo} alt='logo kasirqu' style={MUI_st_navFlatNavbar_logo_IMG} />
                         </Link>
-                        <Button color="inherit">Login</Button>
+                        <ToggleLightNight isDarkMode={props.isDarkMode} />
                     </Toolbar>
                 </AppBar>
                 <Toolbar />

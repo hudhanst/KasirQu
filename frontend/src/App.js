@@ -14,7 +14,7 @@ import BaseRouter from './Router'
 
 class App extends React.Component {
   state = {
-    isDarkMode: false,
+    // isDarkMode: false,
     isSideNavOpen: true,
   }
   componentDidMount() {
@@ -26,14 +26,16 @@ class App extends React.Component {
   }
   render() {
     // console.log(this.state)
+    const { isDarkMode } = this.props.auth
     return (
       <Fragment>
-        <ThemeProvider theme={this.state.isDarkMode ? MUI_theme_dark : MUI_theme_light}>
+        {/* <ThemeProvider theme={this.state.isDarkMode ? MUI_theme_dark : MUI_theme_light}> */}
+        <ThemeProvider theme={(isDarkMode === 'true' || isDarkMode === true) ? MUI_theme_dark : MUI_theme_light}>
           <CssBaseline />
           {
             (this.props.auth.token && this.props.auth.isAuth) ?
               <Fragment>
-                <Navbar />
+                <Navbar isDarkMode={isDarkMode} />
               </Fragment>
               : null
           }
@@ -43,8 +45,8 @@ class App extends React.Component {
               {
                 // (initialMUIState.minWidth.first < WindowWidth) ?
                 this.state.isSideNavOpen ?
-                MUI_st__Container_SideNav :
-                MUI_st__Container_FlatNav
+                  MUI_st__Container_SideNav :
+                  MUI_st__Container_FlatNav
               }>
               {/* <Button variant="contained" color="primary" >
                   tes

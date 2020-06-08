@@ -1,0 +1,1 @@
+export const DARKMODE_CONFIG = 'DARKMODE_CONFIG'
