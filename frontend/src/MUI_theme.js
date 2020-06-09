@@ -46,7 +46,7 @@ export const initialMUIState = {
 export const MUI_theme_unauth_light = createMuiTheme({
     palette: {
         type: "light",
-        primary:{
+        primary: {
             main: initialMUIState.color.navColor_lg,
         },
         // text: {
@@ -66,7 +66,7 @@ export const MUI_theme_unauth_light = createMuiTheme({
 export const MUI_theme_unauth_dark = createMuiTheme({
     palette: {
         type: "dark",
-        primary:{
+        primary: {
             main: initialMUIState.color.navColor_dr,
         },
         // text: {
@@ -108,7 +108,11 @@ export const MUI_theme_auth_light = createMuiTheme({
         },
         readonlytextfield: {
             backgroundColor: initialMUIState.color.rotextfield_lg,
-        }
+        },
+        menupaper:{
+            background:initialMUIState.color.navBackground_lg,
+            color:initialMUIState.color.navColor_lg,
+        },
     }
 })
 
@@ -136,7 +140,11 @@ export const MUI_theme_auth_dark = createMuiTheme({
         },
         readonlytextfield: {
             backgroundColor: initialMUIState.color.rotextfield_dr,
-        }
+        },
+        menupaper:{
+            background:initialMUIState.color.navBackground_dr,
+            color:initialMUIState.color.navColor_dr,
+        },
     }
 })
 ////// END-THEME-AUTH
@@ -147,6 +155,7 @@ export const test = createStyles({
     root: {
         marginTop: 0,
         top: 0,
+        
     }
 })
 ////// END-TEST
@@ -190,9 +199,11 @@ export const MUI_st__Container_SideNav = ({
     marginRight: '0',
     width: '90%',
     // minHeight:'100vh',
+    padding: '1%',
 })
 export const MUI_st__Container_FlatNav = ({
     // border: '1px solid red',
+    padding: '1%',
 })
 ////// STYLE-NAV-SIDENAV
 export const MUI_st_navSideNavbar__ = ({
@@ -256,6 +267,19 @@ export const MUI_st_navFlatNavbar_logo_IMG = ({
 })
 ////// END-STYLE-NAV-FLATNAV
 ////// END-STYLE-NAV
+
+////// STYLE-MENU
+export const MUI_st_Menu_Paper = ({
+    height: '180px',
+    width: '180px',
+    alignItems: 'center',
+    textAlign: 'center',
+    padding: '10%',
+    paddingTop: '35%',
+    borderRadius: '30px',
+    boxShadow: '2px 0 10px -3px #010101',
+})
+////// END-STYLE-MENU
 
 ////// STYLE-ACCOUNT
 export const MUI_st_Account_Container = ({
