@@ -25,10 +25,14 @@ export const initialMUIState = {
         // bgcolor_dr: '#393e46',
         // bgcolor_dr: '#2A2E35',
         bgcolor_dr: '#222831',
+        // bgcolor_dr: '#222222',
         navBackground_lg: '#5c4d4d',
         navBackground_dr: '#000000',
         navColor_lg: '#32e0c4',
         navColor_dr: '#a7d129',
+        rotextfield_lg: '#E0E0E0',
+        rotextfield_dr: '#030912',
+        // rotextfield_dr : '#030303',
     },
     units: {
         minWidth_first: 980,
@@ -38,8 +42,50 @@ export const initialMUIState = {
 ////// END-INITIALSTATE
 
 ////// THEME
-////// THEME-MUI_theme_light
-export const MUI_theme_light = createMuiTheme({
+////// THEME-UNAUTH
+export const MUI_theme_unauth_light = createMuiTheme({
+    palette: {
+        type: "light",
+        primary:{
+            main: initialMUIState.color.navColor_lg,
+        },
+        // text: {
+        //     primary: initialMUIState.color.navColor_lg
+        // },
+        background: {
+            default: initialMUIState.color.navBackground_lg
+        }
+    },
+    customTheme: {
+        loginpage: {
+            background: initialMUIState.color.bgcolor_lg,
+            // color: initialMUIState.color.navColor_lg,
+        }
+    }
+})
+export const MUI_theme_unauth_dark = createMuiTheme({
+    palette: {
+        type: "dark",
+        primary:{
+            main: initialMUIState.color.navColor_dr,
+        },
+        // text: {
+        //     primary: initialMUIState.color.navColor_dr
+        // },
+        background: {
+            default: initialMUIState.color.navBackground_dr,
+        }
+    },
+    customTheme: {
+        loginpage: {
+            background: initialMUIState.color.bgcolor_dr,
+        },
+    }
+})
+////// END-THEME-UNAUTH
+////// THEME-AUTH
+////// THEME-MUI_theme_auth_light
+export const MUI_theme_auth_light = createMuiTheme({
     palette: {
         type: "light",
         // primary: {
@@ -57,14 +103,17 @@ export const MUI_theme_light = createMuiTheme({
             background: initialMUIState.color.navBackground_lg,
             color: initialMUIState.color.navColor_lg,
         },
-        navbartext:{
+        navbartext: {
             color: initialMUIState.color.navColor_lg,
         },
+        readonlytextfield: {
+            backgroundColor: initialMUIState.color.rotextfield_lg,
+        }
     }
 })
 
-////// THEME-MUI_theme_dark
-export const MUI_theme_dark = createMuiTheme({
+////// THEME-MUI_theme_auth_dark
+export const MUI_theme_auth_dark = createMuiTheme({
     palette: {
         type: "dark",
         // primary: {
@@ -82,11 +131,15 @@ export const MUI_theme_dark = createMuiTheme({
             background: initialMUIState.color.navBackground_dr,
             color: initialMUIState.color.navColor_dr,
         },
-        navbartext:{
+        navbartext: {
             color: initialMUIState.color.navColor_dr,
         },
+        readonlytextfield: {
+            backgroundColor: initialMUIState.color.rotextfield_dr,
+        }
     }
 })
+////// END-THEME-AUTH
 ////// END-THEME
 
 ////// TEST
@@ -107,20 +160,40 @@ export const MUI_st__Paper = ({
     // marginTop:0,
     // top:0,
 })
+export const MUI_FullWidth = ({
+    width: '100%',
+})
+export const MUI_VerticalMargin = ({
+    width: '100%',
+    marginTop: '10px',
+    marginBottom: '10px',
 
+})
+////// END-STYLE-GLOBAL
+
+////// STYLE
+////// STYLE-LOGINPAGE
+export const MUI_st_Login_Container = ({
+    // border:'1px solid red',
+    marginTop: '5%',
+    borderRadius: '30px',
+    boxShadow: '2px 0 10px -3px #010101',
+    paddingTop: '20px',
+    paddingBottom: '40px',
+    // minHeight:'100vh',
+})
+////// END-STYLE-LOGINPAGE
+////// STYLE-NAV
 export const MUI_st__Container_SideNav = ({
     // border: '1px solid red',
     marginLeft: '10%',
     marginRight: '0',
     width: '90%',
+    // minHeight:'100vh',
 })
 export const MUI_st__Container_FlatNav = ({
     // border: '1px solid red',
 })
-////// END-STYLE-GLOBAL
-
-////// STYLE
-////// STYLE-NAV
 ////// STYLE-NAV-SIDENAV
 export const MUI_st_navSideNavbar__ = ({
     // border: '1px solid red',
@@ -169,14 +242,7 @@ export const MUI_st_navSideNavbar_BottomNavigation = ({
     // backgroundColor: initialMUIState.color.navBackground_dr,
     // alignItems: 'center',
 })
-
-// export const MUI_st_navSideNavbar_Icon = ({
-//     color: initialMUIState.color.navColor_dr,
-// })
-
-// export const MUI_st_navSideNavbar_BottomNavigationAction = ({
-//     color: initialMUIState.color.navColor_dr,
-// })
+////// END-STYLE-NAV-SIDENAV
 ////// STYLE-NAV-FLATNAV
 export const MUI_st_navFlatNavbar_logo = ({
     height: '9vh',
@@ -189,6 +255,35 @@ export const MUI_st_navFlatNavbar_logo_IMG = ({
     borderRadius: '0px 0px 20px 20px'
 })
 ////// END-STYLE-NAV-FLATNAV
-////// END-STYLE-NAV-SIDENAV
 ////// END-STYLE-NAV
+
+////// STYLE-ACCOUNT
+export const MUI_st_Account_Container = ({
+    // border:'1px solid red',
+    marginTop: '5%',
+    borderRadius: '30px',
+    boxShadow: '2px 0 10px -3px #010101',
+    paddingTop: '20px',
+    paddingBottom: '40px',
+})
+////// STYLE-ACCOUNT-ACCOUNTDETAIL
+export const MUI_st_AccountDetail_Avatar = ({
+    // border: '1px solid red',
+    width: '25vh',
+    height: '25vh',
+    // marginTop: '-10px',
+    marginRight: 'auto',
+    marginBottom: '20px',
+    marginLeft: 'auto',
+    display: 'block',
+    position: 'relative',
+    zIndex: 10
+})
+export const MUI_st_AccountDetail_TextField = ({
+    width: '100%',
+    marginBottom: '20px',
+    boxShadow: '2px 0 10px -7px #010101',
+})
+////// END-STYLE-ACCOUNT-ACCOUNTDETAIL
+////// END-STYLE-ACCOUNT
 ////// END-STYLE

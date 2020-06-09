@@ -7,7 +7,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 // import {LoadUser} from './Store/Actions/Auth.Actions'
 
 import { CssBaseline, ThemeProvider, Container } from '@material-ui/core'
-import { initialMUIState, MUI_theme_dark, MUI_theme_light, MUI_st__Container_SideNav, MUI_st__Container_FlatNav } from './MUI_theme'
+import { initialMUIState, MUI_theme_auth_dark, MUI_theme_auth_light, MUI_theme_unauth_dark, MUI_theme_unauth_light, MUI_st__Container_SideNav, MUI_st__Container_FlatNav } from './MUI_theme'
 
 import Navbar from './Components/Containers/Navbar'
 import BaseRouter from './Router'
@@ -27,10 +27,21 @@ class App extends React.Component {
   render() {
     // console.log(this.state)
     const { isDarkMode } = this.props.auth
+    // const isDarkMode = false
     return (
       <Fragment>
-        {/* <ThemeProvider theme={this.state.isDarkMode ? MUI_theme_dark : MUI_theme_light}> */}
-        <ThemeProvider theme={(isDarkMode === 'true' || isDarkMode === true) ? MUI_theme_dark : MUI_theme_light}>
+        <ThemeProvider
+          theme={
+            (this.props.auth.token && this.props.auth.isAuth) ?
+              ((isDarkMode === 'true' || isDarkMode === true) ?
+                MUI_theme_auth_dark :
+                MUI_theme_auth_light
+              ) :
+              ((isDarkMode === 'true' || isDarkMode === true) ?
+                MUI_theme_unauth_dark :
+                MUI_theme_unauth_light
+              )
+          }>
           <CssBaseline />
           {
             (this.props.auth.token && this.props.auth.isAuth) ?
@@ -41,16 +52,16 @@ class App extends React.Component {
           }
 
           <Fragment>
-            <Container style=
+            <Container
+              style=
               {
-                // (initialMUIState.minWidth.first < WindowWidth) ?
-                this.state.isSideNavOpen ?
-                  MUI_st__Container_SideNav :
-                  MUI_st__Container_FlatNav
+                (this.props.auth.token && this.props.auth.isAuth) ? (
+                  (this.state.isSideNavOpen) ?
+                    MUI_st__Container_SideNav :
+                    MUI_st__Container_FlatNav
+                  ) : null
+                // ) : { border: '1px solid red' }
               }>
-              {/* <Button variant="contained" color="primary" >
-                  tes
-                  </Button> */}
 
               <Router>
                 <BaseRouter />
