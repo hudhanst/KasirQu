@@ -9,8 +9,8 @@ import Logout from './Components/Layouts/Account/Logout'
 
 import Home from './Components/Layouts/Home'
 import Transaksi from './Components/Layouts/Transaksi'
-import Barang from './Components/Layouts/Barang'
-import Help from './Components/Layouts/Help'
+import Barang from './Components/Layouts/Barang/Barang'
+import Help from './Components/Layouts/Help/Help'
 import Account from './Components/Layouts/Account/Account'
 
 const BaseRouter = () => {

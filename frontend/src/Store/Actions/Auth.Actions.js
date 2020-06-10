@@ -21,6 +21,38 @@ export const Config_DarkMode = (isDarkMode) => (dispatch) => {
 
 export const LogIn = (username, password) => (dispatch) => {
     dispatch({ type: AUTH_LOADING })
+    // const userdatabases = [
+    //     {
+    //         Username: 'kasir',
+    //         Password: '123',
+    //         Name: 'kasir_kasirqu',
+    //         isUserActive: true,
+    //         isUserKasir: true,
+    //         isUserAdmin: false,
+    //         isUserSuperUser: false,
+    //         LastActive: '13-09-2001'
+    //     },
+    //     {
+    //         Username: 'admin',
+    //         Password: '1234',
+    //         Name: 'admin_kasirqu',
+    //         isUserActive: true,
+    //         isUserKasir: true,
+    //         isUserAdmin: true,
+    //         isUserSuperUser: false,
+    //         LastActive: '13-09-2001'
+    //     },
+    //     {
+    //         Username: 'superuser',
+    //         Password: '12345',
+    //         Name: 'superuser_kasirqu',
+    //         isUserActive: true,
+    //         isUserKasir: true,
+    //         isUserAdmin: true,
+    //         isUserSuperUser: true,
+    //         LastActive: '13-09-2001'
+    //     }
+    // ]
     dispatch({
         type: LOGIN_SUCCESS,
         // payload: isDarkMode,
