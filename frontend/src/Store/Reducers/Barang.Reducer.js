@@ -10,6 +10,7 @@ const initialState = {
         {
             Barcode:'123',
             NamaBarang:'coba',
+            JenisBarang:'1',
             StokBarang:100,
             HargaJual:3000,
             HargaBeli:2500,
@@ -17,6 +18,7 @@ const initialState = {
         {
             Barcode:'12345',
             NamaBarang:'coba1',
+            JenisBarang:'1',
             StokBarang:62,
             HargaJual:3500,
             HargaBeli:2000,
@@ -24,10 +26,11 @@ const initialState = {
         {
             Barcode:'897888',
             NamaBarang:'speda',
+            JenisBarang:'2',
             StokBarang:54,
             HargaJual:35000,
             HargaBeli:28000,
-        }
+        },
     ],
 }
 

@@ -8,7 +8,7 @@ import Login from './Components/Layouts/Account/Login'
 import Logout from './Components/Layouts/Account/Logout'
 
 import Home from './Components/Layouts/Home'
-import Transaksi from './Components/Layouts/Transaksi'
+import Transaksi from './Components/Layouts/Transaksi/Transaksi'
 import Barang from './Components/Layouts/Barang/Barang'
 import Help from './Components/Layouts/Help/Help'
 import Account from './Components/Layouts/Account/Account'
