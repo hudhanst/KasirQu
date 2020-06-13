@@ -131,6 +131,7 @@ class TransaksiTransaksi extends React.Component {
                                         <TextField
                                             onChange={this.onEditChange}
                                             value={this.state.EditingValue}
+                                            type='number'
                                         >
                                         </TextField>
                                         : item.Jumlah

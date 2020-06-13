@@ -12,6 +12,7 @@ import Transaksi from './Components/Layouts/Transaksi/Transaksi'
 import Barang from './Components/Layouts/Barang/Barang'
 import Help from './Components/Layouts/Help/Help'
 import Account from './Components/Layouts/Account/Account'
+import UserList from './Components/Layouts/Account/UserList'
 
 const BaseRouter = () => {
     return (
@@ -21,6 +22,7 @@ const BaseRouter = () => {
             <PrivateRoute exact path="/barang" component={Barang} />
             <PrivateRoute exact path="/help" component={Help} />
             <PrivateRoute exact path="/account" component={Account} />
+            <PrivateRoute exact path="/account/userlist" component={UserList} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/logout" component={Logout} />
         </Switch>

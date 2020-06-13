@@ -8,7 +8,7 @@ import HomeIcon from '@material-ui/icons/Home';
 export const BreadCrumbs = (props) => {
     return (
         <Fragment>
-            <Breadcrumbs maxItems={3} aria-label="breadcrumb">
+            <Breadcrumbs maxItems={2} aria-label="breadcrumb">
                 <Link href='/' underline='hover' >
                     <Typography color="textPrimary" >
                         <HomeIcon />
