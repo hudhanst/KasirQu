@@ -3,6 +3,7 @@ const router = express.Router()
 const bcrypt = require('bcryptjs')
 const config_jwtSecret = require('../../config/keys').jwtSecret
 const config_coupon = require('../../config/keys').coupon
+const config_tokenexpiresIn = require('../../config/keys').tokenexpiresIn
 const jwt = require('jsonwebtoken')
 
 ////// import auth
@@ -59,7 +60,7 @@ router.post('/firsttimeuse/register/superuser', (req, res) => {
                                     jwt.sign(
                                         { id: user.id },
                                         config_jwtSecret,
-                                        { expiresIn: 3600 },
+                                        { expiresIn: config_tokenexpiresIn },
                                         (err, token) => {
                                             if (err) throw err
                                             ////// responses
