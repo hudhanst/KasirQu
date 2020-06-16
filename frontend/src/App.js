@@ -4,12 +4,13 @@ import { connect } from 'react-redux'
 
 import { BrowserRouter as Router } from 'react-router-dom'
 
-// import {LoadUser} from './Store/Actions/Auth.Actions'
+import { Load_User } from './Store/Actions/Auth.Actions'
 
 import { CssBaseline, ThemeProvider, Container } from '@material-ui/core'
 import { initialMUIState, MUI_theme_auth_dark, MUI_theme_auth_light, MUI_theme_unauth_dark, MUI_theme_unauth_light, MUI_st__Container_SideNav, MUI_st__Container_FlatNav } from './MUI_theme'
 
 import Navbar from './Components/Containers/Navbar'
+import Messages from './Components/Containers/Messages'
 import BaseRouter from './Router'
 
 class App extends React.Component {
@@ -18,8 +19,9 @@ class App extends React.Component {
     isSideNavOpen: true,
   }
   componentDidMount() {
+    this.props.Load_User()
     window.addEventListener("resize", this.CheckWindowWidth.bind(this))
-    this.CheckWindowWidth();
+    this.CheckWindowWidth()
   }
   CheckWindowWidth() {
     this.setState({ isSideNavOpen: window.innerWidth > initialMUIState.units.minWidth_first })
@@ -45,13 +47,17 @@ class App extends React.Component {
           <CssBaseline />
           {
             (this.props.auth.token && this.props.auth.isAuth) ?
-              <Fragment>
+              // <Fragment>
                 <Navbar isDarkMode={isDarkMode} />
-              </Fragment>
+              // </Fragment>
               : null
           }
 
-          <Fragment>
+          {/* <Fragment> */}
+            <Messages />
+          {/* </Fragment> */}
+
+          {/* <Fragment> */}
             <Container
               style=
               {
@@ -59,7 +65,7 @@ class App extends React.Component {
                   (this.state.isSideNavOpen) ?
                     MUI_st__Container_SideNav :
                     MUI_st__Container_FlatNav
-                  ) : null
+                ) : null
                 // ) : { border: '1px solid red' }
               }>
 
@@ -67,7 +73,7 @@ class App extends React.Component {
                 <BaseRouter />
               </Router>
             </Container>
-          </Fragment>
+          {/* </Fragment> */}
         </ThemeProvider>
       </Fragment >
     )
@@ -76,4 +82,4 @@ class App extends React.Component {
 const mapStateToProps = state => ({
   auth: state.Auth,
 })
-export default connect(mapStateToProps, {})(App)
+export default connect(mapStateToProps, { Load_User })(App)

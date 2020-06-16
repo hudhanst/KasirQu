@@ -15,7 +15,7 @@ export const Menu = (props) => {
         setOpen(!open)
     }
     const st_paper = { ...MUI_st_Menu_Paper, ...theme.customTheme.menupaper }
-    console.log(MUI_st_Menu_Paper)
+    // console.log(MUI_st_Menu_Paper)
     return (
         <Fragment>
             <List>

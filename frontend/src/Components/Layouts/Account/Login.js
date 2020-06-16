@@ -19,6 +19,7 @@ class Login extends React.Component {
         username: '',
         password: '',
         isShowPassword: false,
+        firsttimeuse_clickcounter: 0,
     }
     onChange = E => this.setState({ [E.target.name]: E.target.value })
     onSubmit = E => {
@@ -27,12 +28,15 @@ class Login extends React.Component {
         this.props.LogIn(this.state.username, this.state.password)
     }
     onClickShowPassword = () => {
-        this.setState({ isShowPassword: !this.state.isShowPassword });
-    };
-    // onMouseDownPassword = (event) => {
-    //     event.preventDefault();
-    // };
-
+        this.setState({ isShowPassword: !this.state.isShowPassword })
+    }
+    onClickFirstTimeUse = () => {
+        if (this.state.firsttimeuse_clickcounter < 10) {
+            this.setState({ firsttimeuse_clickcounter: (this.state.firsttimeuse_clickcounter + 1) })
+        } else {
+            window.location.href = '/firsttimeregistration'
+        }
+    }
     render() {
         const theme = this.props.theme
         if ((this.props.isAuth && this.props.token)) {
@@ -51,7 +55,7 @@ class Login extends React.Component {
                         Login page
                     </Typography>
                     <Typography align='center'>
-                        <img src={logo} alt='logo kasirqu' />
+                        <img src={logo} alt='logo kasirqu' onClick={this.onClickFirstTimeUse} />
                     </Typography>
                     <form onSubmit={this.onSubmit}>
                         <TextField style={st_textfield} variant='outlined' type='text' onChange={this.onChange} label='User Name' name='username' value={username} />
@@ -68,7 +72,6 @@ class Login extends React.Component {
                                         <IconButton
                                             aria-label="toggle password visibility"
                                             onClick={this.onClickShowPassword}
-                                            // onMouseDown={this.onMouseDownPassword}
                                             edge="end"
                                         >
                                             {this.state.isShowPassword ? <Visibility /> : <VisibilityOff />}

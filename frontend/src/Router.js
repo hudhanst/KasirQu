@@ -5,6 +5,7 @@ import { Route, Switch } from 'react-router-dom'
 import PrivateRoute from './Security/PrivateRoute'
 
 import Login from './Components/Layouts/Account/Login'
+import FirstTimeRegistration from './Components/Layouts/Account/FirstTimeRegistration'
 import Logout from './Components/Layouts/Account/Logout'
 
 import Home from './Components/Layouts/Home'
@@ -23,6 +24,7 @@ const BaseRouter = () => {
             <PrivateRoute exact path="/help" component={Help} />
             <PrivateRoute exact path="/account" component={Account} />
             <PrivateRoute exact path="/account/userlist" component={UserList} />
+            <Route exact path="/firsttimeregistration" component={FirstTimeRegistration} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/logout" component={Logout} />
         </Switch>
