@@ -9,10 +9,10 @@ const auth = require('../Middleware/auth')
 ////// import user model
 const User = require('../../Models/User')
 
-//// @router  POST api/auth
+//// @router  POST api/auth/login
 //// @desc    Auth user
 //// @access  Public
-router.post('/', (req, res) => {
+router.post('/login', (req, res) => {
     const { UserName, Password } = req.body
     if (!UserName || !Password) {
         return res.status(400).json({ msg: 'form tidak lengkap' })
@@ -20,6 +20,7 @@ router.post('/', (req, res) => {
     User.findOne({ UserName })
         .then(user => {
             if (!user) return res.status(400).json({ msg: 'user tidak ditemukan' })
+            if (!user.isActive) return res.status(400).json({ msg: 'user tidak aktif' })
 
             ////// validate password
             bcrypt.compare(Password, user.Password)
@@ -61,7 +62,7 @@ router.post('/', (req, res) => {
 //// @access  Private
 router.get('/user', auth, (req, res) => {
     User.findById(req.user.id)
-        .select('-Password -LastActive -RegisterDate')
+        .select('-Password -ProfilePicture -LastActive -RegisterDate')
         .then(user => res.json(user))
         .catch((err) => res.status(404).json(err))
 })

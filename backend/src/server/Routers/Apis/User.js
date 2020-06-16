@@ -1,10 +1,37 @@
 const express = require('express')
 const router = express.Router()
+
 const bcrypt = require('bcryptjs')
+
+const jwt = require('jsonwebtoken')
+
+const multer = require('multer')
+const storage = multer.diskStorage({
+    destination: (req, file, cd) => {
+        cd(null, './uploads/users/')
+    },
+    filename: (req, file, cd) => {
+        cd(null, new Date().toISOString().replace(/:/g, '-') + file.originalname)
+    }
+})
+const fileFilter = (req, file, cd) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cd(null, true)
+    } else {
+        cd(null, false)
+    }
+}
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 30
+    },
+    fileFilter: fileFilter
+})
+
 const config_jwtSecret = require('../../config/keys').jwtSecret
 const config_coupon = require('../../config/keys').coupon
 const config_tokenexpiresIn = require('../../config/keys').tokenexpiresIn
-const jwt = require('jsonwebtoken')
 
 ////// import auth
 const auth = require('../Middleware/auth')
@@ -16,8 +43,10 @@ const User = require('../../Models/User')
 //// @access  Private
 router.get('/', auth, (req, res) => {
     User.find()
+        .select('_id, UserName')
         .sort({ RegisterDate: -1 })
         .then(users => res.json(users))
+        .catch(err => res.status(400).json({ msg: 'ada kesalahan', error: err }))
 })
 //// @router  GET api/users/user/:id
 //// @desc    get a user detail
@@ -30,7 +59,7 @@ router.get('/user/:id', auth, (req, res) => {
 //// @router  POST api/users/firsttimeuse/register/superuser
 //// @desc    Register for new use
 //// @access  Public
-router.post('/firsttimeuse/register/superuser', (req, res) => {
+router.post('/firsttimeuse/register/superuser', upload.single('ProfilePicture'), (req, res) => {
     const { UserName, Name, Password, coupon } = req.body
     if (coupon === config_coupon) {
         User.findOne({ isSuperUser: true })
@@ -38,21 +67,30 @@ router.post('/firsttimeuse/register/superuser', (req, res) => {
                 if (user) {
                     return res.status(401).json({ msg: 'super user telah dibuat, hanya bisa digunakan sekali' })
                 } else {
-                    console.log(1)
 
-                    const newUser = new User({
-                        UserName: UserName,
-                        Name: Name,
-                        Password: Password,
-                        isKasir: true,
-                        isAdmin: true,
-                        isSuperUser: true,
-                    })
+                    const newUser = req.file ?
+                        new User({
+                            UserName,
+                            Name,
+                            Password,
+                            isKasir: true,
+                            isAdmin: true,
+                            isSuperUser: true,
+                            ProfilePicture: req.file.path
+                        }) :
+                        new User({
+                            UserName,
+                            Name,
+                            Password,
+                            isKasir: true,
+                            isAdmin: true,
+                            isSuperUser: true,
+                        })
                     ////// create salt & hash
                     bcrypt.genSalt(10, (err, salt) => {
                         bcrypt.hash(newUser.Password, salt, (err, hash) => {
                             if (err) throw err
-                            console.log(2)
+                            // console.log(2)
                             newUser.Password = hash
                             newUser.save()
                                 .then(user => {
@@ -75,6 +113,7 @@ router.post('/firsttimeuse/register/superuser', (req, res) => {
                                                     isKasir: user.isKasir,
                                                     isAdmin: user.isAdmin,
                                                     isSuperUser: user.isSuperUser,
+                                                    ProfilePicture: user.ProfilePicture,
                                                     LastActive: user.LastActive,
                                                     RegisterDate: user.RegisterDate,
                                                 }
@@ -92,17 +131,36 @@ router.post('/firsttimeuse/register/superuser', (req, res) => {
 //// @router  POST api/users/register
 //// @desc    Register new user
 //// @access  Private
-router.post('/register', auth, (req, res) => {
+router.post('/register', upload.single('ProfilePicture'), auth, (req, res) => {
     const { UserName, Name, Password, isKasir, isAdmin, isSuperUser } = req.body
     // const { UserName, Name, Password } = req.body
+
+    if (req.body.isKasir) {
+        if (req.body.isKasir === 'true') {
+            req.body.isKasir = true
+        } else if (req.body.isKasir === 'false')
+            req.body.isKasir = false
+    }
+    if (req.body.isAdmin) {
+        if (req.body.isAdmin === 'true') {
+            req.body.isAdmin = true
+        } else if (req.body.isAdmin === 'false')
+            req.body.isAdmin = false
+    }
+    if (req.body.isSuperUser) {
+        if (req.body.isSuperUser === 'true') {
+            req.body.isSuperUser = true
+        } else if (req.body.isSuperUser === 'false')
+            req.body.isSuperUser = false
+    }
 
     ////// simple validation
     if (!UserName || !Name || !Password) {
         return res.status(400).json({ msg: 'mohon lengkapi form registrasi' })
     }
-    if ((typeof isKasir !== 'undefined' && typeof isKasir !== 'boolean') ||
-        (typeof isAdmin !== 'undefined' && typeof isAdmin !== 'boolean') ||
-        (typeof isSuperUser !== 'undefined' && typeof isSuperUser !== 'boolean')) {
+    if ((typeof req.body.isKasir !== 'undefined' && typeof req.body.isKasir !== 'boolean') ||
+        (typeof req.body.isAdmin !== 'undefined' && typeof req.body.isAdmin !== 'boolean') ||
+        (typeof req.body.isSuperUser !== 'undefined' && typeof req.body.isSuperUser !== 'boolean')) {
         return res.status(400).json({ msg: 'mohon masukkan input yang benar' })
     }
     ////// chec if user exist
@@ -111,14 +169,24 @@ router.post('/register', auth, (req, res) => {
             if (UserNameExist) {
                 return res.status(400).json({ msg: 'UserName sudah ada' })
             } else {
-                const newUser = new User({
-                    UserName,
-                    Name,
-                    Password,
-                    isKasir,
-                    isAdmin,
-                    isSuperUser,
-                })
+                const newUser = req.file ?
+                    new User({
+                        UserName,
+                        Name,
+                        Password,
+                        isKasir,
+                        isAdmin,
+                        isSuperUser,
+                        ProfilePicture: req.file.path
+                    }) :
+                    new User({
+                        UserName,
+                        Name,
+                        Password,
+                        isKasir,
+                        isAdmin,
+                        isSuperUser,
+                    })
 
                 ////// create salt & hash
                 bcrypt.genSalt(10, (err, salt) => {
@@ -138,6 +206,7 @@ router.post('/register', auth, (req, res) => {
                                             isKasir: user.isKasir,
                                             isAdmin: user.isAdmin,
                                             isSuperUser: user.isSuperUser,
+                                            ProfilePicture: user.ProfilePicture,
                                             LastActive: user.LastActive,
                                             RegisterDate: user.RegisterDate,
                                         }
@@ -152,15 +221,42 @@ router.post('/register', auth, (req, res) => {
 //// @router  UPDATE api/users/user/:id/update
 //// @desc    Update an User
 //// @access  Private
-router.patch('/user/:id/update', auth, (req, res) => {
-    const { UserName, LastActive, RegisterDate, Password, isActive, isKasir, isAdmin, isSuperUser } = req.body
+router.patch('/user/:id/update', upload.single('ProfilePicture'), auth, (req, res) => {
+    const { UserName, LastActive, RegisterDate, Password } = req.body
     if (UserName || LastActive || RegisterDate) {
         return res.status(401).json({ msg: 'input yang anda masukkan tidak bisa diganti' })
     }
-    if ((typeof isActive !== 'undefined' && typeof isActive !== 'boolean') ||
-        (typeof isKasir !== 'undefined' && typeof isKasir !== 'boolean') ||
-        (typeof isAdmin !== 'undefined' && typeof isAdmin !== 'boolean') ||
-        (typeof isSuperUser !== 'undefined' && typeof isSuperUser !== 'boolean')) {
+    if (req.body.isActive) {
+        if (req.body.isActive === 'true') {
+            req.body.isActive = true
+        } else if (req.body.isActive === 'false')
+            req.body.isActive = false
+    }
+    if (req.body.isKasir) {
+        if (req.body.isKasir === 'true') {
+            req.body.isKasir = true
+        } else if (req.body.isKasir === 'false')
+            req.body.isKasir = false
+    }
+    if (req.body.isAdmin) {
+        if (req.body.isAdmin === 'true') {
+            req.body.isAdmin = true
+        } else if (req.body.isAdmin === 'false')
+            req.body.isAdmin = false
+    }
+    if (req.body.isSuperUser) {
+        if (req.body.isSuperUser === 'true') {
+            req.body.isSuperUser = true
+        } else if (req.body.isSuperUser === 'false')
+            req.body.isSuperUser = false
+    }
+    if (req.file.path) {
+        req.body.ProfilePicture = req.file.path
+    }
+    if ((typeof req.body.isActive !== 'undefined' && typeof req.body.isActive !== 'boolean') ||
+        (typeof req.body.isKasir !== 'undefined' && typeof req.body.isKasir !== 'boolean') ||
+        (typeof req.body.isAdmin !== 'undefined' && typeof req.body.isAdmin !== 'boolean') ||
+        (typeof req.body.isSuperUser !== 'undefined' && typeof req.body.isSuperUser !== 'boolean')) {
         return res.status(400).json({ msg: 'mohon masukkan input yang benar' })
     }
     if (Password) {
@@ -192,6 +288,7 @@ router.patch('/user/:id/update', auth, (req, res) => {
 //// @desc    Delete an User
 //// @access  Private
 router.delete('/user/:id/delete', auth, (req, res) => {
+    console.log(req.params.id)
     User.findById(req.params.id)
         .then(user => user.remove())
         .then(() => res.status(200).json({ msg: 'delet sukses' }))

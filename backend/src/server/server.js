@@ -1,10 +1,14 @@
 const express = require('express')
+
 const mongoose = require('mongoose')
 
 const app = express()
 
 // Bodyparser middleware
 app.use(express.json())
+
+// static file config
+app.use('/uploads', express.static('uploads'))
 
 // Add headers
 app.use((req, res, next) => {
