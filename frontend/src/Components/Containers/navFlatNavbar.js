@@ -76,7 +76,7 @@ const NavFlatNavbar = (props) => {
                         <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
                             <MenuIcon />
                         </IconButton>
-                        <Link style={MUI_st_navFlatNavbar_logo}>
+                        <Link style={MUI_st_navFlatNavbar_logo} href='/'>
                             <img src={logo} alt='logo kasirqu' style={MUI_st_navFlatNavbar_logo_IMG} />
                         </Link>
                         <ToggleLightNight isDarkMode={props.isDarkMode} />

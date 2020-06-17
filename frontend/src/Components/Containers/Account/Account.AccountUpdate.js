@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 
 import { connect } from 'react-redux'
 
-import { get_AccountDetail, Update_Account } from '../../../Store/Actions/Auth.Actions'
+import { get_AccountDetail, Update_Account } from '../../../Store/Actions/Account.Actions'
 
 import { TextField, Checkbox, FormGroup, FormControlLabel, Button } from '@material-ui/core'
 
@@ -162,8 +162,8 @@ class AccountUpdate extends React.Component {
 
 const mapStateToProps = (state) => ({
     User: state.Auth.User,
-    idUpdateAccount: state.Auth.idUpdateAccount,
-    AccountDetail: state.Auth.AccountDetail,
+    idUpdateAccount: state.Account.idUpdateAccount,
+    AccountDetail: state.Account.AccountDetail,
 })
 
 export default connect(mapStateToProps, { get_AccountDetail, Update_Account })(withTheme(AccountUpdate))

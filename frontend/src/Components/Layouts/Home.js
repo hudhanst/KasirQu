@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react'
 
+import { connect } from 'react-redux'
+
 import BreadCrumbs from '../Containers/BreadCrumbs'
 import Menu from '../Containers/Menu'
 
@@ -20,139 +22,148 @@ import AccountBoxTwoToneIcon from '@material-ui/icons/AccountBoxTwoTone'
 import RecentActorsTwoToneIcon from '@material-ui/icons/RecentActorsTwoTone'
 import StoreTwoToneIcon from '@material-ui/icons/StoreTwoTone'
 
-const Home = () => {
-    const breadcrumbs = []
-    const menuitems = [
-        {
-            menuheader: {
-                name: 'Transaksi',
-                icon: <ShoppingCartTwoToneIcon />
-            },
-            menuitems: [
-                {
+class Home extends React.Component {
+    render() {
+        const breadcrumbs = []
+        const menuitems = [
+            {
+                menuheader: {
                     name: 'Transaksi',
-                    link: 'transaksi',
-                    icon: <ShoppingCartTwoToneIcon />,
-                    type: 'nonPrivacry',
+                    icon: <ShoppingCartTwoToneIcon />
                 },
-                {
-                    name: 'Belanja',
-                    link: 'transaksi/belanja',
-                    icon: <LocalMallTwoToneIcon />,
-                    // type: 'Privacry',
-                    type: 'nonPrivacry',
-                },
-                {
-                    name: 'Import/Export Transaksi',
-                    link: 'transaksi/importexport',
-                    icon: <SettingsApplicationsTwoToneIcon />,
-                    // type: 'SuperPrivacry',
-                    type: 'nonPrivacry',
-                },
-            ]
-        },
-        {
-            menuheader: {
-                name: 'Barang',
-                icon: <StorageTwoToneIcon />
+                menuitems: [
+                    {
+                        name: 'Transaksi',
+                        link: 'transaksi',
+                        icon: <ShoppingCartTwoToneIcon />,
+                        type: 'nonPrivacry',
+                    },
+                    {
+                        name: 'Belanja',
+                        link: 'transaksi/belanja',
+                        icon: <LocalMallTwoToneIcon />,
+                        type: 'Privacry',
+                        // type: 'nonPrivacry',
+                    },
+                    {
+                        name: 'Import/Export Transaksi',
+                        link: 'transaksi/importexport',
+                        icon: <SettingsApplicationsTwoToneIcon />,
+                        type: 'SuperPrivacry',
+                        // type: 'nonPrivacry',
+                    },
+                ]
             },
-            menuitems: [
-                {
-                    name: 'List Barang',
-                    link: 'barang',
-                    icon: <StorageTwoToneIcon />,
-                    type: 'nonPrivacry',
+            {
+                menuheader: {
+                    name: 'Barang',
+                    icon: <StorageTwoToneIcon />
                 },
-                {
-                    name: 'Kategori Barang',
-                    link: 'barang/barangcategory',
-                    icon: <CategoryTwoToneIcon />,
-                    // type: 'Privacry',
-                    type: 'nonPrivacry',
-                },
-                {
-                    name: 'Konfigurasi Barang',
-                    link: 'barang/barangcategory',
-                    icon: <PlaylistAddTwoToneIcon />,
-                    // type: 'Privacry',
-                    type: 'nonPrivacry',
-                },
-                {
-                    name: 'Import/Export Barang',
-                    link: 'transaksi/importexport',
-                    icon: <SettingsApplicationsTwoToneIcon />,
-                    // type: 'SuperPrivacry',
-                    type: 'nonPrivacry',
-                },
-            ]
-        },
-        {
-            menuheader: {
-                name: 'Help',
-                icon: <LiveHelpTwoToneIcon />
+                menuitems: [
+                    {
+                        name: 'List Barang',
+                        link: 'barang',
+                        icon: <StorageTwoToneIcon />,
+                        type: 'nonPrivacry',
+                    },
+                    {
+                        name: 'Kategori Barang',
+                        link: 'barang/barangcategory',
+                        icon: <CategoryTwoToneIcon />,
+                        type: 'Privacry',
+                        // type: 'nonPrivacry',
+                    },
+                    {
+                        name: 'Konfigurasi Barang',
+                        link: 'barang/barangcategory',
+                        icon: <PlaylistAddTwoToneIcon />,
+                        type: 'Privacry',
+                        // type: 'nonPrivacry',
+                    },
+                    {
+                        name: 'Import/Export Barang',
+                        link: 'transaksi/importexport',
+                        icon: <SettingsApplicationsTwoToneIcon />,
+                        type: 'SuperPrivacry',
+                        // type: 'nonPrivacry',
+                    },
+                ]
             },
-            menuitems: [
-                {
+            {
+                menuheader: {
                     name: 'Help',
-                    link: 'help',
-                    icon: <LiveHelpTwoToneIcon />,
-                    type: 'nonPrivacry',
+                    icon: <LiveHelpTwoToneIcon />
                 },
-                {
-                    name: 'Laporan Penjualan Bulanan',
-                    link: 'help/penjualanbulanan',
-                    icon: <AttachMoneyTwoToneIcon />,
-                    // type: 'Privacry',
-                    type: 'nonPrivacry',
-                },
-                {
-                    name: 'Grafik Report',
-                    link: 'help/grafikreport',
-                    icon: <TrendingUpTwoToneIcon />,
-                    // type: 'Privacry',
-                    type: 'nonPrivacry',
-                },
-            ]
-        },
-        {
-            menuheader: {
-                name: 'Account',
-                icon: <AccountBoxTwoToneIcon />
+                menuitems: [
+                    {
+                        name: 'Help',
+                        link: 'help',
+                        icon: <LiveHelpTwoToneIcon />,
+                        type: 'nonPrivacry',
+                    },
+                    {
+                        name: 'Laporan Penjualan Bulanan',
+                        link: 'help/penjualanbulanan',
+                        icon: <AttachMoneyTwoToneIcon />,
+                        type: 'Privacry',
+                        // type: 'nonPrivacry',
+                    },
+                    {
+                        name: 'Grafik Report',
+                        link: 'help/grafikreport',
+                        icon: <TrendingUpTwoToneIcon />,
+                        type: 'Privacry',
+                        // type: 'nonPrivacry',
+                    },
+                ]
             },
-            menuitems: [
-                {
+            {
+                menuheader: {
                     name: 'Account',
-                    link: 'account',
-                    icon: <AccountBoxTwoToneIcon />,
-                    type: 'nonPrivacry',
+                    icon: <AccountBoxTwoToneIcon />
                 },
-                {
-                    name: 'List User',
-                    link: 'account/userlist',
-                    icon: <RecentActorsTwoToneIcon />,
-                    // type: 'SuperPrivacry',
-                    type: 'nonPrivacry',
-                },
-                {
-                    name: 'Tentang Toko',
-                    link: 'account/tentang',
-                    icon: <StoreTwoToneIcon />,
-                    // type: 'SuperPrivacry',
-                    type: 'nonPrivacry',
-                },
-            ]
-        },
-        
-    ]
+                menuitems: [
+                    {
+                        name: 'Account',
+                        link: 'account',
+                        icon: <AccountBoxTwoToneIcon />,
+                        type: 'nonPrivacry',
+                    },
+                    {
+                        name: 'List User',
+                        link: 'account/userlist',
+                        icon: <RecentActorsTwoToneIcon />,
+                        type: 'Privacry',
+                        // type: 'nonPrivacry',
+                    },
+                    {
+                        name: 'Tentang Toko',
+                        link: 'account/tentang',
+                        icon: <StoreTwoToneIcon />,
+                        type: 'SuperPrivacry',
+                        // type: 'nonPrivacry',
+                    },
+                ]
+            },
 
-    return (
-        <Fragment>
-            <BreadCrumbs breadcrumbs={breadcrumbs} />
-            {menuitems.map((menuitem, index) => (
-                <Menu key={index} menu={menuitem} />
-            ))}
-        </Fragment>
-    )
+        ]
+
+        const User = this.props.User
+        return (
+            <Fragment>
+                <BreadCrumbs breadcrumbs={breadcrumbs} />
+                {
+                    menuitems.map((menuitem, index) => (
+                        <Menu key={index} menu={menuitem} User={User} />
+                    ))
+                }
+            </Fragment >
+        )
+    }
 }
 
-export default Home
+const mapStateToProps = state => ({
+    User: state.Auth.User,
+})
+
+export default connect(mapStateToProps, {})(Home)

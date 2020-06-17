@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 
 import { connect } from 'react-redux'
 
-import { Add_Account } from '../../../Store/Actions/Auth.Actions'
+import { Add_Account } from '../../../Store/Actions/Account.Actions'
 
 import { TextField, Button } from '@material-ui/core'
 

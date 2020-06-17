@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 
 import { connect } from 'react-redux'
 
-import { get_AccountDetail } from '../../../Store/Actions/Auth.Actions'
+import { get_AccountDetail } from '../../../Store/Actions/Account.Actions'
 
 import { Avatar, TextField } from '@material-ui/core'
 
@@ -78,8 +78,8 @@ class AccountDetail extends React.Component {
 
 const mapStateToProps = state => ({
     User: state.Auth.User,
-    idDetailAccount: state.Auth.idDetailAccount,
-    AccountDetail: state.Auth.AccountDetail,
+    idDetailAccount: state.Account.idDetailAccount,
+    AccountDetail: state.Account.AccountDetail,
 })
 
 export default connect(mapStateToProps, { get_AccountDetail })(withTheme(AccountDetail))

@@ -195,22 +195,27 @@ router.post('/register', upload.single('ProfilePicture'), auth, (req, res) => {
                         newUser.Password = hash
                         newUser.save()
                             .then(user => {
-                                res.status(200)
-                                    .json({
-                                        user: {
-                                            id: user.id,
-                                            UserName: user.UserName,
-                                            Name: user.Name,
-                                            Password: user.Password,
-                                            isActive: user.isActive,
-                                            isKasir: user.isKasir,
-                                            isAdmin: user.isAdmin,
-                                            isSuperUser: user.isSuperUser,
-                                            ProfilePicture: user.ProfilePicture,
-                                            LastActive: user.LastActive,
-                                            RegisterDate: user.RegisterDate,
-                                        }
-                                    })
+                                console.log(`registered = id${user.id}`)
+                                res.status(200).json({
+                                    msg: 'Registrasi sukses',
+                                    user: {
+                                        id: user.id,
+                                        UserName: user.UserName,
+                                        Name: user.Name,
+                                        Password: user.Password,
+                                        isActive: user.isActive,
+                                        isKasir: user.isKasir,
+                                        isAdmin: user.isAdmin,
+                                        isSuperUser: user.isSuperUser,
+                                        ProfilePicture: user.ProfilePicture,
+                                        LastActive: user.LastActive,
+                                        RegisterDate: user.RegisterDate,
+                                    }
+                                })
+                            })
+                            .catch(err => {
+                                console.log(`Erorr saat register => ${err}`)
+                                res.status(404).json({ msg: 'ada kesalahan pada proses registrasi', errorDetail: err })
                             })
                     })
                 })
@@ -222,7 +227,7 @@ router.post('/register', upload.single('ProfilePicture'), auth, (req, res) => {
 //// @desc    Update an User
 //// @access  Private
 router.patch('/user/:id/update', upload.single('ProfilePicture'), auth, (req, res) => {
-    const { UserName, LastActive, RegisterDate, Password } = req.body
+    const { UserName, LastActive, RegisterDate } = req.body
     if (UserName || LastActive || RegisterDate) {
         return res.status(401).json({ msg: 'input yang anda masukkan tidak bisa diganti' })
     }
@@ -250,7 +255,7 @@ router.patch('/user/:id/update', upload.single('ProfilePicture'), auth, (req, re
         } else if (req.body.isSuperUser === 'false')
             req.body.isSuperUser = false
     }
-    if (req.file.path) {
+    if (req.file) {
         req.body.ProfilePicture = req.file.path
     }
     if ((typeof req.body.isActive !== 'undefined' && typeof req.body.isActive !== 'boolean') ||
@@ -259,7 +264,7 @@ router.patch('/user/:id/update', upload.single('ProfilePicture'), auth, (req, re
         (typeof req.body.isSuperUser !== 'undefined' && typeof req.body.isSuperUser !== 'boolean')) {
         return res.status(400).json({ msg: 'mohon masukkan input yang benar' })
     }
-    if (Password) {
+    if (req.body.Password) {
         ////// retrieve the password field
         var password = req.body.Password
 
@@ -271,16 +276,28 @@ router.patch('/user/:id/update', upload.single('ProfilePicture'), auth, (req, re
                 } else {
                     req.body.Password = hash
                     User.findByIdAndUpdate(req.params.id, { $set: req.body })
-                        .then(() => res.status(200).json({ msg: 'update berhasil' }))
-                        .catch(err => res.status(404).json({ msg: 'ada kesalahan pada proses update', errorDetail: err }))
+                        .then(() => {
+                            console.log(`updated = id${req.params.id}`)
+                            res.status(200).json({ msg: 'update berhasil' })
+                        })
+                        .catch(err => {
+                            console.log(`Erorr saat update id${req.params.id} => ${err}`)
+                            res.status(404).json({ msg: 'ada kesalahan pada proses update', errorDetail: err })
+                        })
                 }
             })
         })
-    }
-    else {
+    } else {
+        delete req.body.Password
         User.findByIdAndUpdate(req.params.id, { $set: req.body })
-            .then(() => res.status(200).json({ msg: 'update berhasil' }))
-            .catch(err => res.status(404).json({ msg: 'ada kesalahan pada proses update', errorDetail: err }))
+            .then(() => {
+                console.log(`updated = id${req.params.id}`)
+                res.status(200).json({ msg: 'update berhasil' })
+            })
+            .catch(err => {
+                console.log(`Erorr saat update id${req.params.id} => ${err}`)
+                res.status(404).json({ msg: 'ada kesalahan pada proses update', errorDetail: err })
+            })
     }
 })
 
@@ -288,11 +305,16 @@ router.patch('/user/:id/update', upload.single('ProfilePicture'), auth, (req, re
 //// @desc    Delete an User
 //// @access  Private
 router.delete('/user/:id/delete', auth, (req, res) => {
-    console.log(req.params.id)
     User.findById(req.params.id)
         .then(user => user.remove())
-        .then(() => res.status(200).json({ msg: 'delet sukses' }))
-        .catch(err => res.status(404).json({ msg: 'ada kesalahan pada proses delete', errorDetail: err }))
+        .then(() => {
+            console.log(`deleted = id${req.params.id}`)
+            res.status(200).json({ msg: 'delet sukses' })
+        })
+        .catch(err => {
+            console.log(`Erorr saat Delete id${req.params.id} => ${err}`)
+            res.status(404).json({ msg: 'ada kesalahan pada proses delete', errorDetail: err })
+        })
 })
 
 module.exports = router

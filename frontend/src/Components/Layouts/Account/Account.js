@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 
 import { connect } from 'react-redux'
 
-import { get_AccountId_Detail, get_AccountId_Update } from '../../../Store/Actions/Auth.Actions'
+import { get_AccountId_Detail, get_AccountId_Update } from '../../../Store/Actions/Account.Actions'
 
 import { Container } from '@material-ui/core'
 

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 
 import { connect } from 'react-redux'
 
-import { Load_Account_List, get_AccountId_Detail, get_AccountId_Update, Delete_an_Account } from '../../../Store/Actions/Auth.Actions'
+import { Load_Account_List, get_AccountId_Detail, get_AccountId_Update, Delete_an_Account } from '../../../Store/Actions/Account.Actions'
 
 import { Short_Column_INT, Short_Column_STR } from '../Shorting'
 
@@ -134,8 +134,8 @@ class UserDataList extends React.Component {
 
 const mapStateToProps = (state) => ({
     User: state.Auth.User,
-    AccountList: state.Auth.AccountList,
-    idDetailAccount: state.Auth.idDetailAccount,
+    AccountList: state.Account.AccountList,
+    idDetailAccount: state.Account.idDetailAccount,
 })
 
 export default connect(mapStateToProps, { Load_Account_List, get_AccountId_Detail, get_AccountId_Update, Delete_an_Account })(UserDataList)

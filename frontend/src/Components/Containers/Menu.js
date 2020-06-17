@@ -9,6 +9,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 
 export const Menu = (props) => {
+    const User = props.User
     const theme = useTheme()
     const [open, setOpen] = React.useState(true)
     const handleClick = () => {
@@ -36,15 +37,29 @@ export const Menu = (props) => {
                                         <Grid container spacing={5} justify="flex-start" alignItems="center">
                                             {props.menu.menuitems.map((menuitem, index) => (
                                                 <Grid key={index} item  >
-                                                    {
-                                                        (menuitem.type === 'nonPrivacry') ? (
-                                                            <Link href={`${menuitem.link}`} underline='none' >
-                                                                <Paper style={st_paper} className='MenuPaperHover' >
-                                                                    {menuitem.icon}<br />
-                                                                    {menuitem.name}
-                                                                </Paper>
-                                                            </Link>
-                                                        ) : null}
+                                                    {User ? (((menuitem.type === 'SuperPrivacry') && (User.isSuperUser === true)) ? (
+                                                        <Link href={`${menuitem.link}`} underline='none' >
+                                                            <Paper style={st_paper} className='MenuPaperHover' >
+                                                                {menuitem.icon}<br />
+                                                                {menuitem.name}
+                                                            </Paper>
+                                                        </Link>
+                                                    ) : (((menuitem.type === 'Privacry') && ((User.isSuperUser) || (User.isAdmin))) ? (
+                                                        <Link href={`${menuitem.link}`} underline='none' >
+                                                            <Paper style={st_paper} className='MenuPaperHover' >
+                                                                {menuitem.icon}<br />
+                                                                {menuitem.name}
+                                                            </Paper>
+                                                        </Link>
+                                                    ) : ((menuitem.type === 'nonPrivacry') ? (
+                                                        <Link href={`${menuitem.link}`} underline='none' >
+                                                            <Paper style={st_paper} className='MenuPaperHover' >
+                                                                {menuitem.icon}<br />
+                                                                {menuitem.name}
+                                                            </Paper>
+                                                        </Link>
+                                                    ) : null))
+                                                    ) : null}
 
                                                 </Grid>
                                             ))}

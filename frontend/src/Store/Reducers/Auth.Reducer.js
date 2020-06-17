@@ -6,11 +6,6 @@ import {
     LOGIN_SUCCESS,
     USER_LOADED,
     USER_EXPIRED,
-    GET_ACCOUNTID_FOR_DETAIL,
-    GET_ACCOUNT_DETAIL,
-    GET_ACCOUNTID_FOR_UPDATE,
-    GET_LIST_ACCOUNT,
-    ACCOUNT_DELETE,
     LOGOUT_SUCCESS,
 } from '../Actions/Type.Actions'
 
@@ -19,10 +14,6 @@ const initialState = {
     isAuth: localStorage.getItem('KasirQU_isAuth'),
     isUserLoading: false,
     User: null,
-    idDetailAccount: null,
-    AccountDetail: null,
-    idUpdateAccount: null,
-    AccountList: [],
     isDarkMode: localStorage.getItem('KasirQU_isDarkMode')
 }
 
@@ -67,31 +58,6 @@ export default function (state = initialState, action) {
                 isAuth: true,
                 token: action.payload.token,
                 User: action.payload.user
-            }
-        case GET_ACCOUNTID_FOR_DETAIL:
-            return {
-                ...state,
-                idDetailAccount: action.payload,
-            }
-        case GET_ACCOUNT_DETAIL:
-            return {
-                ...state,
-                AccountDetail: action.payload,
-            }
-        case GET_ACCOUNTID_FOR_UPDATE:
-            return {
-                ...state,
-                idUpdateAccount: action.payload,
-            }
-        case GET_LIST_ACCOUNT:
-            return {
-                ...state,
-                AccountList: action.payload,
-            }
-        case ACCOUNT_DELETE:
-            return {
-                ...state,
-                AccountList: state.AccountList.filter(AccountList => AccountList._id !== action.payload)
             }
         case USER_EXPIRED:
         case LOGOUT_SUCCESS:
