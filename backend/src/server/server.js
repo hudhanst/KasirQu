@@ -53,3 +53,7 @@ app.listen(port, () => console.log(`server start on port ${port}`))
 // use route
 app.use('/api/auth', require('./Routers/Apis/Auth'))
 app.use('/api/users', require('./Routers/Apis/User'))
+app.use('/api/toko', require('./Routers/Apis/Toko'))
+// app.use('/api/barang', require('./Routers/Apis/Barang'))
+// app.use('/api/jenisbarang', require('./Routers/Apis/JenisBarang'))
+// app.use('/api/transaksi', require('./Routers/Apis/Transaksi'))

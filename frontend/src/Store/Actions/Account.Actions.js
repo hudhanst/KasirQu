@@ -10,6 +10,7 @@ import {
     GET_ACCOUNT_ID_FOR_UPDATE,
     ACCOUNT_DELETED,
     LIST_ACCOUNT,
+    TOKO_DETAIL,
 } from '../Actions/Type.Actions'
 
 import {
@@ -164,5 +165,51 @@ export const Load_Account_List = () => (dispatch, getState) => {
             dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg ? err.response.data.msg : null))
             // dispatch({ type: ACCOUNT_LOADED })
         })
+    dispatch({ type: ACCOUNT_LOADED })
+}
+
+export const get_TokoDetail = () => (dispatch, getState) => {
+    dispatch({ type: ACCOUNT_LOADING })
+    axios.get('http://127.0.0.1:5000/api/toko/detail', tokenConfig(getState))
+        .then(res => {
+            // console.log(res)
+            dispatch({
+                type: TOKO_DETAIL,
+                payload: res.data.toko
+            })
+        }).catch(err => {
+            console.log(err)
+            dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg ? err.response.data.msg : null))
+        })
+    dispatch({ type: ACCOUNT_LOADED })
+}
+
+export const Update_Toko = (UpdateData, Auth) => (dispatch, getState) => {
+    dispatch({ type: ACCOUNT_LOADING })
+    if (Auth) {
+        const isSuperUser = Auth.isSuperUser
+        if (isSuperUser) {
+            const bodydata = new FormData()
+
+            bodydata.append("NamaToko", UpdateData.NamaToko)
+            bodydata.append("Alamat", UpdateData.Alamat)
+            bodydata.append("Kontak", UpdateData.Kontak)
+            if (UpdateData.Logo !== null) {
+                bodydata.append("Logo", UpdateData.Logo);
+            }
+            axios.patch('http://127.0.0.1:5000/api/toko/update', bodydata, tokenConfigmultipleform(getState))
+                .then(res => {
+                    // console.log(res)
+                    dispatch(Create_Success_Messages(res.status ? res.status : null, res.data.msg ? res.data.msg : null))
+                }).catch(err => {
+                    console.log(err.response)
+                    dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg))
+                })
+        } else {
+            dispatch(Create_Error_Messages(null, 'maaf anda tidak diperkenankan melakukan ini'))
+        }
+    } else {
+        dispatch(Create_Error_Messages(null, 'anda harus login untuk melakukan ini'))
+    }
     dispatch({ type: ACCOUNT_LOADED })
 }

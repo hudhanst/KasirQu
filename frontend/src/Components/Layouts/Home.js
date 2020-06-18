@@ -137,8 +137,8 @@ class Home extends React.Component {
                         // type: 'nonPrivacry',
                     },
                     {
-                        name: 'Tentang Toko',
-                        link: 'account/tentang',
+                        name: 'Detail Toko',
+                        link: 'account/tokodetail',
                         icon: <StoreTwoToneIcon />,
                         type: 'SuperPrivacry',
                         // type: 'nonPrivacry',

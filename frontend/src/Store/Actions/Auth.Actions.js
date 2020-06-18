@@ -63,17 +63,17 @@ export const Config_DarkMode = (isDarkMode) => (dispatch) => {
     })
 }
 
-export const First_Time_Register = (UserName, Name, Password, coupon, Profilepicture) => (dispatch) => {
+export const First_Time_Use = (UserData, TokoData) => (dispatch, getState) => {
     dispatch({ type: AUTH_LOADING })
     // const body = JSON.stringify({ UserName, Name, Password, coupon })
     const bodydata = new FormData()
 
-    bodydata.append("UserName", UserName)
-    bodydata.append("Name", Name)
-    bodydata.append("Password", Password)
-    bodydata.append("coupon", coupon)
-    if (Profilepicture !== null) {
-        bodydata.append("ProfilePicture", Profilepicture)
+    bodydata.append("UserName", UserData.UserName)
+    bodydata.append("Name", UserData.Name)
+    bodydata.append("Password", UserData.Password)
+    bodydata.append("coupon", UserData.cupon)
+    if (UserData.Profilepicture !== null) {
+        bodydata.append("ProfilePicture", UserData.Profilepicture)
     }
     axios.post('http://127.0.0.1:5000/api/users/firsttimeuse/register/superuser', bodydata)
         .then(res => {
@@ -83,6 +83,24 @@ export const First_Time_Register = (UserName, Name, Password, coupon, Profilepic
                 payload: res.data
             })
             dispatch({ type: AUTH_LOADED })
+            dispatch({ type: AUTH_LOADING })
+            const bodydatatoko = new FormData()
+
+            bodydatatoko.append("NamaToko", TokoData.NamaToko)
+            bodydatatoko.append("Alamat", TokoData.Alamat)
+            bodydatatoko.append("Kontak", TokoData.Kontak ? TokoData.Kontak : null)
+            if (TokoData.Logo !== null) {
+                bodydatatoko.append("Logo", TokoData.Logo)
+            }
+            axios.post('http://127.0.0.1:5000/api/toko/firsttimeuse/tokoconfig', bodydatatoko, tokenConfigmultipleform(getState))
+                .then(res => {
+                    // console.log(res)
+                    dispatch({ type: AUTH_LOADED })
+                }).catch(err => {
+                    console.log(err)
+                    dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg ? err.response.data.msg : null))
+                    dispatch({ type: AUTH_LOADED })
+                })
         }).catch(err => {
             console.log(err.response)
             dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg ? err.response.data.msg : null))
@@ -90,6 +108,7 @@ export const First_Time_Register = (UserName, Name, Password, coupon, Profilepic
         })
     // dispatch({ type: AUTH_LOADED })
 }
+
 export const LogIn = (UserName, Password) => (dispatch) => {
     dispatch({ type: AUTH_LOADING })
     const body = JSON.stringify({ UserName, Password })

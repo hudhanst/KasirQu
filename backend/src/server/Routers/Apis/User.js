@@ -94,6 +94,7 @@ router.post('/firsttimeuse/register/superuser', upload.single('ProfilePicture'),
                             newUser.Password = hash
                             newUser.save()
                                 .then(user => {
+                                    console.log(`superuser sudah dibuat = id${user.id}`)
                                     ////// create jwt pattern
                                     jwt.sign(
                                         { id: user.id },
@@ -119,6 +120,10 @@ router.post('/firsttimeuse/register/superuser', upload.single('ProfilePicture'),
                                                 }
                                             })
                                         })
+                                })
+                                .catch(err => {
+                                    console.log(`Erorr saat pembuatan superuser => ${err}`)
+                                    res.status(404).json({ msg: 'ada kesalahan pada proses pembuatan superuser', errorDetail: err })
                                 })
                         })
                     })

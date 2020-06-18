@@ -34,7 +34,7 @@ class Login extends React.Component {
         if (this.state.firsttimeuse_clickcounter < 10) {
             this.setState({ firsttimeuse_clickcounter: (this.state.firsttimeuse_clickcounter + 1) })
         } else {
-            window.location.href = '/firsttimeregistration'
+            window.location.href = '/firsttimeuse'
         }
     }
     render() {

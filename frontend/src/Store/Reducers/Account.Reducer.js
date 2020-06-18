@@ -6,6 +6,7 @@ import {
     GET_ACCOUNT_ID_FOR_UPDATE,
     ACCOUNT_DELETED,
     LIST_ACCOUNT,
+    TOKO_DETAIL,
 } from '../Actions/Type.Actions'
 
 const initialState = {
@@ -14,6 +15,7 @@ const initialState = {
     AccountDetail: null,
     idUpdateAccount: null,
     AccountList: [],
+    TokoDetail: null,
 }
 
 export default function (state = initialState, action) {
@@ -52,6 +54,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 AccountList: action.payload,
+            }
+        case TOKO_DETAIL:
+            return{
+                ...state,
+                TokoDetail: action.payload,
             }
         default:
             return state

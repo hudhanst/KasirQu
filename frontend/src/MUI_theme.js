@@ -29,8 +29,8 @@ export const initialMUIState = {
         // bgcolor_dr: '#2A2E35',
         bgcolor_dr: '#222831',
         // bgcolor_dr: '#222222',
-        hovercolor_lg:'rgba(0, 0, 0, 0.04)',
-        hovercolor_dr:'rgba(255, 255, 255, 0.08)',
+        hovercolor_lg: 'rgba(0, 0, 0, 0.04)',
+        hovercolor_dr: 'rgba(255, 255, 255, 0.08)',
         // 
         navBackground_lg: '#5c4d4d',
         navBackground_dr: '#000000',
@@ -100,8 +100,8 @@ export const MUI_theme_auth_light = createMuiTheme({
         // secondary: {
         //     main: initialMUIState.color.orange,
         // },
-        action:{
-            hover:initialMUIState.color.hovercolor_lg,
+        action: {
+            hover: initialMUIState.color.hovercolor_lg,
             // hover:'red',
         },
         background: {
@@ -123,8 +123,8 @@ export const MUI_theme_auth_light = createMuiTheme({
             background: initialMUIState.color.navBackground_lg,
             color: initialMUIState.color.navColor_lg,
         },
-        tablehead:{
-            background:initialMUIState.color.rotextfield_lg,
+        tablehead: {
+            background: initialMUIState.color.rotextfield_lg,
         }
     }
 })
@@ -139,8 +139,8 @@ export const MUI_theme_auth_dark = createMuiTheme({
         // secondary: {
         //     main: initialMUIState.color.blue,
         // },
-        action:{
-            hover:initialMUIState.color.hovercolor_dr,
+        action: {
+            hover: initialMUIState.color.hovercolor_dr,
         },
         background: {
             default: initialMUIState.color.bgcolor_dr,
@@ -161,8 +161,8 @@ export const MUI_theme_auth_dark = createMuiTheme({
             background: initialMUIState.color.navBackground_dr,
             color: initialMUIState.color.navColor_dr,
         },
-        tablehead:{
-            background:initialMUIState.color.rotextfield_dr,
+        tablehead: {
+            background: initialMUIState.color.rotextfield_dr,
         }
     }
 })
@@ -196,6 +196,10 @@ export const MUI_VerticalMargin = ({
     marginTop: '10px',
     marginBottom: '10px',
 
+})
+export const MUI_HorizontalsmButtonMargin = ({
+    marginLeft: '5px',
+    marginRight: '5px',
 })
 ////// END-STYLE-GLOBAL
 
