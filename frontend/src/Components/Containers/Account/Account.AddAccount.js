@@ -64,9 +64,9 @@ class AddAccount extends React.Component {
         return (
             <Fragment>
                 <form onSubmit={this.Form_OnSubmit}>
-                    <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='User Name' name='UserName' value={UserName} />
-                    <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Name' name='Name' value={Name} />
-                    <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='password' label='Password' name='Password' value={Password} />
+                    <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='User Name' name='UserName' value={UserName} required />
+                    <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Name' name='Name' value={Name} required />
+                    <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='password' label='Password' name='Password' value={Password} required />
                     <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='password' label='Confirm Password' name='ConfirmPassword' value={ConfirmPassword}
                         error={((Password !== ConfirmPassword) && (ConfirmPassword !== '')) ? true : false}
                         helperText={((Password !== ConfirmPassword) && (ConfirmPassword !== '')) ? 'password dan password confirm harus sama' : null}

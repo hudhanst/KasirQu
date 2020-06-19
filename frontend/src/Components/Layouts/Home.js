@@ -68,7 +68,7 @@ class Home extends React.Component {
                     },
                     {
                         name: 'Kategori Barang',
-                        link: 'barang/barangcategory',
+                        link: 'barang/katagoribarang',
                         icon: <CategoryTwoToneIcon />,
                         type: 'Privacry',
                         // type: 'nonPrivacry',

@@ -108,7 +108,7 @@ class AccountUpdate extends React.Component {
                     <Fragment>
                         <form onSubmit={this.Form_OnSubmit}>
                             <TextField style={{ ...st_textfield, ...theme.customTheme.readonlytextfield }} variant='outlined' disabled type='text' label='User Name' name='UserName' value={UserName} />
-                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Name' name='Name' value={Name} />
+                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Name' name='Name' value={Name} required />
                             <FormGroup row>
                                 <FormControlLabel
                                     control={<Checkbox color='primary' onChange={this.CheckBox_OnChange} name="ChangePassword" value={ChangePassword} />}

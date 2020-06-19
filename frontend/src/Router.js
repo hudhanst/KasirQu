@@ -13,6 +13,7 @@ import Home from './Components/Layouts/Home'
 import Transaksi from './Components/Layouts/Transaksi/Transaksi'
 
 import Barang from './Components/Layouts/Barang/Barang'
+import KatagoriBarang from './Components/Layouts/Barang/katagoribarang'
 
 import Help from './Components/Layouts/Help/Help'
 
@@ -28,6 +29,7 @@ const BaseRouter = () => {
             <PrivateRoute exact path="/transaksi" component={Transaksi} />
             
             <PrivateRoute exact path="/barang" component={Barang} />
+            <PrivateRoute exact path="/barang/katagoribarang" component={KatagoriBarang} />
             
             <PrivateRoute exact path="/help" component={Help} />
             
