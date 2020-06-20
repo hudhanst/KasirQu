@@ -75,7 +75,7 @@ class Home extends React.Component {
                     },
                     {
                         name: 'Konfigurasi Barang',
-                        link: 'barang/barangcategory',
+                        link: 'barang/konfigurasibarang',
                         icon: <PlaylistAddTwoToneIcon />,
                         type: 'Privacry',
                         // type: 'nonPrivacry',

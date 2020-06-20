@@ -1,37 +1,19 @@
 import {
     BARANG_LOADING,
     BARANG_LOADED,
-    TABLE_BARANG_LOADED,
+    GET_BARANG_ID_FOR_DETAIL,
+    BARANG_DETAIL,
+    GET_BARANG_ID_FOR_UPDATE,
+    BARANG_DELETED,
+    LIST_BARANG,
 } from '../Actions/Type.Actions'
 
 const initialState = {
     isBarangLoading: false,
-    Table_Barang: [
-        {
-            Barcode:'123',
-            NamaBarang:'coba',
-            JenisBarang:'1',
-            StokBarang:100,
-            HargaJual:3000,
-            HargaBeli:2500,
-        },
-        {
-            Barcode:'12345',
-            NamaBarang:'coba1',
-            JenisBarang:'1',
-            StokBarang:62,
-            HargaJual:3500,
-            HargaBeli:2000,
-        },
-        {
-            Barcode:'897888',
-            NamaBarang:'speda',
-            JenisBarang:'2',
-            StokBarang:54,
-            HargaJual:35000,
-            HargaBeli:28000,
-        },
-    ],
+    idDetailBarang: null,
+    BarangDetail: null,
+    idUpdateBarang: null,
+    BarangList: [],
 }
 
 export default function (state = initialState, action) {
@@ -46,10 +28,30 @@ export default function (state = initialState, action) {
                 ...state,
                 isBarangLoading: false,
             }
-        case TABLE_BARANG_LOADED:
+        case GET_BARANG_ID_FOR_DETAIL:
             return {
                 ...state,
-                // Table_Barang: action.payload
+                idDetailBarang: action.payload,
+            }
+        case BARANG_DETAIL:
+            return {
+                ...state,
+                BarangDetail: action.payload,
+            }
+        case GET_BARANG_ID_FOR_UPDATE:
+            return {
+                ...state,
+                idUpdateBarang: action.payload,
+            }
+        case BARANG_DELETED:
+            return {
+                ...state,
+                BarangList: state.BarangList.filter(BarangList => BarangList._id !== action.payload)
+            }
+        case LIST_BARANG:
+            return {
+                ...state,
+                BarangList: action.payload,
             }
         default:
             return state

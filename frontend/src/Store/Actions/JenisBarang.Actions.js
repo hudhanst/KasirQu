@@ -48,7 +48,8 @@ export const Add_JenisBarang = (JenisBarang, Auth) => (dispatch, getState) => {
     // console.log(AddAccountData, Auth)
     if (Auth) {
         const isSuperUser = Auth.isSuperUser
-        if (isSuperUser) {
+        const isAdmin = Auth.isAdmin
+        if (isSuperUser || isAdmin) {
             const NamaJenisBarang = JenisBarang.NamaJenisBarang
             const Ket = JenisBarang.Ket
 
@@ -83,8 +84,8 @@ export const Update_JenisBarang = (JenisBarangID, UpdateData, Auth) => (dispatch
     dispatch({ type: JENISBARANG_LOADING })
     if (Auth) {
         const isSuperUser = Auth.isSuperUser
-        if (isSuperUser) {
-
+        const isAdmin = Auth.isAdmin
+        if (isSuperUser || isAdmin) {
             const NamaJenisBarang = UpdateData.NamaJenisBarang
             const Ket = UpdateData.Ket
 
@@ -112,7 +113,8 @@ export const Delete_a_JenisBarang = (JenisBarangID, Auth) => (dispatch, getState
     dispatch({ type: JENISBARANG_LOADING })
     if (Auth) {
         const isSuperUser = Auth.isSuperUser
-        if (isSuperUser) {
+        const isAdmin = Auth.isAdmin
+        if (isSuperUser || isAdmin) {
             axios.delete(`http://127.0.0.1:5000/api/jenisbarang/detail/${JenisBarangID}/delete`, tokenConfig(getState))
                 .then(res => {
                     // console.log(res)

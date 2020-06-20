@@ -110,7 +110,6 @@ router.patch('/detail/:id/update', auth, (req, res) => {
 //// @desc    Delete JenisBarang
 //// @access  Private
 router.delete('/detail/:id/delete', auth, (req, res) => {
-    console.log(req.params.id)
     JenisBarang.findByIdAndDelete(req.params.id)
         .then(() => {
             console.log(`JenisBarang ${req.params.id} deleted`)

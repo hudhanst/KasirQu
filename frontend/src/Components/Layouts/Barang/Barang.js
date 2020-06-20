@@ -1,7 +1,5 @@
 import React, { Fragment } from 'react'
 
-// import Typography from '@material-ui/core/Typography'
-
 import BreadCrumbs from '../../Containers/BreadCrumbs'
 import Searching from '../../Containers/Searching'
 import TabelBarang from '../../Containers/Barang/Barang.TabelBarang'

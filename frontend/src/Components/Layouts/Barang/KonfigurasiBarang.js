@@ -4,34 +4,32 @@ import { MUI_FullWidth, MUI_VerticalMargin } from '../../../MUI_theme'
 
 import BreadCrumbs from '../../Containers/BreadCrumbs'
 import GenericModals from '../../Containers/GenericModals'
-import AddJenisBarang from '../../Containers/Barang/Barang.AddJenisBarang'
-import KatagoriBarangList from '../../Containers/Barang/Barang.KatagoriBarangList'
+import AddBarang from '../../Containers/Barang/Barang.AddBarang'
+import Searching from '../../Containers/Searching'
+import BarangList from '../../Containers/Barang/Barang.BarangList'
 
-
-////// TODO ADD WARNING WHEN USER WANNA UPDATE
-////// TODO ADD WARNING WHEN USER WANNA DELETE
-
-
-const KatagoriBarang = () => {
-    const breadcrumbs = [{ name: 'Barang', link: 'barang' }, { name: 'Katagori Barang', link: 'barang/katagoribarang' }]
+const KonfigurasiBarang = () => {
+    const breadcrumbs = [{ name: 'Barang', link: 'barang' }, { name: 'Konfigurasi Barang', link: 'barang/konfigurasibarang' }]
     return (
         <Fragment>
             <BreadCrumbs breadcrumbs={breadcrumbs} />
             <GenericModals
                 size='m'
-                header='Tambah Jenis Barang'
-                body={<AddJenisBarang />}
+                header='Tambah Barang'
+                body={<AddBarang />}
                 Buttonstyle={{ ...MUI_FullWidth, ...MUI_VerticalMargin }}
                 Buttonvariant='contained'
                 Buttonsize='large'
                 Buttoncolor='primary'
                 ButtononClickeven={() => null}
-                Buttonlabel={'Tambah Jenis Barang'}
+                Buttonlabel={'Tambah Barang'}
             />
             <hr />
-            <KatagoriBarangList />
+            <Searching tablename={'tabel_barang'} tdnumber={2} width='xl' label={null} />
+            <hr />
+            <BarangList />
         </Fragment>
     )
 }
 
-export default KatagoriBarang
+export default KonfigurasiBarang
