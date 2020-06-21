@@ -28,7 +28,7 @@ export const get_AccountId_Detail = (UserID) => (dispatch) => {
 
 export const get_AccountDetail = (UserID) => (dispatch, getState) => {
     dispatch({ type: ACCOUNT_LOADING })
-    axios.get(`http://127.0.0.1:5000/api/users/user/${UserID}`, tokenConfig(getState))
+    axios.get(`/api/users/user/${UserID}`, tokenConfig(getState))
         .then(res => {
             // console.log(res)
             dispatch({
@@ -62,7 +62,7 @@ export const Add_Account = (AddAccountData, Auth) => (dispatch, getState) => {
                 bodydata.append("ProfilePicture", AddAccountData.Profilepicture);
             }
             // console.log('bodydata', ...bodydata)
-            axios.post('http://127.0.0.1:5000/api/users/register', bodydata, tokenConfigmultipleform(getState))
+            axios.post('/api/users/register', bodydata, tokenConfigmultipleform(getState))
                 .then(res => {
                     // console.log(res)
                     dispatch(Create_Success_Messages(res.status ? res.status : null, res.data.msg ? res.data.msg : null))
@@ -105,7 +105,7 @@ export const Update_Account = (AccountID, UpdateData, Auth) => (dispatch, getSta
             if (UpdateData.Profilepicture !== null) {
                 bodydata.append("ProfilePicture", UpdateData.Profilepicture);
             }
-            axios.patch(`http://127.0.0.1:5000/api/users/user/${AccountID}/update`, bodydata, tokenConfigmultipleform(getState))
+            axios.patch(`/api/users/user/${AccountID}/update`, bodydata, tokenConfigmultipleform(getState))
                 .then(res => {
                     // console.log(res)
                     dispatch(Create_Success_Messages(res.status ? res.status : null, res.data.msg ? res.data.msg : null))
@@ -128,7 +128,7 @@ export const Delete_an_Account = (AccountID, Auth) => (dispatch, getState) => {
     if (Auth) {
         const isSuperUser = Auth.isSuperUser
         if (isSuperUser) {
-            axios.delete(`http://127.0.0.1:5000/api/users/user/${AccountID}/delete`, tokenConfig(getState))
+            axios.delete(`/api/users/user/${AccountID}/delete`, tokenConfig(getState))
                 .then(res => {
                     console.log(res)
                     dispatch({
@@ -152,7 +152,7 @@ export const Delete_an_Account = (AccountID, Auth) => (dispatch, getState) => {
 export const Load_Account_List = () => (dispatch, getState) => {
     // console.log(2)
     dispatch({ type: ACCOUNT_LOADING })
-    axios.get(`http://127.0.0.1:5000/api/users`, tokenConfig(getState))
+    axios.get(`/api/users`, tokenConfig(getState))
         .then(res => {
             // console.log(res)
             dispatch({
@@ -170,7 +170,7 @@ export const Load_Account_List = () => (dispatch, getState) => {
 
 export const get_TokoDetail = () => (dispatch, getState) => {
     dispatch({ type: ACCOUNT_LOADING })
-    axios.get('http://127.0.0.1:5000/api/toko/detail', tokenConfig(getState))
+    axios.get('/api/toko/detail', tokenConfig(getState))
         .then(res => {
             // console.log(res)
             dispatch({
@@ -197,7 +197,7 @@ export const Update_Toko = (UpdateData, Auth) => (dispatch, getState) => {
             if (UpdateData.Logo !== null) {
                 bodydata.append("Logo", UpdateData.Logo);
             }
-            axios.patch('http://127.0.0.1:5000/api/toko/update', bodydata, tokenConfigmultipleform(getState))
+            axios.patch('/api/toko/update', bodydata, tokenConfigmultipleform(getState))
                 .then(res => {
                     // console.log(res)
                     dispatch(Create_Success_Messages(res.status ? res.status : null, res.data.msg ? res.data.msg : null))

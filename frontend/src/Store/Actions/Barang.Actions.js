@@ -28,7 +28,7 @@ export const get_BarangId_Detail = (BarangID) => (dispatch) => {
 export const get_BarangDetail = (BarangID) => (dispatch, getState) => {
     // console.log('BarangID',BarangID)
     dispatch({ type: BARANG_LOADING })
-    axios.get(`http://127.0.0.1:5000/api/barang/detail/${BarangID}`, tokenConfig(getState))
+    axios.get(`/api/barang/detail/${BarangID}`, tokenConfig(getState))
         .then(res => {
             // console.log(res)
             dispatch({
@@ -60,7 +60,7 @@ export const Add_Barang = (Barang, Auth) => (dispatch, getState) => {
             if (Barang.BarangPic !== null) {
                 bodydata.append("BarangPic", Barang.BarangPic);
             }
-            axios.post('http://127.0.0.1:5000/api/barang/tambah', bodydata, tokenConfigmultipleform(getState))
+            axios.post('/api/barang/tambah', bodydata, tokenConfigmultipleform(getState))
                 .then(res => {
                     // console.log(res)
                     dispatch(Create_Success_Messages(res.status ? res.status : null, res.data.msg ? res.data.msg : null))
@@ -104,7 +104,7 @@ export const Update_Barang = (BarangID, UpdateData, Auth) => (dispatch, getState
                 bodydata.append("BarangPic", UpdateData.BarangPic);
             }
 
-            axios.patch(`http://127.0.0.1:5000/api/barang/detail/${BarangID}/update`, bodydata, tokenConfigmultipleform(getState))
+            axios.patch(`/api/barang/detail/${BarangID}/update`, bodydata, tokenConfigmultipleform(getState))
                 .then(res => {
                     // console.log(res)
                     dispatch(Create_Success_Messages(res.status ? res.status : null, res.data.msg ? res.data.msg : null))
@@ -128,7 +128,7 @@ export const Delete_a_Barang = (BarangID, Auth) => (dispatch, getState) => {
         const isSuperUser = Auth.isSuperUser
         const isAdmin = Auth.isAdmin
         if (isSuperUser || isAdmin) {
-            axios.delete(`http://127.0.0.1:5000/api/barang/detail/${BarangID}/delete`, tokenConfig(getState))
+            axios.delete(`/api/barang/detail/${BarangID}/delete`, tokenConfig(getState))
                 .then(res => {
                     // console.log(res)
                     dispatch({
@@ -151,7 +151,7 @@ export const Delete_a_Barang = (BarangID, Auth) => (dispatch, getState) => {
 
 export const Load_Barang_List = () => (dispatch, getState) => {
     dispatch({ type: BARANG_LOADING })
-    axios.get('http://127.0.0.1:5000/api/barang/list', tokenConfig(getState))
+    axios.get('/api/barang/list', tokenConfig(getState))
         .then(res => {
             // console.log(res)
             dispatch({

@@ -27,7 +27,7 @@ export const get_JenisBarangId_Detail = (JenisBarangID) => (dispatch) => {
 
 export const get_JenisBarangDetail = (JenisBarangID) => (dispatch, getState) => {
     dispatch({ type: JENISBARANG_LOADING })
-    axios.get(`http://127.0.0.1:5000/api/jenisbarang/detail/${JenisBarangID}`, tokenConfig(getState))
+    axios.get(`/api/jenisbarang/detail/${JenisBarangID}`, tokenConfig(getState))
         .then(res => {
             // console.log(res)
             dispatch({
@@ -55,7 +55,7 @@ export const Add_JenisBarang = (JenisBarang, Auth) => (dispatch, getState) => {
 
             const body = JSON.stringify({ NamaJenisBarang, Ket })
 
-            axios.post('http://127.0.0.1:5000/api/jenisbarang/tambah', body, tokenConfig(getState))
+            axios.post('/api/jenisbarang/tambah', body, tokenConfig(getState))
                 .then(res => {
                     // console.log(res)
                     dispatch(Create_Success_Messages(res.status ? res.status : null, res.data.msg ? res.data.msg : null))
@@ -91,7 +91,7 @@ export const Update_JenisBarang = (JenisBarangID, UpdateData, Auth) => (dispatch
 
             const body = JSON.stringify({ NamaJenisBarang, Ket })
 
-            axios.patch(`http://127.0.0.1:5000/api/jenisbarang/detail/${JenisBarangID}/update`, body, tokenConfig(getState))
+            axios.patch(`/api/jenisbarang/detail/${JenisBarangID}/update`, body, tokenConfig(getState))
                 .then(res => {
                     // console.log(res)
                     dispatch(Create_Success_Messages(res.status ? res.status : null, res.data.msg ? res.data.msg : null))
@@ -115,7 +115,7 @@ export const Delete_a_JenisBarang = (JenisBarangID, Auth) => (dispatch, getState
         const isSuperUser = Auth.isSuperUser
         const isAdmin = Auth.isAdmin
         if (isSuperUser || isAdmin) {
-            axios.delete(`http://127.0.0.1:5000/api/jenisbarang/detail/${JenisBarangID}/delete`, tokenConfig(getState))
+            axios.delete(`/api/jenisbarang/detail/${JenisBarangID}/delete`, tokenConfig(getState))
                 .then(res => {
                     // console.log(res)
                     dispatch({
@@ -138,7 +138,7 @@ export const Delete_a_JenisBarang = (JenisBarangID, Auth) => (dispatch, getState
 
 export const Load_JenisBarang_List = () => (dispatch, getState) => {
     dispatch({ type: JENISBARANG_LOADING })
-    axios.get('http://127.0.0.1:5000/api/jenisbarang/list', tokenConfig(getState))
+    axios.get('/api/jenisbarang/list', tokenConfig(getState))
         .then(res => {
             // console.log(res)
             dispatch({

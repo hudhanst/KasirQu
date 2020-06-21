@@ -75,7 +75,7 @@ export const First_Time_Use = (UserData, TokoData) => (dispatch, getState) => {
     if (UserData.Profilepicture !== null) {
         bodydata.append("ProfilePicture", UserData.Profilepicture)
     }
-    axios.post('http://127.0.0.1:5000/api/users/firsttimeuse/register/superuser', bodydata)
+    axios.post('/api/users/firsttimeuse/register/superuser', bodydata)
         .then(res => {
             // console.log(res.data)
             dispatch({
@@ -92,7 +92,7 @@ export const First_Time_Use = (UserData, TokoData) => (dispatch, getState) => {
             if (TokoData.Logo !== null) {
                 bodydatatoko.append("Logo", TokoData.Logo)
             }
-            axios.post('http://127.0.0.1:5000/api/toko/firsttimeuse/tokoconfig', bodydatatoko, tokenConfigmultipleform(getState))
+            axios.post('/api/toko/firsttimeuse/tokoconfig', bodydatatoko, tokenConfigmultipleform(getState))
                 .then(res => {
                     // console.log(res)
                     dispatch({ type: AUTH_LOADED })
@@ -112,7 +112,7 @@ export const First_Time_Use = (UserData, TokoData) => (dispatch, getState) => {
 export const LogIn = (UserName, Password) => (dispatch) => {
     dispatch({ type: AUTH_LOADING })
     const body = JSON.stringify({ UserName, Password })
-    axios.post('http://127.0.0.1:5000/api/auth/login', body, defaultheader())
+    axios.post('/api/auth/login', body, defaultheader())
         .then(res => {
             // console.log(res.data)
             dispatch({
@@ -130,7 +130,7 @@ export const LogIn = (UserName, Password) => (dispatch) => {
 
 export const Load_User = () => (dispatch, getState) => {
     dispatch({ type: AUTH_LOADING })
-    axios.get('http://127.0.0.1:5000/api/auth/user', tokenConfig(getState))
+    axios.get('/api/auth/user', tokenConfig(getState))
         .then(res => {
             // console.log(res.data)
             dispatch({
