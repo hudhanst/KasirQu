@@ -3,14 +3,14 @@ import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 
 import { Load_Barang_List } from '../../../Store/Actions/Barang.Actions'
-import { Add_Barang_To_Transaksi } from '../../../Store/Actions/Transaksi.Actions'
-import { Create_Info_Messages, Create_Warning_Messages } from '../../../Store/Actions/Messages.Actions'
+import { Add_Barang_To_Belanja } from '../../../Store/Actions/Transaksi.Actions'
+import { Create_Info_Messages } from '../../../Store/Actions/Messages.Actions'
 
 import { TextField, Button } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
 
 
-class AddBarangToTransaksi extends React.Component {
+class AddBarangToBelanja extends React.Component {
     state = {
         Data_Barang: this.props.Data_Barang,
         NamaBarang: null,
@@ -21,7 +21,6 @@ class AddBarangToTransaksi extends React.Component {
     }
     BarangonChange = (e, newNamaBarang) => {
         this.setState({ NamaBarang: newNamaBarang })
-        // this.setState({ Barcode: null })
     }
     BarcodeonChange = (e, newBarcode) => {
         this.setState({ Barcode: newBarcode })
@@ -30,14 +29,11 @@ class AddBarangToTransaksi extends React.Component {
     onSubmit = e => {
         e.preventDefault()
         const { Data_Barang, NamaBarang, Barcode, } = this.state
-        console.log('NamaBarang', NamaBarang)
+        // console.log('NamaBarang', NamaBarang)
         // console.log('Barcode', Barcode)
         if (NamaBarang !== null) {
             if (NamaBarang.Barcode) {
-                if (NamaBarang.Stok <= 10) {
-                    this.props.Create_Warning_Messages(null, 'stok barang kurang dari 10, akan gagal jika jumlah transaksi lebih banyak dari stok')
-                }
-                this.props.Add_Barang_To_Transaksi(NamaBarang)
+                this.props.Add_Barang_To_Belanja(NamaBarang)
                 this.setState({
                     NamaBarang: null,
                     Barcode: '',
@@ -45,10 +41,7 @@ class AddBarangToTransaksi extends React.Component {
             } else {
                 const barang = Data_Barang.find(data_barang => data_barang.Barcode === NamaBarang)
                 if (barang) {
-                    if (barang.Stok <= 10) {
-                        this.props.Create_Warning_Messages(null, 'stok barang kurang dari 10, akan gagal jika jumlah transaksi lebih banyak dari stok')
-                    }
-                    this.props.Add_Barang_To_Transaksi(barang)
+                    this.props.Add_Barang_To_Belanja(barang)
                     this.setState({
                         NamaBarang: null,
                         Barcode: '',
@@ -60,10 +53,7 @@ class AddBarangToTransaksi extends React.Component {
         } else {
             const barang = Data_Barang.find(data_barang => data_barang.Barcode === Barcode)
             if (barang) {
-                if (barang.Stok <= 10) {
-                    this.props.Create_Warning_Messages(null, 'stok barang kurang dari 10, akan gagal jika jumlah transaksi lebih banyak dari stok')
-                }
-                this.props.Add_Barang_To_Transaksi(barang)
+                this.props.Add_Barang_To_Belanja(barang)
                 this.setState({
                     NamaBarang: null,
                     Barcode: '',
@@ -72,17 +62,15 @@ class AddBarangToTransaksi extends React.Component {
                 this.props.Create_Info_Messages(null, 'barcode yang anda masukkan tidak sesuai')
             }
             // Data_Barang.forEach((item, index) => {
-            //     if (NamaBarang === item.Barcode) {
+            //     if (Barcode === item.Barcode) {
             //         const BarcodeItem = item
-            //         if (item.Stok <= 10) {
-            //             this.props.Create_Warning_Messages(null, 'stok barang kurang dari 10, akan gagal jika jumlah transaksi lebih banyak dari stok')
-            //         }
-            //         this.props.Add_Barang_To_Transaksi(BarcodeItem)
+            //         this.props.Add_Barang_To_Belanja(BarcodeItem)
             //         this.setState({
             //             NamaBarang: null,
             //             Barcode: '',
             //         })
             //     } else if ((index === (Data_Barang.length - 1)) && (Barcode !== Data_Barang[index])) {
+            //         // console.log('warning')
             //         this.props.Create_Info_Messages(null, 'barcode yang anda masukkan tidak sesuai')
             //     }
             // })
@@ -159,4 +147,4 @@ const mapStateToProps = (state) => ({
     isTransaksiLoading: state.Transaksi.isTransaksiLoading
 })
 
-export default connect(mapStateToProps, { Load_Barang_List, Add_Barang_To_Transaksi, Create_Info_Messages, Create_Warning_Messages })(AddBarangToTransaksi)
+export default connect(mapStateToProps, { Load_Barang_List, Add_Barang_To_Belanja, Create_Info_Messages })(AddBarangToBelanja)

@@ -11,7 +11,7 @@ import { MUI_st_AccountDetail_TextField, MUI_VerticalMargin } from '../../../MUI
 
 import { DataTidakDitemukan } from '../Page404'
 
-class AccountDetail extends React.Component {
+class JenisBarangDetail extends React.Component {
     componentDidUpdate(prevProps) {
         if (this.props.idDetailJenisBarang !== prevProps.idDetailJenisBarang) {
             const { idDetailJenisBarang } = this.props
@@ -48,4 +48,4 @@ const mapStateToProps = state => ({
     JenisBarangDetail: state.JenisBarang.JenisBarangDetail,
 })
 
-export default connect(mapStateToProps, { get_JenisBarangDetail })(withTheme(AccountDetail))
+export default connect(mapStateToProps, { get_JenisBarangDetail })(withTheme(JenisBarangDetail))

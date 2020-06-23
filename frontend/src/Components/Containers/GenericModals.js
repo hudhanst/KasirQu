@@ -76,6 +76,7 @@ const GenericModals = (props) => {
     return (
         <Fragment>
             <Button
+                disabled={props.Buttondisabled ? props.Buttondisabled : false}
                 variant={props.Buttonvariant ? props.Buttonvariant : "outlined"}
                 style={props.Buttonstyle ? props.Buttonstyle : null}
                 color={props.Buttoncolor ? props.Buttoncolor : ''}

@@ -1,15 +1,29 @@
 import {
     TRANSAKSI_LOADING,
     TRANSAKSI_LOADED,
+    ////// TRANSAKSI
     ADD_BARANG_TO_TRANSAKSI,
     CHANGE_TRANSAKSI_ITEM_JUMLAH,
     CLEAR_A_BARANG_FROM_TRANSAKSI,
     CLEAR_BARANG_IN_TRANSAKSI,
+    ////// BELANJA
+    ADD_BARANG_TO_BELANJA,
+    CHANGE_BELANJA_DETAIL,
+    CLEAR_A_BARANG_FROM_BELANJA,
+    CLEAR_BARANG_IN_BELANJA,
+    //////
+    LIST_TRANSAKSI,
+    GET_TRANSAKSI_ID_FOR_DETAIL,
+    TRANSAKSI_DETAIL,
 } from '../Actions/Type.Actions'
 
 const initialState = {
     isTransaksiLoading: false,
     Transaksi: [],
+    Belanja: [],
+    TransaksiList: [],
+    idDetailTransaksi: null,
+    TransaksiDetail: null,
 }
 
 export default function (state = initialState, action) {
@@ -24,26 +38,24 @@ export default function (state = initialState, action) {
                 ...state,
                 isTransaksiLoading: false,
             }
+        ////// TRANSAKSI
         case ADD_BARANG_TO_TRANSAKSI:
             const newTransaksi = {
+                Id: action.payload._id,
                 Barcode: action.payload.Barcode,
-                NamaBarang: action.payload.NamaBarang,
+                NamaBarang: action.payload.Name,
                 Jumlah: 1,
                 HargaSatuan: action.payload.HargaJual,
                 HargaTotal: 1 * action.payload.HargaJual,
                 isEditAble: false,
             }
-            // console.log(state.Transaksi)
             state.Transaksi.push(newTransaksi)
-            // console.log(state.Transaksi)
             return {
                 ...state,
-                // Transaksi: action.payload
-                // Transaksi:[...state.Transaksi, actions.payload]
             }
         case CHANGE_TRANSAKSI_ITEM_JUMLAH:
-            state.Transaksi[action.payload.Index].Jumlah=action.payload.Jumlah
-            state.Transaksi[action.payload.Index].HargaTotal=action.payload.HargaTotal
+            state.Transaksi[action.payload.Index].Jumlah = action.payload.Jumlah
+            state.Transaksi[action.payload.Index].HargaTotal = action.payload.HargaTotal
             return {
                 ...state,
             }
@@ -56,6 +68,55 @@ export default function (state = initialState, action) {
             state.Transaksi.length = 0
             return {
                 ...state,
+            }
+        ////// BELANJA
+        case ADD_BARANG_TO_BELANJA:
+            const newBelanja = {
+                Id: action.payload._id,
+                Barcode: action.payload.Barcode,
+                NamaBarang: action.payload.Name,
+                Jumlah: 1,
+                HargaModal: 0,
+                HargaJual: 0,
+                TotalModal: 0,
+                isEditAble: false,
+            }
+            state.Belanja.push(newBelanja)
+            return {
+                ...state,
+            }
+        case CHANGE_BELANJA_DETAIL:
+            state.Belanja[action.payload.Index].Jumlah = action.payload.Jumlah
+            state.Belanja[action.payload.Index].HargaModal = action.payload.HargaModal
+            state.Belanja[action.payload.Index].HargaJual = action.payload.HargaJual
+            state.Belanja[action.payload.Index].TotalModal = action.payload.TotalModal
+            return {
+                ...state,
+            }
+        case CLEAR_A_BARANG_FROM_BELANJA:
+            state.Belanja.splice(action.payload, 1)
+            return {
+                ...state,
+            }
+        case CLEAR_BARANG_IN_BELANJA:
+            state.Belanja.length = 0
+            return {
+                ...state,
+            }
+        case LIST_TRANSAKSI:
+            return {
+                ...state,
+                TransaksiList: action.payload,
+            }
+        case GET_TRANSAKSI_ID_FOR_DETAIL:
+            return {
+                ...state,
+                idDetailTransaksi: action.payload,
+            }
+        case TRANSAKSI_DETAIL:
+            return {
+                ...state,
+                TransaksiDetail: action.payload,
             }
         default:
             return state

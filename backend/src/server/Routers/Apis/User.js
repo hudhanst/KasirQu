@@ -200,7 +200,7 @@ router.post('/register', upload.single('ProfilePicture'), auth, (req, res) => {
                         newUser.Password = hash
                         newUser.save()
                             .then(user => {
-                                console.log(`registered = id${user.id}`)
+                                console.log(`registered ${user}`)
                                 res.status(200).json({
                                     msg: 'Registrasi sukses',
                                     user: {

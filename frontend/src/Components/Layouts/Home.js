@@ -9,6 +9,7 @@ import SettingsApplicationsTwoToneIcon from '@material-ui/icons/SettingsApplicat
 
 import ShoppingCartTwoToneIcon from '@material-ui/icons/ShoppingCartTwoTone'
 import LocalMallTwoToneIcon from '@material-ui/icons/LocalMallTwoTone'
+import ReceiptRoundedIcon from '@material-ui/icons/ReceiptRounded'
 
 import StorageTwoToneIcon from '@material-ui/icons/StorageTwoTone'
 import CategoryTwoToneIcon from '@material-ui/icons/CategoryTwoTone'
@@ -42,6 +43,13 @@ class Home extends React.Component {
                         name: 'Belanja',
                         link: 'transaksi/belanja',
                         icon: <LocalMallTwoToneIcon />,
+                        type: 'Privacry',
+                        // type: 'nonPrivacry',
+                    },
+                    {
+                        name: 'List Transaksi',
+                        link: 'transaksi/transaksilist',
+                        icon: <ReceiptRoundedIcon />,
                         type: 'Privacry',
                         // type: 'nonPrivacry',
                     },
