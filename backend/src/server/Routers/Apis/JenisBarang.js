@@ -4,13 +4,7 @@ const router = express.Router()
 const auth = require('../Middleware/auth')
 
 const JenisBarang = require('../../Models/JenisBarang')
-
-
-////// TODO GET LIST BASE ON JENISBARANG (ON BARANG)
-////// TODO UPDATE => UPDATE ON BARANGDATABASE
-////// TODO DELETE => DELETE ON BARANGDATABASE
-
-
+const Barang = require('../../Models/Barang')
 
 //// @router  Post api/jenisbarang/cek
 //// @desc    cek JenisBarang name
@@ -31,19 +25,20 @@ router.post('/cek', auth, (req, res) => {
 //// @desc    Add new JenisBarang
 //// @access  Private
 router.post('/tambah', auth, (req, res) => {
-    const { NamaJenisBarang, Ket } = req.body
+    const { NamaJenisBarang, Kepemilikan, Ket } = req.body
 
-    if (!NamaJenisBarang) {
-        return res.status(400).json({ msg: 'mohon lengkapi form registrasi' })
+    if ((!NamaJenisBarang) || (!Kepemilikan)) {
+        return res.status(400).json({ msg: 'form tidak lengkap' })
     }
 
-    JenisBarang.findOne({ NamaJenisBarang })
+    JenisBarang.findOne({ NamaJenisBarang: NamaJenisBarang.toLocaleLowerCase() })
         .then(JenisBarangExist => {
             if (JenisBarangExist) {
                 return res.status(400).json({ msg: 'Jenis Barang sudah ada' })
             } else {
                 const newJenisBarang = new JenisBarang({
-                    NamaJenisBarang,
+                    NamaJenisBarang: NamaJenisBarang.toLocaleLowerCase(),
+                    Kepemilikan: req.body.Kepemilikan,
                     Ket,
                 })
 
@@ -65,15 +60,15 @@ router.post('/tambah', auth, (req, res) => {
 //// @access  Private
 router.get('/list', auth, (req, res) => {
     JenisBarang.find()
-    .select('_id, NamaJenisBarang')
-    .then((listjenisbarang) => {
-        console.log('JenisBarang list dipanggil')
-        res.status(200).json({ listjenisbarang, msg: 'JenisBarang list berhasil dipanggil' })
-    })
-    .catch(err => {
-        console.log(`Erorr saat pemanggilan list JenisBarang => ${err}`)
-        res.status(404).json({ msg: 'ada kesalahan pada proses pemanggilan list JenisBaran', errorDetail: err })
-    })
+        .select('_id NamaJenisBarang Kepemilikan')
+        .then((listjenisbarang) => {
+            console.log('JenisBarang list dipanggil')
+            res.status(200).json({ listjenisbarang, msg: 'JenisBarang list berhasil dipanggil' })
+        })
+        .catch(err => {
+            console.log(`Erorr saat pemanggilan list JenisBarang => ${err}`)
+            res.status(404).json({ msg: 'ada kesalahan pada proses pemanggilan list JenisBaran', errorDetail: err })
+        })
 })
 
 //// @router  GET api/jenisbarang/detail/:id
@@ -95,6 +90,11 @@ router.get('/detail/:id', auth, (req, res) => {
 //// @desc    Update JenisBarang
 //// @access  Private
 router.patch('/detail/:id/update', auth, (req, res) => {
+    const { NamaJenisBarang } = req.body
+    if (NamaJenisBarang) {
+        return res.status(401).json({ msg: 'input yang anda masukkan tidak bisa diganti' })
+    }
+
     JenisBarang.findByIdAndUpdate(req.params.id, { $set: req.body })
         .then(() => {
             console.log(`JenisBarang updated = ${req.params.id}`)
@@ -111,8 +111,29 @@ router.patch('/detail/:id/update', auth, (req, res) => {
 //// @access  Private
 router.delete('/detail/:id/delete', auth, (req, res) => {
     JenisBarang.findByIdAndDelete(req.params.id)
-        .then(() => {
-            console.log(`JenisBarang ${req.params.id} deleted`)
+        .then((jenisbarang) => {
+            // console.log(jenisbarang)
+            Barang.find()
+                .where('Jenis').equals(jenisbarang.NamaJenisBarang)
+                .then((barang) => {
+                    // console.log('barang', barang)
+                    if (barang && barang.length > 0) {
+                        // console.log('ada barang')
+                        barang.forEach(item => {
+                            Barang.findByIdAndDelete(item._id)
+                                .then(() => {
+                                    console.log(`Barang ${item.Barcode} berhasil dihapus`)
+                                })
+                                .catch((err) => {
+                                    console.log(`Barang ${item.Barcode} error saat penghapusan ${err}`)
+                                })
+                        })
+                    }
+                })
+                .catch((err) => {
+                    console.log(`Barang ${barang.Barcode} error saat pencarian ${err}`)
+                })
+            console.log(`JenisBarang ${req.params.id} deleted ${jenisbarang}`)
             res.status(200).json({ msg: 'JenisBarang berhasil didelete' })
         })
         .catch(err => {

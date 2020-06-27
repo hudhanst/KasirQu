@@ -51,9 +51,10 @@ export const Add_JenisBarang = (JenisBarang, Auth) => (dispatch, getState) => {
         const isAdmin = Auth.isAdmin
         if (isSuperUser || isAdmin) {
             const NamaJenisBarang = JenisBarang.NamaJenisBarang
+            const Kepemilikan = JenisBarang.Kepemilikan
             const Ket = JenisBarang.Ket
 
-            const body = JSON.stringify({ NamaJenisBarang, Ket })
+            const body = JSON.stringify({ NamaJenisBarang, Kepemilikan, Ket })
 
             axios.post('/api/jenisbarang/tambah', body, tokenConfig(getState))
                 .then(res => {
@@ -86,10 +87,11 @@ export const Update_JenisBarang = (JenisBarangID, UpdateData, Auth) => (dispatch
         const isSuperUser = Auth.isSuperUser
         const isAdmin = Auth.isAdmin
         if (isSuperUser || isAdmin) {
-            const NamaJenisBarang = UpdateData.NamaJenisBarang
+            // const NamaJenisBarang = UpdateData.NamaJenisBarang
+            const Kepemilikan = UpdateData.Kepemilikan
             const Ket = UpdateData.Ket
 
-            const body = JSON.stringify({ NamaJenisBarang, Ket })
+            const body = JSON.stringify({ Kepemilikan, Ket })
 
             axios.patch(`/api/jenisbarang/detail/${JenisBarangID}/update`, body, tokenConfig(getState))
                 .then(res => {

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 
 import { connect } from 'react-redux'
 
-import { Load_Barang_List, get_BarangId_Detail, get_BarangId_Update, Delete_a_Barang } from '../../../Store/Actions/Barang.Actions'
+import { Load_Barang_List, Load_Barang_List_Base_On_Jenis, get_BarangId_Detail, get_BarangId_Update, Delete_a_Barang } from '../../../Store/Actions/Barang.Actions'
 
 import { Short_Column_INT, Short_Column_STR } from '../Shorting'
 
@@ -18,7 +18,11 @@ import BarangUpdate from './Barang.BarangUpdate'
 
 class BarangList extends React.Component {
     componentDidMount() {
-        this.props.Load_Barang_List()
+        if (this.props.LoadBarangListBaseOnJenis) {
+            this.props.Load_Barang_List_Base_On_Jenis(this.props.LoadBarangListBaseOnJenis)
+        } else {
+            this.props.Load_Barang_List()
+        }
     }
     ButtonShortSTR(ColumnNumb) {
         Short_Column_STR('tabel_barang', ColumnNumb)
@@ -151,4 +155,4 @@ const mapStateToProps = (state) => ({
     idDetailBarang: state.Barang.idDetailBarang,
 })
 
-export default connect(mapStateToProps, { Load_Barang_List, get_BarangId_Detail, get_BarangId_Update, Delete_a_Barang })(BarangList)
+export default connect(mapStateToProps, { Load_Barang_List, Load_Barang_List_Base_On_Jenis, get_BarangId_Detail, get_BarangId_Update, Delete_a_Barang })(BarangList)

@@ -166,3 +166,22 @@ export const Load_Barang_List = () => (dispatch, getState) => {
         })
     dispatch({ type: BARANG_LOADED })
 }
+
+export const Load_Barang_List_Base_On_Jenis = (JenisID) => (dispatch, getState) => {
+    dispatch({ type: BARANG_LOADING })
+    // const body = JSON.stringify({ Jenis })
+    axios.get(`/api/barang/jenisbaranglist/${JenisID}`, tokenConfig(getState))
+        .then(res => {
+            // console.log(res)
+            dispatch({
+                type: LIST_BARANG,
+                payload: res.data.ListBarang
+            })
+            // dispatch({ type: BARANG_LOADED })
+        }).catch(err => {
+            console.log(err.response)
+            dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg ? err.response.data.msg : null))
+            // dispatch({ type: BARANG_LOADED })
+        })
+    dispatch({ type: BARANG_LOADED })
+}

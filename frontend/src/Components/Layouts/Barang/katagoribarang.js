@@ -7,11 +7,6 @@ import GenericModals from '../../Containers/GenericModals'
 import AddJenisBarang from '../../Containers/Barang/Barang.AddJenisBarang'
 import KatagoriBarangList from '../../Containers/Barang/Barang.KatagoriBarangList'
 
-
-////// TODO ADD WARNING WHEN USER WANNA UPDATE
-////// TODO ADD WARNING WHEN USER WANNA DELETE
-
-
 const KatagoriBarang = () => {
     const breadcrumbs = [{ name: 'Barang', link: 'barang' }, { name: 'Katagori Barang', link: 'barang/katagoribarang' }]
     return (

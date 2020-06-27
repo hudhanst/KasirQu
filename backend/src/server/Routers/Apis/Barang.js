@@ -28,6 +28,7 @@ const upload = multer({
 const auth = require('../Middleware/auth')
 
 const Barang = require('../../Models/Barang')
+const JenisBarang = require('../../Models/JenisBarang')
 
 //// @router  Post api/barang/cek/barcode
 //// @desc    cek Barang barcode
@@ -114,6 +115,31 @@ router.get('/list', auth, (req, res) => {
         .catch(err => {
             console.log(`Erorr saat pemanggilan list Barang => ${err}`)
             res.status(404).json({ msg: 'ada kesalahan pada proses pemanggilan list Barang', errorDetail: err })
+        })
+})
+
+//// @router  GET api/barang/jenisbaranglist/:id
+//// @desc    Get Barang List base on JenisBarang
+//// @access  Private
+router.get('/jenisbaranglist/:id', auth, (req, res) => {
+    JenisBarang.findById(req.params.id)
+        .then((jenisbarang) => {
+            console.log(`JenisBarang ${jenisbarang.NamaJenisBarang} list dipanggil`)
+            Barang.find()
+                .where('Jenis').equals(jenisbarang.NamaJenisBarang)
+                .select('-Ket -BarangPic')
+                .then((ListBarang) => {
+                    console.log('Barang list dipanggil')
+                    res.status(200).json({ ListBarang, msg: 'Barang list berhasil dipanggil' })
+                })
+                .catch(err => {
+                    console.log(`Erorr saat pemanggilan list Barang => ${err}`)
+                    res.status(404).json({ msg: 'ada kesalahan pada proses pemanggilan list Barang', errorDetail: err })
+                })
+        })
+        .catch((err) => {
+            console.log(`Erorr saat pemanggilan list JenisBarang => ${err}`)
+            res.status(404).json({ msg: 'ada kesalahan pada proses pemanggilan list JenisBarang', errorDetail: err })
         })
 })
 

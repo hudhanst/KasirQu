@@ -4,8 +4,9 @@ import { connect } from 'react-redux'
 
 import { get_JenisBarangDetail, Update_JenisBarang } from '../../../Store/Actions/JenisBarang.Actions'
 
-import { TextField, Button } from '@material-ui/core'
+import { TextField, FormControl, InputLabel, Select, Button } from '@material-ui/core'
 
+import { withTheme } from '@material-ui/core/styles'
 import { MUI_VerticalMargin, MUI_FullWidth } from '../../../MUI_theme'
 
 import { DataTidakDitemukan } from '../Page404'
@@ -17,6 +18,7 @@ import { DataTidakDitemukan } from '../Page404'
 class JenisBarangUpdate extends React.Component {
     state = {
         NamaJenisBarang: '',
+        Kepemilikan: '',
         Ket: '',
     }
     componentDidMount() {
@@ -35,6 +37,7 @@ class JenisBarangUpdate extends React.Component {
             if (JenisBarangDetail) {
                 this.setState({
                     NamaJenisBarang: JenisBarangDetail.NamaJenisBarang,
+                    Kepemilikan: JenisBarangDetail.Kepemilikan,
                     Ket: JenisBarangDetail.Ket,
                 })
             }
@@ -47,7 +50,8 @@ class JenisBarangUpdate extends React.Component {
         E.preventDefault()
         const { User, idUpdateJenisBarang } = this.props
         const updatedata = {
-            NamaJenisBarang: this.state.NamaJenisBarang,
+            // NamaJenisBarang: this.state.NamaJenisBarang,
+            Kepemilikan: this.state.Kepemilikan,
             Ket: this.state.Ket,
         }
         const authdata = {
@@ -59,18 +63,30 @@ class JenisBarangUpdate extends React.Component {
     }
     render() {
         const JenisBarangDetail = this.props.JenisBarangDetail
+        const theme = this.props.theme
 
         const st_textfield = { ...MUI_VerticalMargin, ...MUI_FullWidth }
         const {
             NamaJenisBarang,
+            Kepemilikan,
             Ket,
         } = this.state
+        const choices = ['pribadi', 'nonpribadi']
         return (
             <Fragment>
                 {JenisBarangDetail ?
                     <Fragment>
                         <form onSubmit={this.Form_OnSubmit}>
-                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='NamaJenisBarang' name='NamaJenisBarang' value={NamaJenisBarang} required />
+                            <TextField style={{ ...st_textfield, ...theme.customTheme.readonlytextfield }} variant='outlined' disabled type='text' label='NamaJenisBarang' name='NamaJenisBarang' value={NamaJenisBarang} required />
+                            <FormControl style={st_textfield} variant="filled" required >
+                                <InputLabel shrink >Kepemilikan</InputLabel>
+                                <Select native onChange={this.Form_OnChange} label="Kepemilikan" name='Kepemilikan' value={Kepemilikan} labelWidth={100} >
+                                    <option value="" disabled> -- select an option -- </option>
+                                    {choices.map((item, index) =>
+                                        <option key={index} value={item}>{item}</option>
+                                    )}
+                                </Select>
+                            </FormControl>
                             <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Ket' name='Ket' value={Ket} />
                             <hr />
                             <Button type='submit' style={st_textfield} size="large" variant='contained' color='primary' >Update</Button>
@@ -89,4 +105,4 @@ const mapStateToProps = (state) => ({
     JenisBarangDetail: state.JenisBarang.JenisBarangDetail,
 })
 
-export default connect(mapStateToProps, { get_JenisBarangDetail, Update_JenisBarang })(JenisBarangUpdate)
+export default connect(mapStateToProps, { get_JenisBarangDetail, Update_JenisBarang })(withTheme(JenisBarangUpdate))

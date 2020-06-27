@@ -13,11 +13,8 @@ import { MUI_FullWidth, MUI_VerticalMargin } from '../../../MUI_theme'
 import { DataTidakDitemukan } from '../Page404'
 import GenericModals from '../GenericModals'
 import JenisBarangDetail from './Barang.JenisBarangDetail'
+import ListJenisBarang from './Barang.BarangList'
 import JenisBarangUpdate from './Barang.JenisBarangUpdate'
-
-
-////// TODO ADD LIST BASE ON JENISBARANG PAGE 
-
 
 class KatagoriBarangList extends React.Component {
     componentDidMount() {
@@ -68,8 +65,8 @@ class KatagoriBarangList extends React.Component {
                         <TableHead>
                             <TableRow>
                                 <TableCell style={{ width: '5%' }} align='center' onClick={() => this.ButtonShortINT(0)}>No</TableCell>
-                                <TableCell style={{ width: '10%' }} align='left' onClick={() => this.ButtonShortSTR(1)}>ID</TableCell>
-                                <TableCell style={{ width: '45%' }} align='left' onClick={() => this.ButtonShortSTR(2)}>Jenis Barang</TableCell>
+                                <TableCell style={{ width: '45%' }} align='center' onClick={() => this.ButtonShortSTR(1)}>Nama Jenis Barang</TableCell>
+                                <TableCell style={{ width: '10%' }} align='center' onClick={() => this.ButtonShortSTR(2)}>Tipe Kepemilikan</TableCell>
                                 <TableCell style={{ width: '10%' }} align='center'>Detail</TableCell>
                                 <TableCell style={{ width: '10%' }} align='center'>List</TableCell>
                                 {User ? ((User.isSuperUser || User.isAdmin) ?
@@ -86,8 +83,8 @@ class KatagoriBarangList extends React.Component {
                             {data.map((item, index) => (
                                 <TableRow hover key={index + 1}>
                                     <TableCell align='center'>{index + 1}</TableCell>
-                                    <TableCell align='left'>{item._id}</TableCell>
                                     <TableCell align='left'>{item.NamaJenisBarang}</TableCell>
+                                    <TableCell align='left'>{item.Kepemilikan}</TableCell>
                                     <TableCell align='center'>
                                         <GenericModals
                                             size='s'
@@ -100,9 +97,9 @@ class KatagoriBarangList extends React.Component {
                                     </TableCell>
                                     <TableCell align='center'>
                                         <GenericModals
-                                            size='l'
+                                            size='xl'
                                             header='List dari Jenis Barang'
-                                            body={('belum diimplementasikan')}
+                                            body={<ListJenisBarang LoadBarangListBaseOnJenis={item._id} />}
                                             Buttoncolor='default'
                                             ButtononClickeven={() => null}
                                             Buttonlabel={'List'}
@@ -124,6 +121,8 @@ class KatagoriBarangList extends React.Component {
                                                 <GenericModals
                                                     size='s'
                                                     header='Delete Jenis Barang'
+                                                    massagestype='warning'
+                                                    massages='Jika Jenis Barang Dihapus Semua Barang Terkait Akan Ikut Terhapu'
                                                     body={<JenisBarangDetail />}
                                                     footer={<DeleteButton />}
                                                     Buttoncolor='secondary'

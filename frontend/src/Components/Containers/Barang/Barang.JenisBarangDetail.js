@@ -34,6 +34,7 @@ class JenisBarangDetail extends React.Component {
                 {JenisBarangDetail ?
                     <Fragment>
                         <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Nama Jenis Barang' name='NamaJenisBarang' value={JenisBarangDetail.NamaJenisBarang} />
+                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Kepemilikan' name='Kepemilikan' value={JenisBarangDetail.Kepemilikan} />
                         <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Keterangan' name='Ket' value={JenisBarangDetail.Ket} />
                     </Fragment>
                     : <DataTidakDitemukan />

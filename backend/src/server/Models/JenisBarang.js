@@ -6,6 +6,10 @@ const JenisBarangSchema = new mongoose.Schema({
         unique: true,
         required: true,
     },
+    Kepemilikan: {
+        type: String,
+        required: true
+    },
     Ket: {
         type: String,
     }

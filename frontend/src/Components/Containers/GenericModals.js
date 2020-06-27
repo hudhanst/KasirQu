@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 
 import { Paper, Typography, Modal, Button } from '@material-ui/core'
+import Alert from '@material-ui/lab/Alert'
 
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -52,6 +53,26 @@ const GenericModals = (props) => {
         </Fragment>
     )
 
+    const massages = (
+        <Fragment>
+            {props.massagestype ? (
+                <Alert
+                    variant="filled"
+                    severity={props.massagestype ?
+                        props.massagestype
+                        : 'info'
+                    }
+                >
+                    {props.massages ?
+                        props.massages :
+                        'info'
+                    }
+                </Alert>
+            ) : null
+            }
+        </Fragment>
+    )
+
     const body = (
         <Fragment>
             {props.body ?
@@ -96,6 +117,7 @@ const GenericModals = (props) => {
                 <Paper className={classes.paper}>
                     {header}
                     <hr />
+                    {massages}
                     {body}
                     {footer}
                 </Paper>
