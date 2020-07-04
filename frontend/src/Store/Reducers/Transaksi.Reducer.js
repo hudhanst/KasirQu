@@ -3,7 +3,7 @@ import {
     TRANSAKSI_LOADED,
     ////// TRANSAKSI
     ADD_BARANG_TO_TRANSAKSI,
-    CHANGE_TRANSAKSI_ITEM_JUMLAH,
+    CHANGE_TRANSAKSI_DETAIL,
     CLEAR_A_BARANG_FROM_TRANSAKSI,
     CLEAR_BARANG_IN_TRANSAKSI,
     ////// BELANJA
@@ -44,8 +44,12 @@ export default function (state = initialState, action) {
                 Id: action.payload._id,
                 Barcode: action.payload.Barcode,
                 NamaBarang: action.payload.Name,
+                SatuanOptions: action.payload.SatuanJual,
+                isDecimal: action.payload.isDecimal,
+                Satuan: "satuan",
                 Jumlah: 1,
                 HargaSatuan: action.payload.HargaJual,
+                TotalBarang: 1,
                 HargaTotal: 1 * action.payload.HargaJual,
                 isEditAble: false,
             }
@@ -53,8 +57,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
             }
-        case CHANGE_TRANSAKSI_ITEM_JUMLAH:
+        case CHANGE_TRANSAKSI_DETAIL:
+            state.Transaksi[action.payload.Index].Satuan = action.payload.NamaSatuan
             state.Transaksi[action.payload.Index].Jumlah = action.payload.Jumlah
+            state.Transaksi[action.payload.Index].HargaSatuan = action.payload.HargaSatuan
+            state.Transaksi[action.payload.Index].TotalBarang = action.payload.TotalBarang
             state.Transaksi[action.payload.Index].HargaTotal = action.payload.HargaTotal
             return {
                 ...state,

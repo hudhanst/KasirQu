@@ -129,22 +129,42 @@ router.get('/detail/:id', auth, (req, res) => {
 //// @desc    Add new Transaksi transaksi
 //// @access  Private
 router.post('/transaksi/tambah', auth, (req, res) => {
-    const { NamaKasir, DetailTransaksi, Diskon } = req.body
-    if (Diskon === 100 || Diskon === '100') {
-        req.body.TotalPembayaran = 1
-    }
-    if ((!NamaKasir) || (!DetailTransaksi) || (!req.body.TotalPembayaran)) {
+    // console.log('transaksi/tambah', req.body)
+    // const { NamaKasir, DetailTransaksi, Diskon } = req.body
+    const { NamaKasir, DetailTransaksi } = req.body
+    // if (Diskon === 100 || Diskon === '100') {
+    //     req.body.TotalPembayaran = 1
+    // }
+    // if ((!NamaKasir) || (!DetailTransaksi) || (!req.body.TotalPembayaran)) {
+    if ((!NamaKasir) || (!DetailTransaksi)) {
         return res.status(400).json({ msg: 'data yang dikirimkan kurang' })
     }
 
-    const transaksibarcodes = DetailTransaksi.map((item) => {
-        return item.Barcode
+    // const transaksibarcodes = DetailTransaksi.map((item) => {
+    //     return item.Barcode
+    // })
+    // const isDuplicateBarcode = transaksibarcodes.some((item, idx) => {
+    //     return transaksibarcodes.indexOf(item) != idx
+    // })
+    const TransaksiBarang = []
+    DetailTransaksi.forEach(detailtransaksi => {
+        if (TransaksiBarang.length >= 1) {
+            const TransaksiBarangIndex = TransaksiBarang.findIndex(transaksibarang => transaksibarang.Barcode === detailtransaksi.Barcode)
+            if (TransaksiBarangIndex >= 0) {
+                TransaksiBarang[TransaksiBarangIndex].TotalBarang = TransaksiBarang[TransaksiBarangIndex].TotalBarang + detailtransaksi.TotalBarang
+            } else {
+                const newTransaksiBarang = { Barcode: detailtransaksi.Barcode, TotalBarang: detailtransaksi.TotalBarang }
+                TransaksiBarang.push(newTransaksiBarang)
+            }
+        } else {
+            const newTransaksiBarang = { Barcode: detailtransaksi.Barcode, TotalBarang: detailtransaksi.TotalBarang }
+            TransaksiBarang.push(newTransaksiBarang)
+        }
     })
-    const isDuplicateBarcode = transaksibarcodes.some((item, idx) => {
-        return transaksibarcodes.indexOf(item) != idx
-    })
+    // console.log('TransaksiBarang', TransaksiBarang)
 
-    DetailTransaksi.forEach((data, index) => {
+    // DetailTransaksi.forEach((data, index) => {
+    TransaksiBarang.forEach((data, index) => {
         Barang.findOne({ Barcode: data.Barcode })
             .then((barang) => {
                 if (!barang) {
@@ -152,36 +172,47 @@ router.post('/transaksi/tambah', auth, (req, res) => {
                     // console.log('req.body.DetailTransaksi', req.body.DetailTransaksi)
                     return res.status(400).json({ msg: `barang yang dimasukkan tidak ditemukan barcode=${data.Barcode}` })
                 }
-                if (isDuplicateBarcode == true) {
-                    let jumlahitembarcode = 0
-                    DetailTransaksi.forEach((trans, indx) => {
-                        if (data.Barcode === trans.Barcode) {
-                            jumlahitembarcode = jumlahitembarcode + trans.Jumlah
-                        }
-                    })
-                    if (barang.Stok < jumlahitembarcode) {
-                        req.body.DetailTransaksi = null
-                        return res.status(400).json({ msg: `stok barang tidak mencukupi barcode=${data.Barcode}` })
-                    }
-                } else {
-                    if (barang.Stok < data.Jumlah) {
-                        req.body.DetailTransaksi = null
-                        return res.status(400).json({ msg: `stok barang tidak mencukupi barcode=${data.Barcode}` })
-                    }
+                if (barang.Stok < data.TotalBarang) {
+                    // console.log(1)
+                    // console.log('Stok', barang.Stok)
+                    // console.log('TotalBarang', data.TotalBarang)
+                    req.body.DetailTransaksi = null
+                    // throw Error(`stok barang tidak mencukupi barcode=${data.Barcode}`)
+                    return res.status(400).json({ msg: `stok barang tidak mencukupi barcode=${data.Barcode}` })
                 }
-                if (index === DetailTransaksi.length - 1) {
-                    DetailTransaksi.forEach((item, hitungan) => {
+                // if (isDuplicateBarcode === true) {
+                //     let jumlahitembarcode = 0
+                //     DetailTransaksi.forEach((trans, indx) => {
+                //         if (data.Barcode === trans.Barcode) {
+                //             jumlahitembarcode = jumlahitembarcode + trans.TotalBarang
+                //         }
+                //     })
+                //     if (barang.Stok < jumlahitembarcode) {
+                //         console.log('asd')
+                //         req.body.DetailTransaksi = null
+                //         return res.status(400).json({ msg: `stok barang tidak mencukupi barcode=${data.Barcode}` })
+                //     }
+                // } else {
+                //     if (barang.Stok < data.TotalBarang) {
+                //         console.log(2)
+                //         req.body.DetailTransaksi = null
+                //         return res.status(400).json({ msg: `stok barang tidak mencukupi barcode=${data.Barcode}` })
+                //     }
+                // }
+                if (index === TransaksiBarang.length - 1) {
+                    TransaksiBarang.forEach((item, hitungan) => {
                         Barang.findByIdAndUpdate(item.Id, {
-                            $inc: { Stok: -item.Jumlah }
+                            $inc: { Stok: -item.TotalBarang }
                         })
                             .then(() => {
-                                if (hitungan === DetailTransaksi.length - 1) {
+                                if (hitungan === TransaksiBarang.length - 1) {
                                     const newTransaksi = new Transaksi({
                                         NamaKasir: req.body.NamaKasir,
                                         Tipe: 'Transaksi',
                                         DetailTransaksi: req.body.DetailTransaksi,
+                                        Diskon: req.body.Diskon ? req.body.Diskon : 0,
+                                        PotonganHarga: req.body.PotonganHarga ? req.body.PotonganHarga : 0,
                                         TotalPembayaran: req.body.TotalPembayaran,
-                                        Diskon: req.body.Diskon ? req.body.Diskon : null,
                                         Ket: req.body.Ket ? req.body.Ket : null
                                     })
                                     // console.log('newTransaksi', req.body.DetailTransaksi)
@@ -209,7 +240,10 @@ router.post('/transaksi/tambah', auth, (req, res) => {
                     })
                 }
             })
-
+            .catch(err => {
+                console.log(err)
+                return res.status(400).json({ msg: 'ada kesalahan pada data yang dikirim', errorDetail: err })
+            })
     })
 })
 
@@ -234,18 +268,30 @@ router.post('/belanja/tambah', auth, (req, res) => {
         Barang.findOne({ Barcode: data.Barcode })
             .then((barang) => {
                 if (!barang) {
+                    ////// cek apakah barang tidak ada
                     req.body.DetailTransaksi = null
                     // console.log('req.body.DetailTransaksi', req.body.DetailTransaksi)
                     return res.status(400).json({ msg: `barang yang dimasukkan tidak ditemukan barcode=${data.Barcode}` })
                 }
                 if (index === DetailTransaksi.length - 1) {
                     DetailTransaksi.forEach((item, hitungan) => {
-                        Barang.findByIdAndUpdate(item.Id, {
-                            $set: { HargaModal: item.HargaModal, HargaJual: item.HargaJual },
-                            $inc: { Stok: item.Jumlah }
+                        ////// proses update barang
+                        Barang.update({ // findByIdAndUpdate
+                            _id: item.Id,
+                            "SatuanJual.NamaSatuan": "satuan"
+                        }, {
+                            $set: {
+                                HargaModal: item.HargaModal,
+                                HargaJual: item.HargaJual,
+                                "SatuanJual.$.HargaJual": item.HargaJual
+                            },
+                            $inc: {
+                                Stok: item.Jumlah
+                            }
                         })
                             .then(() => {
                                 if (hitungan === DetailTransaksi.length - 1) {
+                                    ////// proses pencatatan transaksi
                                     const newTransaksi = new Transaksi({
                                         NamaKasir: req.body.NamaKasir,
                                         Tipe: 'Belanja',
@@ -269,6 +315,7 @@ router.post('/belanja/tambah', auth, (req, res) => {
                                 }
                             })
                             .catch(err => {
+                                ////// proses catch update barang
                                 req.body.DetailTransaksi = null
                                 // console.log('req.body.DetailTransaksi', req.body.DetailTransaksi)
                                 console.log(`Erorr saat Transaksi Belanja update Barang ${data.Barcode} => ${err}`)
@@ -280,58 +327,6 @@ router.post('/belanja/tambah', auth, (req, res) => {
             })
 
     })
-
-    // DetailTransaksi.forEach((data) => {
-    //     Barang.findOne({ Barcode: data.Barcode }, (err, barang) => {
-    //         if ((err) || (!barang)) {
-    //             req.body.DetailTransaksi = null
-    //             console.log('req.body.DetailTransaksi', req.body.DetailTransaksi)
-    //             throw res.status(400).json({ msg: `barang yang dimasukkan tidak ditemukan barcode=${data.Barcode}` })
-    //             // return res.status(400).json({ msg: `barang yang dimasukkan tidak ditemukan barcode=${data.Barcode}` })
-    //         }
-    //     })
-
-    //     // Barang.findOne({ Barcode: data.Barcode })
-    //     //     .then((barang) => {
-    //     //         if (!barang) {
-    //     //             req.body.DetailTransaksi = null
-    //     //             // console.log('req.body.DetailTransaksi', req.body.DetailTransaksi)
-    //     //             return res.status(400).json({ msg: `barang yang dimasukkan tidak ditemukan barcode=${data.Barcode}` })
-    //     //         }
-    //     //     })
-    // })
-
-    // DetailTransaksi.forEach(data => {
-    //     Barang.findByIdAndUpdate(data.Id, {
-    //         $set: { HargaModal: data.HargaModal, HargaJual: data.HargaJual },
-    //         $inc: { Stok: data.Jumlah }
-    //     })
-    //         .catch(err => {
-    //             console.log(`Erorr saat Transaksi update Barang ${data.Barcode} => ${err}`)
-    //             return res.status(500).json({ msg: 'ada kesalahan pada proses Transaksi Update Barang', errorDetail: err })
-    //         })
-    // })
-    // console.log('asd', req.body.DetailTransaksi)
-
-    // const newTransaksi = new Transaksi({
-    //     NamaKasir: req.body.NamaKasir,
-    //     Tipe: 'Belanja',
-    //     DetailTransaksi: req.body.DetailTransaksi,
-    //     TotalPembayaran: req.body.TotalPembayaran,
-    //     Ket: req.body.Ket ? req.body.Ket : null
-    // })
-    // // console.log('asd111', req.body.DetailTransaksi)
-
-    // newTransaksi.save()
-    //     .then((newtransaksi) => {
-    //         console.log(`Transaksi Belanja ditambah = ${newtransaksi._id}`)
-    //         console.log(`Transaksi Belanja = ${newtransaksi}`)
-    //         res.status(200).json({ msg: 'Transaksi Belanja  berhasil ditambah' })
-    //     })
-    //     .catch(err => {
-    //         console.log(`Erorr saat penambahan Transaksi Belanja => ${err}`)
-    //         res.status(500).json({ msg: 'ada kesalahan pada proses penambahan Transaksi Belanja', errorDetail: err })
-    //     })
 })
 
 module.exports = router

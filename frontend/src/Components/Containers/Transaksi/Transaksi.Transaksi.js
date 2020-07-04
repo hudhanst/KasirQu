@@ -2,13 +2,13 @@ import React, { Fragment } from 'react'
 
 import { connect } from 'react-redux'
 
-import { Change_Transaksi_Item_Jumlah, Clear_A_Barang_From_Transaksi, Clear_Barang_In_Transaksi } from '../../../Store/Actions/Transaksi.Actions'
+import { Change_Transaksi_Detail, Clear_A_Barang_From_Transaksi, Clear_Barang_In_Transaksi } from '../../../Store/Actions/Transaksi.Actions'
 import { Create_Warning_Messages } from '../../../Store/Actions/Messages.Actions'
 
 import { Short_Column_INT, Short_Column_STR } from '../Shorting'
 import MoneyFormater from '../MoneyFormater'
 
-import { Table, TableHead, TableRow, TableCell, TableBody, IconButton, TextField } from '@material-ui/core'
+import { Table, TableHead, TableRow, TableCell, TableBody, IconButton, TextField, FormControl, InputLabel, Select } from '@material-ui/core'
 
 import { withTheme } from '@material-ui/core/styles'
 import { MUI_FullWidth, MUI_VerticalMargin } from '../../../MUI_theme'
@@ -26,7 +26,8 @@ class TransaksiTransaksi extends React.Component {
         Transaksi: this.props.Transaksi.Transaksi,
         TotalHarga: [],
         isEditingOn: false,
-        EditingValue: '',
+        JumlahBaru: '',
+        SatuanBaru: '',
     }
     componentDidUpdate(prevProps) {
         if (this.props.Transaksi !== prevProps.Transaksi) {
@@ -41,23 +42,48 @@ class TransaksiTransaksi extends React.Component {
             transaksi.isEditAble = true
             transaksis[Index] = transaksi
             this.setState({ Transaksi: transaksis })
-            this.setState({ EditingValue: transaksi.Jumlah })
+            this.setState({ JumlahBaru: transaksi.Jumlah })
+            this.setState({ SatuanBaru: transaksi.Satuan })
             this.setState({ isEditingOn: true })
         } else {
             this.props.Create_Warning_Messages(null, 'mohon selesaikan proses editing terlebih dahulu')
         }
     }
-    onEditChange = e => this.setState({ EditingValue: e.target.value })
-    EditingDone(index, hargasatuan) {
-        const jumlah = this.state.EditingValue
-        this.props.Change_Transaksi_Item_Jumlah(index, jumlah, hargasatuan)
-        this.setState({ Transaksi: this.props.Transaksi.Transaksi })
-        this.setState({ EditingValue: '' })
-        this.setState({ isEditingOn: false })
+    onEditChange = e => {
+        this.setState({ [e.target.name]: e.target.value })
+        // this.setState({ JumlahBaru: e.target.value })
+    }
+    onKeyPress = (e, index, SatuanOptions, isDecimal) => {
+        if (e.keyCode === 13) {
+            this.EditingDone(index, SatuanOptions, isDecimal)
+        }
+        if (e.keyCode === 27) {
+            this.Editingcancel()
+        }
+    }
+    EditingDone(index, SatuanOptions, isDecimal) {
+        // console.log('EditingDone', this.state)
+        const { JumlahBaru, SatuanBaru } = this.state
+        // console.log('SatuanOptions', SatuanOptions)
+        const newSatuanBaru = SatuanOptions.find(satuanoptions => satuanoptions.NamaSatuan === SatuanBaru)
+        const NamaSatuan_SatuanBaru = newSatuanBaru.NamaSatuan
+        const MinBarang_SatuanBaru = newSatuanBaru.MinBarang
+        const HargaJual_SatuanBaru = newSatuanBaru.HargaJual
+
+        if ((JumlahBaru % 1 !== 0) && (isDecimal === false)) {
+            this.props.Create_Warning_Messages(null, 'jumlah barang harus bulat tidak bisa desimal')
+        } else {
+            this.props.Change_Transaksi_Detail(index, JumlahBaru, NamaSatuan_SatuanBaru, MinBarang_SatuanBaru, HargaJual_SatuanBaru)
+            this.setState({ Transaksi: this.props.Transaksi.Transaksi })
+            this.setState({ JumlahBaru: '' })
+            this.setState({ SatuanBaru: '' })
+            this.setState({ isEditingOn: false })
+        }
     }
     Editingcancel() {
         this.setState({ Transaksi: this.props.Transaksi.Transaksi })
-        this.setState({ EditingValue: '' })
+        this.setState({ JumlahBaru: '' })
+        this.setState({ SatuanBaru: '' })
         this.setState({ isEditingOn: false })
     }
     CancelBarang(Barcode) {
@@ -102,11 +128,13 @@ class TransaksiTransaksi extends React.Component {
                             <TableCell style={{ width: '10%' }} align="center"  >Edit</TableCell>
                             <TableCell style={{ width: '5%' }} align="center" onClick={() => this.CancelAllBarang()} >Cancel</TableCell>
                             <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(2)}>No</TableCell>
-                            <TableCell style={{ width: '10%' }} align="left" onClick={() => this.ButtonShortINT(3)}>Barcode</TableCell>
-                            <TableCell style={{ width: '30%' }} align="left" onClick={() => this.ButtonShortSTR(4)}>Nama Barang</TableCell>
-                            <TableCell style={{ width: '10%' }} align="left" onClick={() => this.ButtonShortINT(5)}>Jumlah</TableCell>
-                            <TableCell style={{ width: '15%' }} align="right" onClick={() => this.ButtonShortSTR(6)}>Harga Satuan&nbsp;(Rp)</TableCell>
-                            <TableCell style={{ width: '15%' }} align="right" onClick={() => this.ButtonShortSTR(7)}>Harga Total&nbsp;(Rp)</TableCell>
+                            <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortINT(3)}>Barcode</TableCell>
+                            <TableCell style={{ width: '25%' }} align="center" onClick={() => this.ButtonShortSTR(4)}>Nama Barang</TableCell>
+                            <TableCell style={{ width: '15%' }} align="center" onClick={() => this.ButtonShortSTR(5)}>Satuan</TableCell>
+                            <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(6)}>Jumlah</TableCell>
+                            <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(7)}>Harga Satuan&nbsp;(Rp)</TableCell>
+                            <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(8)}>Total Barang</TableCell>
+                            <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(9)}>Harga Total&nbsp;(Rp)</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -118,7 +146,7 @@ class TransaksiTransaksi extends React.Component {
                                 <TableCell align="center" >
                                     {item.isEditAble ?
                                         <Fragment>
-                                            <IconButton onClick={() => this.EditingDone(index, item.HargaSatuan)}>
+                                            <IconButton onClick={() => this.EditingDone(index, item.SatuanOptions, item.isDecimal)}>
                                                 <DoneIcon />
                                             </IconButton>
                                             <IconButton onClick={() => this.Editingcancel()}>
@@ -141,11 +169,29 @@ class TransaksiTransaksi extends React.Component {
                                 <TableCell align="center">{index + 1}</TableCell>
                                 <TableCell align="left">{item.Barcode}</TableCell>
                                 <TableCell align="left">{item.NamaBarang}</TableCell>
-                                <TableCell align="left">
+                                <TableCell align="center">
+                                    {item.isEditAble ?
+                                        // <FormControl style={st_textfield} variant="filled" required >
+                                        <FormControl variant="filled"  >
+                                            <InputLabel shrink >Satuan</InputLabel>
+                                            <Select native onChange={this.onEditChange} label="Satuan" name='SatuanBaru' value={this.state.SatuanBaru} labelWidth={100} >
+                                                <option value="" disabled> -- select an option -- </option>
+                                                {item.SatuanOptions.map((option, index) =>
+                                                    //fix
+                                                    <option key={index} value={option.NamaSatuan}>{option.MinBarang}, {option.NamaSatuan}</option>
+                                                )}
+                                            </Select>
+                                        </FormControl>
+                                        : item.Satuan
+                                    }
+                                </TableCell>
+                                <TableCell align="right">
                                     {item.isEditAble ?
                                         <TextField
                                             onChange={this.onEditChange}
-                                            value={this.state.EditingValue}
+                                            onKeyDown={(event) => this.onKeyPress(event, index, item.SatuanOptions, item.isDecimal)}
+                                            name='JumlahBaru'
+                                            value={this.state.JumlahBaru}
                                             type='number'
                                         >
                                         </TextField>
@@ -153,6 +199,7 @@ class TransaksiTransaksi extends React.Component {
                                     }
                                 </TableCell>
                                 <TableCell align="right">{this.ConverNumberToMoneyFormat(item.HargaSatuan)}</TableCell>
+                                <TableCell align="right">{item.TotalBarang} </TableCell>
                                 <TableCell align="right">{this.ConverNumberToMoneyFormat(item.HargaTotal)}</TableCell>
                                 {this.SUMHargaTotal(item.HargaTotal)}
                             </TableRow>
@@ -204,4 +251,4 @@ const mapStateToProps = (state) => ({
     Transaksi: state.Transaksi,
 })
 
-export default connect(mapStateToProps, { Change_Transaksi_Item_Jumlah, Clear_A_Barang_From_Transaksi, Clear_Barang_In_Transaksi, Create_Warning_Messages })(withTheme(TransaksiTransaksi))
+export default connect(mapStateToProps, { Change_Transaksi_Detail, Clear_A_Barang_From_Transaksi, Clear_Barang_In_Transaksi, Create_Warning_Messages })(withTheme(TransaksiTransaksi))

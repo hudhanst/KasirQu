@@ -21,6 +21,10 @@ const TransaksiSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    PotonganHarga: {
+        type: Number,
+        default: 0,
+    },
     TotalPembayaran: {
         type: Number,
         required: true

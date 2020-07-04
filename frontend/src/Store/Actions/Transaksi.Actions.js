@@ -7,7 +7,7 @@ import {
     TRANSAKSI_LOADED,
     ////// TRANSAKSI
     ADD_BARANG_TO_TRANSAKSI,
-    CHANGE_TRANSAKSI_ITEM_JUMLAH,
+    CHANGE_TRANSAKSI_DETAIL,
     CLEAR_A_BARANG_FROM_TRANSAKSI,
     CLEAR_BARANG_IN_TRANSAKSI,
     ////// BELANJA
@@ -35,12 +35,13 @@ export const Add_Barang_To_Transaksi = (Barang) => (dispatch) => {
     })
     dispatch({ type: TRANSAKSI_LOADED })
 }
-export const Change_Transaksi_Item_Jumlah = (Index, Jumlah, HargaSatuan) => (dispatch) => {
+export const Change_Transaksi_Detail = (Index, Jumlah, NamaSatuan, MinBarang, HargaSatuan) => (dispatch) => {
     dispatch({ type: TRANSAKSI_LOADING })
-    const HargaTotal = Jumlah * HargaSatuan
+    const TotalBarang = Jumlah * MinBarang
+    const HargaTotal = TotalBarang * HargaSatuan
     dispatch({
-        type: CHANGE_TRANSAKSI_ITEM_JUMLAH,
-        payload: { Index, Jumlah, HargaTotal }
+        type: CHANGE_TRANSAKSI_DETAIL,
+        payload: { Index, NamaSatuan, Jumlah, HargaSatuan, TotalBarang, HargaTotal }
     })
     dispatch({ type: TRANSAKSI_LOADED })
 }
@@ -60,20 +61,29 @@ export const Clear_Barang_In_Transaksi = () => (dispatch) => {
     dispatch({ type: TRANSAKSI_LOADED })
 }
 
-export const Transaksi_Transaksi = (Data, Diskon, Ket, Auth) => (dispatch, getState) => {
+export const Transaksi_Transaksi = (Data, Diskon, PotonganHarga, Ket, Auth) => (dispatch, getState) => {
     // console.log(2)
     dispatch({ type: TRANSAKSI_LOADING })
     if (Auth) {
         const NamaKasir = Auth.UserName
         // const NamaKasir = null
-        const DetailTransaksi = Data.map(({ isEditAble, ...item }) => item)
+        const DetailTransaksi = Data.map(({ SatuanOptions, isDecimal, isEditAble, ...item }) => item)
         const Total = DetailTransaksi.reduce((prev, cur) => {
             return prev + cur.HargaTotal
         }, 0)
-        const TotalPembayaran = ((Diskon >= 1) && (Diskon <= 100)) ? (Total - ((Total * Diskon) / 100)) : Total
+        let TotalPembayaran = Total ? Total : 0
+        if ((Diskon >= 1) && (Diskon <= 100)) {
+            TotalPembayaran = TotalPembayaran - ((TotalPembayaran * Diskon) / 100)
+            if ((PotonganHarga >= 0) && (PotonganHarga <= TotalPembayaran)) {
+                TotalPembayaran = TotalPembayaran - PotonganHarga
+            }
+        } else {
+            if ((PotonganHarga >= 0) && (PotonganHarga <= TotalPembayaran)) {
+                TotalPembayaran = TotalPembayaran - PotonganHarga
+            }
+        }
 
-        const body = JSON.stringify({ NamaKasir, DetailTransaksi, TotalPembayaran, Diskon, Ket })
-        // console.log(body)
+        const body = JSON.stringify({ NamaKasir, DetailTransaksi, Diskon, PotonganHarga, TotalPembayaran, Ket })
         axios.post('/api/transaksi/transaksi/tambah', body, tokenConfig(getState))
             .then(res => {
                 // console.log(res)

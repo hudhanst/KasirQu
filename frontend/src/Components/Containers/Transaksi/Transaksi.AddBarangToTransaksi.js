@@ -30,12 +30,14 @@ class AddBarangToTransaksi extends React.Component {
     onSubmit = e => {
         e.preventDefault()
         const { Data_Barang, NamaBarang, Barcode, } = this.state
-        console.log('NamaBarang', NamaBarang)
+        const minimumstok = 10
+        // const minimumharga = 100
+        // console.log('NamaBarang', NamaBarang)
         // console.log('Barcode', Barcode)
         if (NamaBarang !== null) {
             if (NamaBarang.Barcode) {
-                if (NamaBarang.Stok <= 10) {
-                    this.props.Create_Warning_Messages(null, 'stok barang kurang dari 10, akan gagal jika jumlah transaksi lebih banyak dari stok')
+                if (NamaBarang.Stok <= minimumstok) {
+                    this.props.Create_Warning_Messages(null, `stok barang kurang dari ${minimumstok} akan gagal jika jumlah transaksi lebih banyak dari stok`)
                 }
                 this.props.Add_Barang_To_Transaksi(NamaBarang)
                 this.setState({
@@ -45,8 +47,8 @@ class AddBarangToTransaksi extends React.Component {
             } else {
                 const barang = Data_Barang.find(data_barang => data_barang.Barcode === NamaBarang)
                 if (barang) {
-                    if (barang.Stok <= 10) {
-                        this.props.Create_Warning_Messages(null, 'stok barang kurang dari 10, akan gagal jika jumlah transaksi lebih banyak dari stok')
+                    if (barang.Stok <= minimumstok) {
+                        this.props.Create_Warning_Messages(null, `stok barang kurang dari ${minimumstok} akan gagal jika jumlah transaksi lebih banyak dari stok`)
                     }
                     this.props.Add_Barang_To_Transaksi(barang)
                     this.setState({
@@ -60,8 +62,8 @@ class AddBarangToTransaksi extends React.Component {
         } else {
             const barang = Data_Barang.find(data_barang => data_barang.Barcode === Barcode)
             if (barang) {
-                if (barang.Stok <= 10) {
-                    this.props.Create_Warning_Messages(null, 'stok barang kurang dari 10, akan gagal jika jumlah transaksi lebih banyak dari stok')
+                if (barang.Stok <= minimumstok) {
+                    this.props.Create_Warning_Messages(null, `stok barang kurang dari ${minimumstok} akan gagal jika jumlah transaksi lebih banyak dari stok`)
                 }
                 this.props.Add_Barang_To_Transaksi(barang)
                 this.setState({
@@ -74,8 +76,8 @@ class AddBarangToTransaksi extends React.Component {
             // Data_Barang.forEach((item, index) => {
             //     if (NamaBarang === item.Barcode) {
             //         const BarcodeItem = item
-            //         if (item.Stok <= 10) {
-            //             this.props.Create_Warning_Messages(null, 'stok barang kurang dari 10, akan gagal jika jumlah transaksi lebih banyak dari stok')
+            //         if (item.Stok <= minimumstok) {
+            //             this.props.Create_Warning_Messages(null, `stok barang kurang dari ${minimumstok} akan gagal jika jumlah transaksi lebih banyak dari stok`)
             //         }
             //         this.props.Add_Barang_To_Transaksi(BarcodeItem)
             //         this.setState({
@@ -114,7 +116,7 @@ class AddBarangToTransaksi extends React.Component {
                             freeSolo
                             disableClearable
 
-                            options={Data_Barang}
+                            options={Data_Barang.sort((a, b) => (a.Jenis > b.Jenis) ? 1 : ((b.Jenis > a.Jenis) ? -1 : 0))}
                             // getOptionLabel={(option) => option.Name}
                             getOptionLabel={option => typeof option === 'string' ? option : option.Name}
                             groupBy={(option) => option.Jenis}

@@ -1,9 +1,8 @@
 import React, { Fragment } from 'react'
 
-import Typography from '@material-ui/core/Typography';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Link from '@material-ui/core/Link';
-import HomeIcon from '@material-ui/icons/Home';
+import { Breadcrumbs, Link, Typography } from '@material-ui/core'
+
+import HomeIcon from '@material-ui/icons/Home'
 
 export const BreadCrumbs = (props) => {
     return (
@@ -22,7 +21,6 @@ export const BreadCrumbs = (props) => {
                     </Link>
                 ))}
             </Breadcrumbs>
-
         </Fragment >
     )
 }

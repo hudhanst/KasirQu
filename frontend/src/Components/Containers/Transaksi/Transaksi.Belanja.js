@@ -52,6 +52,14 @@ class TransaksiBelanja extends React.Component {
         }
     }
     onEditChange = e => this.setState({ [[e.target.name]]: e.target.value })
+    onKeyPress = (e, index) => {
+        if (e.keyCode === 13) {
+            this.EditingDone(index)
+        }
+        if (e.keyCode === 27) {
+            this.Editingcancel()
+        }
+    }
     EditingDone(index) {
         const { Jumlah, HargaModal, HargaJual } = this.state
         this.props.Change_Belanja_Detail(index, Jumlah, HargaModal, HargaJual)
@@ -108,8 +116,8 @@ class TransaksiBelanja extends React.Component {
                             <TableCell style={{ width: '10%' }} align="center"  >Edit</TableCell>
                             <TableCell style={{ width: '5%' }} align="center" onClick={() => this.CancelAllBarang()} >Cancel</TableCell>
                             <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(2)}>No</TableCell>
-                            <TableCell style={{ width: '10%' }} align="left" onClick={() => this.ButtonShortINT(3)}>Barcode</TableCell>
-                            <TableCell style={{ width: '35%' }} align="left" onClick={() => this.ButtonShortSTR(4)}>Nama Barang</TableCell>
+                            <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortINT(3)}>Barcode</TableCell>
+                            <TableCell style={{ width: '35%' }} align="center" onClick={() => this.ButtonShortSTR(4)}>Nama Barang</TableCell>
                             <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(5)}>Jumlah</TableCell>
                             <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(6)}>Harga Modal&nbsp;(Rp)</TableCell>
                             <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(7)}>Harga Jual&nbsp;(Rp)</TableCell>
@@ -148,10 +156,11 @@ class TransaksiBelanja extends React.Component {
                                 <TableCell align="center">{index + 1}</TableCell>
                                 <TableCell align="left">{item.Barcode}</TableCell>
                                 <TableCell align="left">{item.NamaBarang}</TableCell>
-                                <TableCell align="center">
+                                <TableCell align="right">
                                     {item.isEditAble ?
                                         <TextField
                                             onChange={this.onEditChange}
+                                            onKeyDown={(event) => this.onKeyPress(event, index)}
                                             name='Jumlah'
                                             value={this.state.Jumlah}
                                             type='number'
@@ -164,6 +173,7 @@ class TransaksiBelanja extends React.Component {
                                     {item.isEditAble ?
                                         <TextField
                                             onChange={this.onEditChange}
+                                            onKeyDown={(event) => this.onKeyPress(event, index)}
                                             name='HargaModal'
                                             value={this.state.HargaModal}
                                             type='number'
@@ -178,6 +188,7 @@ class TransaksiBelanja extends React.Component {
                                     {item.isEditAble ?
                                         <TextField
                                             onChange={this.onEditChange}
+                                            onKeyDown={(event) => this.onKeyPress(event, index)}
                                             name='HargaJual'
                                             value={this.state.HargaJual}
                                             type='number'

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import { Load_Barang_List } from '../../../Store/Actions/Barang.Actions'
 import { Add_Barang_To_Belanja } from '../../../Store/Actions/Transaksi.Actions'
-import { Create_Info_Messages } from '../../../Store/Actions/Messages.Actions'
+import { Create_Info_Messages, Create_Warning_Messages } from '../../../Store/Actions/Messages.Actions'
 
 import { TextField, Button } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
@@ -29,23 +29,34 @@ class AddBarangToBelanja extends React.Component {
     onSubmit = e => {
         e.preventDefault()
         const { Data_Barang, NamaBarang, Barcode, } = this.state
+        const { Belanja } = this.props
         // console.log('NamaBarang', NamaBarang)
         // console.log('Barcode', Barcode)
         if (NamaBarang !== null) {
             if (NamaBarang.Barcode) {
-                this.props.Add_Barang_To_Belanja(NamaBarang)
-                this.setState({
-                    NamaBarang: null,
-                    Barcode: '',
-                })
-            } else {
-                const barang = Data_Barang.find(data_barang => data_barang.Barcode === NamaBarang)
-                if (barang) {
-                    this.props.Add_Barang_To_Belanja(barang)
+                const isBaranginBelanja = Belanja.find(belanja => belanja.Barcode === NamaBarang.Barcode)
+                if (isBaranginBelanja) {
+                    this.props.Create_Warning_Messages(null, `barcode ${NamaBarang.Barcode} sudah ada di list belanja`)
+                } else {
+                    this.props.Add_Barang_To_Belanja(NamaBarang)
                     this.setState({
                         NamaBarang: null,
                         Barcode: '',
                     })
+                }
+            } else {
+                const barang = Data_Barang.find(data_barang => data_barang.Barcode === NamaBarang)
+                if (barang) {
+                    const isBaranginBelanja = Belanja.find(belanja => belanja.Barcode === barang.Barcode)
+                    if (isBaranginBelanja) {
+                        this.props.Create_Warning_Messages(null, `barcode ${barang.Barcode} sudah ada di list belanja`)
+                    } else {
+                        this.props.Add_Barang_To_Belanja(barang)
+                        this.setState({
+                            NamaBarang: null,
+                            Barcode: '',
+                        })
+                    }
                 } else {
                     this.props.Create_Info_Messages(null, 'barcode yang anda masukkan tidak sesuai')
                 }
@@ -53,11 +64,16 @@ class AddBarangToBelanja extends React.Component {
         } else {
             const barang = Data_Barang.find(data_barang => data_barang.Barcode === Barcode)
             if (barang) {
-                this.props.Add_Barang_To_Belanja(barang)
-                this.setState({
-                    NamaBarang: null,
-                    Barcode: '',
-                })
+                const isBaranginBelanja = Belanja.find(belanja => belanja.Barcode === barang.Barcode)
+                if (isBaranginBelanja) {
+                    this.props.Create_Warning_Messages(null, `barcode ${barang.Barcode} sudah ada di list belanja`)
+                } else {
+                    this.props.Add_Barang_To_Belanja(barang)
+                    this.setState({
+                        NamaBarang: null,
+                        Barcode: '',
+                    })
+                }
             } else {
                 this.props.Create_Info_Messages(null, 'barcode yang anda masukkan tidak sesuai')
             }
@@ -102,7 +118,7 @@ class AddBarangToBelanja extends React.Component {
                             freeSolo
                             disableClearable
 
-                            options={Data_Barang}
+                            options={Data_Barang.sort((a, b) => (a.Jenis > b.Jenis) ? 1 : ((b.Jenis > a.Jenis) ? -1 : 0))}
                             // getOptionLabel={(option) => option.Name}
                             getOptionLabel={option => typeof option === 'string' ? option : option.Name}
                             groupBy={(option) => option.Jenis}
@@ -144,7 +160,8 @@ class AddBarangToBelanja extends React.Component {
 const mapStateToProps = (state) => ({
     User: state.Auth.User,
     Data_Barang: state.Barang.BarangList,
+    Belanja: state.Transaksi.Belanja,
     isTransaksiLoading: state.Transaksi.isTransaksiLoading
 })
 
-export default connect(mapStateToProps, { Load_Barang_List, Add_Barang_To_Belanja, Create_Info_Messages })(AddBarangToBelanja)
+export default connect(mapStateToProps, { Load_Barang_List, Add_Barang_To_Belanja, Create_Info_Messages, Create_Warning_Messages })(AddBarangToBelanja)

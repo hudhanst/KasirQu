@@ -7,7 +7,7 @@ import { Transaksi_Transaksi } from '../../../Store/Actions/Transaksi.Actions'
 import { Short_Column_INT, Short_Column_STR } from '../Shorting'
 import MoneyFormater from '../MoneyFormater'
 
-import { Table, TableHead, TableRow, TableCell, TableBody, TextField, Button, Typography } from '@material-ui/core'
+import { Table, TableHead, TableRow, TableCell, TableBody, TextField, Button, Typography, FormHelperText } from '@material-ui/core'
 
 import { withTheme } from '@material-ui/core/styles'
 import { MUI_FullWidth, MUI_VerticalMargin } from '../../../MUI_theme'
@@ -18,6 +18,7 @@ class ReviewPembayaran extends React.Component {
     state = {
         Transaksi: this.props.Transaksi.Transaksi,
         Diskon: 0,
+        PotonganHarga: 0,
         Ket: '',
         UangBayar: '',
     }
@@ -27,15 +28,14 @@ class ReviewPembayaran extends React.Component {
         const Data = this.state.Transaksi
         const Ket = this.state.Ket
         const Diskon = this.state.Diskon
+        const PotonganHarga = this.state.PotonganHarga
         const authdata = {
             UserName: User.UserName,
             isKasir: User.isKasir,
             isAdmin: User.isAdmin,
             isSuperUser: User.isSuperUser,
         }
-        if ((!Diskon >= 0) && (!Diskon <= 100)) {
-            this.props.Transaksi_Transaksi(Data, Diskon, Ket, authdata)
-        }
+        this.props.Transaksi_Transaksi(Data, Diskon, PotonganHarga, Ket, authdata)
     }
     Form_OnChange = E => {
         this.setState({ [E.target.name]: E.target.value })
@@ -60,12 +60,24 @@ class ReviewPembayaran extends React.Component {
         const Data = this.state.Transaksi
         const {
             Diskon,
+            PotonganHarga,
             Ket,
             UangBayar,
         } = this.state
         const TotalPembayaran = Data.reduce((prev, cur) => {
             return prev + cur.HargaTotal
         }, 0)
+        let TotalTagihan = TotalPembayaran ? TotalPembayaran : 0
+        if ((Diskon >= 1) && (Diskon <= 100)) {
+            TotalTagihan = TotalTagihan - ((TotalTagihan * Diskon) / 100)
+            if ((PotonganHarga >= 0) && (PotonganHarga <= TotalTagihan)) {
+                TotalTagihan = TotalTagihan - PotonganHarga
+            }
+        } else {
+            if ((PotonganHarga >= 0) && (PotonganHarga <= TotalTagihan)) {
+                TotalTagihan = TotalTagihan - PotonganHarga
+            }
+        }
         return (
             <Fragment>
                 {Data ? (
@@ -74,11 +86,13 @@ class ReviewPembayaran extends React.Component {
                             <TableHead style={st_tablehead}>
                                 <TableRow>
                                     <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>
-                                    <TableCell style={{ width: '10%' }} align="left" onClick={() => this.ButtonShortINT(1)}>Barcode</TableCell>
-                                    <TableCell style={{ width: '50%' }} align="left" onClick={() => this.ButtonShortSTR(2)}>Nama Barang</TableCell>
-                                    <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(3)}>Jumlah</TableCell>
-                                    <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(4)}>Harga Satuan&nbsp;(Rp)</TableCell>
-                                    <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(5)}>Harga Total&nbsp;(Rp)</TableCell>
+                                    <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortINT(1)}>Barcode</TableCell>
+                                    <TableCell style={{ width: '45%' }} align="center" onClick={() => this.ButtonShortSTR(2)}>Nama Barang</TableCell>
+                                    <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(3)}>Satuan</TableCell>
+                                    <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(4)}>Jumlah</TableCell>
+                                    <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(5)}>Harga Satuan&nbsp;(Rp)</TableCell>
+                                    <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(6)}>Total Barang</TableCell>
+                                    <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(7)}>Harga Total&nbsp;(Rp)</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -91,23 +105,49 @@ class ReviewPembayaran extends React.Component {
                                         <TableCell align="center" >{index + 1}</TableCell>
                                         <TableCell align="left" >{item.Barcode}</TableCell>
                                         <TableCell align="left" >{item.NamaBarang}</TableCell>
-                                        <TableCell align="center" >{item.Jumlah}</TableCell>
+                                        <TableCell align="center" >{item.Satuan}</TableCell>
+                                        <TableCell align="right" >{item.Jumlah}</TableCell>
                                         <TableCell align="right" >{this.ConverNumberToMoneyFormat(item.HargaSatuan)}</TableCell>
+                                        <TableCell align="right" >{item.TotalBarang}</TableCell>
                                         <TableCell align="right" >{this.ConverNumberToMoneyFormat(item.HargaTotal)}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
+                        <Table>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell align="left">total:</TableCell>
+                                    <TableCell align="left"></TableCell>
+                                    <TableCell align="left"></TableCell>
+                                    <TableCell align="left"></TableCell>
+                                    <TableCell align="left"></TableCell>
+                                    <TableCell align="left"></TableCell>
+                                    <TableCell align="left"></TableCell>
+                                    <TableCell align="right">{this.ConverNumberToMoneyFormat(TotalPembayaran)}</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
                         <form onSubmit={this.Form_OnSubmit}>
                             <TextField style={st_button} variant='outlined' onChange={this.Form_OnChange} type='text' label='Keterangan' name='Ket' value={Ket} />
                             <TextField style={st_button} variant='outlined' onChange={this.Form_OnChange} type='number' label='Diskon' name='Diskon' value={Diskon} />
+                            <FormHelperText>1%-100%</FormHelperText>
+                            <TextField style={st_button} variant='outlined' onChange={this.Form_OnChange} type='number' label='Potongan Harga' name='PotonganHarga' value={PotonganHarga} />
+                            <FormHelperText>dalam bentuk Rp</FormHelperText>
+                            <FormHelperText>Tidak bisa lebih besar dari Jumlah Tagihan</FormHelperText>
+                            <FormHelperText>PotonganHarga dilakukan setelah diskon</FormHelperText>
+                            <hr />
                             <label>Jumlah Tagihan:</label>
-                            <Typography align='center' variant='h2'>Total: Rp {this.ConverNumberToMoneyFormat(((Diskon >= 1) && (Diskon <= 100)) ? (TotalPembayaran - ((TotalPembayaran * Diskon) / 100)) : TotalPembayaran)}</Typography>
-                            <TextField style={st_button} variant='outlined' onChange={this.Form_OnChange} type='number' label='Uang Bayar' name='UangBayar' value={UangBayar} />
+                            <Typography align='center' variant='h2'>Total: Rp {this.ConverNumberToMoneyFormat(TotalTagihan)}</Typography>
+                            <TextField style={st_button} variant='outlined' color='primary' onChange={this.Form_OnChange} type='number' label='Uang Bayar' name='UangBayar' value={UangBayar} />
                             <label>kembalian:</label>
-                            <Typography align='center' variant='h3'>Rp {this.ConverNumberToMoneyFormat((UangBayar ? (UangBayar - (((Diskon >= 1) && (Diskon <= 100)) ? (TotalPembayaran - ((TotalPembayaran * Diskon) / 100)) : TotalPembayaran)) : 0))}</Typography>
+                            <Typography align='center' variant='h3'>Rp {this.ConverNumberToMoneyFormat(UangBayar ? UangBayar - TotalTagihan : 0)}</Typography>
                             <Button type='submit' style={st_button} size="large" variant='contained' color='primary'
-                                disabled={((Diskon >= 1) && (Diskon <= 100)) ? (UangBayar >= (TotalPembayaran - ((TotalPembayaran * Diskon) / 100))) ? false : true : (UangBayar >= TotalPembayaran) ? false : true}
+                                disabled={(
+                                    (UangBayar >= TotalTagihan) &&
+                                    ((Diskon >= 0) && (Diskon <= 100)) &&
+                                    ((PotonganHarga >= 0) && (PotonganHarga <= (((Diskon >= 0) && (Diskon <= 100)) ? (TotalPembayaran - ((TotalPembayaran * Diskon) / 100)) : TotalPembayaran)))
+                                ) ? false : true}
                             >
                                 Bayar
                                 </Button>
