@@ -73,12 +73,12 @@ class BarangList extends React.Component {
                         <TableHead>
                             <TableRow>
                                 <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>
-                                <TableCell style={{ width: '10%' }} align="left" onClick={() => this.ButtonShortINT(1)}>Barcode</TableCell>
-                                <TableCell style={{ width: '35%' }} align="left" onClick={() => this.ButtonShortSTR(2)}>Nama Barang</TableCell>
-                                <TableCell style={{ width: '10%' }} align="left" onClick={() => this.ButtonShortSTR(3)}>Jenis Barang</TableCell>
-                                <TableCell style={{ width: '5%' }} align="left" onClick={() => this.ButtonShortINT(4)}>Stok Barang</TableCell>
-                                <TableCell style={{ width: '10%' }} align="right" onClick={() => this.ButtonShortSTR(5)}>Harga Jual&nbsp;(Rp)</TableCell>
-                                <TableCell style={{ width: '10%' }} align="right" onClick={() => this.ButtonShortSTR(6)}>Modal&nbsp;(Rp)</TableCell>
+                                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortINT(1)}>Barcode</TableCell>
+                                <TableCell style={{ width: '35%' }} align="center" onClick={() => this.ButtonShortSTR(2)}>Nama Barang</TableCell>
+                                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(3)}>Jenis Barang</TableCell>
+                                <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(4)}>Stok Barang</TableCell>
+                                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(5)}>Harga Jual&nbsp;(Rp)</TableCell>
+                                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(6)}>Modal&nbsp;(Rp)</TableCell>
                                 <TableCell style={{ width: '5%' }} align='center'>Detail</TableCell>
                                 {User ? ((User.isSuperUser || User.isAdmin) ?
                                     <Fragment>
@@ -97,7 +97,7 @@ class BarangList extends React.Component {
                                     <TableCell align="left">{item.Barcode}</TableCell>
                                     <TableCell align="left">{item.Name}</TableCell>
                                     <TableCell align="left">{item.Jenis}</TableCell>
-                                    <TableCell align="left">{item.Stok}</TableCell>
+                                    <TableCell align="right">{item.Stok}</TableCell>
                                     <TableCell align="right">{this.ConverNumberToMoneyFormat(item.HargaJual)}</TableCell>
                                     <TableCell align="right">{this.ConverNumberToMoneyFormat(item.HargaModal)}</TableCell>
                                     <TableCell align='center'>

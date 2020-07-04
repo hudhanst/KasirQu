@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { Load_JenisBarang_List } from '../../../Store/Actions/JenisBarang.Actions'
 import { Add_Barang } from '../../../Store/Actions/Barang.Actions'
 
-import { TextField, FormControl, InputLabel, Select, Button } from '@material-ui/core'
+import { TextField, FormControl, InputLabel, Select, FormHelperText, Button } from '@material-ui/core'
 
 import { MUI_VerticalMargin, MUI_FullWidth } from '../../../MUI_theme'
 
@@ -19,6 +19,7 @@ class AddBarang extends React.Component {
         Barcode: '',
         Name: '',
         Jenis: '',
+        isDecimal: false,
         Ket: '',
         BarangPic: null,
     }
@@ -27,6 +28,9 @@ class AddBarang extends React.Component {
     }
     Form_OnChange = E => {
         this.setState({ [E.target.name]: E.target.value })
+    }
+    CheckBox_OnChange = E => {
+        this.setState({ [E.target.name]: !this.state[E.target.name] })
     }
     File_OnChange = E => {
         this.setState({ [E.target.name]: E.target.files[0] })
@@ -38,6 +42,7 @@ class AddBarang extends React.Component {
             Barcode: this.state.Barcode,
             Name: this.state.Name,
             Jenis: this.state.Jenis,
+            isDecimal: this.state.isDecimal,
             Ket: this.state.Ket,
             BarangPic: this.state.BarangPic,
         }
@@ -55,6 +60,7 @@ class AddBarang extends React.Component {
             Barcode,
             Name,
             Jenis,
+            isDecimal,
             Ket,
         } = this.state
         return (
@@ -71,6 +77,11 @@ class AddBarang extends React.Component {
                             )}
                         </Select>
                     </FormControl>
+                    <label>Apakah Bisa Melakukan Transaksi Satuan Desimal?</label><br />
+                    <div className='switch'>
+                        <input type="checkbox" onChange={this.CheckBox_OnChange} name='isDecimal' checked={isDecimal} /><span></span><br />
+                    </div><br />
+                    <FormHelperText >Jika iya maka transaksi bisa dalam bentuk 0.xxx (koma)</FormHelperText>
                     <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Keterangan' name='Ket' value={Ket} />
                     <label>Photo Barang:</label><br />
                     <input type='file' accept='image/*' onChange={this.File_OnChange} name='BarangPic' /><br />

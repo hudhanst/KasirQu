@@ -56,6 +56,7 @@ export const Add_Barang = (Barang, Auth) => (dispatch, getState) => {
             bodydata.append("Barcode", Barang.Barcode)
             bodydata.append("Name", Barang.Name)
             bodydata.append("Jenis", Barang.Jenis)
+            bodydata.append("isDecimal", Barang.isDecimal)
             bodydata.append("Ket", Barang.Ket)
             if (Barang.BarangPic !== null) {
                 bodydata.append("BarangPic", Barang.BarangPic);
@@ -91,16 +92,21 @@ export const Update_Barang = (BarangID, UpdateData, Auth) => (dispatch, getState
         const isSuperUser = Auth.isSuperUser
         const isAdmin = Auth.isAdmin
         if (isSuperUser || isAdmin) {
+            const SatuanJual = UpdateData.SatuanJual.map(({ isEditAble, ...item }) => item)
+            console.log(SatuanJual)
             const bodydata = new FormData()
 
             bodydata.append("Name", UpdateData.Name)
             bodydata.append("Jenis", UpdateData.Jenis)
             bodydata.append("Stok", UpdateData.Stok)
+            bodydata.append("isDecimal", UpdateData.isDecimal)
             bodydata.append("HargaModal", UpdateData.HargaModal)
             bodydata.append("HargaJual", UpdateData.HargaJual)
+            SatuanJual.forEach(element => {
+                bodydata.append("SatuanJual[]", JSON.stringify(element))
+            })
             bodydata.append("Ket", UpdateData.Ket)
             if (UpdateData.BarangPic !== null) {
-                console.log(1)
                 bodydata.append("BarangPic", UpdateData.BarangPic);
             }
 

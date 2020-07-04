@@ -38,12 +38,12 @@ class TabelBarang extends React.Component {
           (<Table aria-label="customized table" id='tabel_data_barang'>
             <TableHead style={st_tablehead}>
               <TableRow>
-                <TableCell style={{ width: '5%' }} align="left" onClick={() => this.ButtonShortINT(0)}>No</TableCell>
-                <TableCell style={{ width: '10%' }} align="left" onClick={() => this.ButtonShortINT(1)}>Barcode</TableCell>
-                <TableCell style={{ width: '40%' }} align="left" onClick={() => this.ButtonShortSTR(2)}>Nama Barang</TableCell>
-                <TableCell style={{ width: '10%' }} align="left" onClick={() => this.ButtonShortSTR(3)}>Jenis Barang</TableCell>
-                <TableCell style={{ width: '5%' }} align="left" onClick={() => this.ButtonShortINT(4)}>Stok Barang</TableCell>
-                <TableCell style={{ width: '15%' }} align="right" onClick={() => this.ButtonShortSTR(5)}>Harga Jual&nbsp;(Rp)</TableCell>
+                <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>
+                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortINT(1)}>Barcode</TableCell>
+                <TableCell style={{ width: '40%' }} align="center" onClick={() => this.ButtonShortSTR(2)}>Nama Barang</TableCell>
+                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(3)}>Jenis Barang</TableCell>
+                <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(4)}>Stok Barang</TableCell>
+                <TableCell style={{ width: '15%' }} align="center" onClick={() => this.ButtonShortSTR(5)}>Harga Jual&nbsp;(Rp)</TableCell>
                 {/* <TableCell style={{ width: '15%' }} align="right" onClick={() => this.ButtonShortSTR(6)}>Modal&nbsp;(Rp)</TableCell> */}
               </TableRow>
             </TableHead>
@@ -56,7 +56,7 @@ class TabelBarang extends React.Component {
                   <TableCell align="left">{item.Barcode}</TableCell>
                   <TableCell align="left">{item.Name}</TableCell>
                   <TableCell align="left">{item.Jenis}</TableCell>
-                  <TableCell align="left">{item.Stok}</TableCell>
+                  <TableCell align="right">{item.Stok}</TableCell>
                   <TableCell align="right">{this.ConverNumberToMoneyFormat(item.HargaJual)}</TableCell>
                   {/* <TableCell align="right">{this.ConverNumberToMoneyFormat(item.HargaModal)}</TableCell> */}
                 </TableRow>

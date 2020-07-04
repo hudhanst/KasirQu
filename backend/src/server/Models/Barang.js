@@ -19,6 +19,10 @@ const BarangSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    isDecimal: {
+        type: Boolean,
+        default: true
+    },
     HargaModal: {
         type: Number,
         default: 0,
@@ -26,6 +30,9 @@ const BarangSchema = new mongoose.Schema({
     HargaJual: {
         type: Number,
         default: 0,
+    },
+    SatuanJual: {
+        type: Array
     },
     Ket: {
         type: String,

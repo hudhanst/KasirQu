@@ -30,6 +30,8 @@ const auth = require('../Middleware/auth')
 const Barang = require('../../Models/Barang')
 const JenisBarang = require('../../Models/JenisBarang')
 
+// TODO update barang name???
+
 //// @router  Post api/barang/cek/barcode
 //// @desc    cek Barang barcode
 //// @access  Private
@@ -69,23 +71,34 @@ router.post('/tambah', upload.single('BarangPic'), auth, (req, res) => {
         return res.status(400).json({ msg: 'mohon lengkapi form registrasi' })
     }
 
-    Barang.findOne({ $or: [{ Barcode: Barcode }, { Name: Name }] })
+    if (req.body.isDecimal) {
+        if (req.body.isDecimal === 'true') {
+            req.body.isDecimal = true
+        } else if (req.body.isDecimal === 'false')
+            req.body.isDecimal = false
+    }
+
+    Barang.findOne({ $or: [{ Barcode: Barcode.toLocaleLowerCase() }, { Name: Name.toLocaleLowerCase() }] })
         .then(barang => {
             if (barang) {
                 return res.status(400).json({ msg: 'Barang sudah ada' })
             } else {
                 const newBarang = req.file ?
                     new Barang({
-                        Barcode,
-                        Name,
+                        Barcode: Barcode.toLocaleLowerCase(),
+                        Name: Name.toLocaleLowerCase(),
                         Jenis,
+                        isDecimal: req.body.isDecimal ? req.body.isDecimal : false,
+                        SatuanJual: { NamaSatuan: 'satuan', MinBarang: 1, HargaJual: 0 },
                         Ket,
                         BarangPic: req.file.path
                     }) :
                     new Barang({
-                        Barcode,
-                        Name,
+                        Barcode: Barcode.toLocaleLowerCase(),
+                        Name: Name.toLocaleLowerCase(),
                         Jenis,
+                        isDecimal: req.body.isDecimal ? req.body.isDecimal : false,
+                        SatuanJual: { NamaSatuan: 'satuan', MinBarang: 1, HargaJual: 0 },
                         Ket,
                     })
 
@@ -127,7 +140,7 @@ router.get('/jenisbaranglist/:id', auth, (req, res) => {
             console.log(`JenisBarang ${jenisbarang.NamaJenisBarang} list dipanggil`)
             Barang.find()
                 .where('Jenis').equals(jenisbarang.NamaJenisBarang)
-                .select('-Ket -BarangPic')
+                .select('-Ket -BarangPic -isDecimal -SatuanJual')
                 .then((ListBarang) => {
                     console.log('Barang list dipanggil')
                     res.status(200).json({ ListBarang, msg: 'Barang list berhasil dipanggil' })
@@ -162,15 +175,34 @@ router.get('/detail/:id', auth, (req, res) => {
 //// @desc    Update Barang
 //// @access  Private
 router.patch('/detail/:id/update', upload.single('BarangPic'), auth, (req, res) => {
+    // console.log(req.body)
+    if (req.body.SatuanJual) {
+        const SatuanJual = []
+        req.body.SatuanJual.forEach(element => {
+            const objsatuanjual = JSON.parse(element)
+            SatuanJual.push(objsatuanjual)
+        })
+        req.body.SatuanJual = SatuanJual
+    }
     const { Barcode } = req.body
     if (Barcode) {
         return res.status(401).json({ msg: 'input yang anda masukkan tidak bisa diganti' })
+    }
+    if (req.body.isDecimal) {
+        if (req.body.isDecimal === 'true') {
+            req.body.isDecimal = true
+        } else if (req.body.isDecimal === 'false')
+            req.body.isDecimal = false
+    }
+    if (req.body.HargaJual) {
+        req.body.SatuanJual[0].HargaJual = req.body.HargaJual
     }
     if (req.file) {
         req.body.BarangPic = req.file.path
     }
     Barang.findByIdAndUpdate(req.params.id, { $set: req.body })
-        .then(() => {
+        .then((barangupdated) => {
+            // console.log(`Barang updated = ${req.params.id} = ${barangupdated} `)
             console.log(`Barang updated = ${req.params.id}`)
             res.status(200).json({ msg: 'Barang berhasil diupdate' })
         })

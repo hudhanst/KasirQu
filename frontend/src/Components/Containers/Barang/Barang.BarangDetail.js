@@ -4,7 +4,10 @@ import { connect } from 'react-redux'
 
 import { get_BarangDetail } from '../../../Store/Actions/Barang.Actions'
 
-import { TextField, Typography } from '@material-ui/core'
+import { Short_Column_INT, Short_Column_STR } from '../Shorting'
+import MoneyFormater from '../MoneyFormater'
+
+import { TextField, Typography, Table, TableHead, TableBody, TableRow, TableCell, } from '@material-ui/core'
 
 import { withTheme } from '@material-ui/core/styles'
 import { MUI_FullWidth, MUI_VerticalMargin, MUI_st_AccountDetail_Avatar } from '../../../MUI_theme'
@@ -26,10 +29,16 @@ class BarangDetail extends React.Component {
             this.props.get_BarangDetail(idDetailBarang)
         }
     }
-    // ConverNumberToMoneyFormat(OriginValue) {
-    //     const MoneyFormate = MoneyFormater(OriginValue ? OriginValue : 0)
-    //     return MoneyFormate
-    // }
+    ButtonShortSTR(ColumnNumb) {
+        Short_Column_STR('tabel_barang_detail', ColumnNumb)
+    }
+    ButtonShortINT(ColumnNumb) {
+        Short_Column_INT('tabel_barang_detail', ColumnNumb)
+    }
+    ConverNumberToMoneyFormat(OriginValue) {
+        const MoneyFormate = MoneyFormater(OriginValue ? OriginValue : 0)
+        return MoneyFormate
+    }
     render() {
         const theme = this.props.theme
         const BarangDetail = this.props.BarangDetail
@@ -39,12 +48,43 @@ class BarangDetail extends React.Component {
             <Fragment>
                 {BarangDetail ?
                     <Fragment>
+                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='id' name='_id' value={BarangDetail._id} />
                         <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Barcode' name='Barcode' value={BarangDetail.Barcode} />
                         <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Nama' name='Name' value={BarangDetail.Name} />
                         <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Jenis' name='Jenis' value={BarangDetail.Jenis} />
                         <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Stok' name='Stok' value={BarangDetail.Stok} />
+                        <label>Apakah Bisa Melakukan Transaksi Satuan Desimal?</label><br />
+                        <div className='switch'>
+                            <input type="checkbox" disabled name='isDecimal' checked={BarangDetail.isDecimal} /><span></span><br />
+                        </div><br />
                         <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Modal' name='HargaModal' value={BarangDetail.HargaModal} />
                         <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Harga Jual' name='HargaJual' value={BarangDetail.HargaJual} />
+                        {BarangDetail.SatuanJual.length >= 1 ?
+                            <Fragment>
+                                <hr />
+                                <Table id='tabel_barang_detail'>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>
+                                            <TableCell style={{ width: '70%' }} align="center" onClick={() => this.ButtonShortSTR(1)}>Nama Satuan</TableCell>
+                                            <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(2)}>Jumlah Beli Minimum</TableCell>
+                                            <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(3)}>Harga Jual Satuan&nbsp;(Rp)</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {BarangDetail.SatuanJual.map((item, index) => (
+                                            <TableRow hover={true} key={index}>
+                                                <TableCell align="center">{index + 1}</TableCell>
+                                                <TableCell align="left">{item.NamaSatuan} </TableCell>
+                                                <TableCell align="center">{item.MinBarang} </TableCell>
+                                                <TableCell align="right">{this.ConverNumberToMoneyFormat(item.HargaJual)} </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                                <hr />
+                            </Fragment>
+                            : null}
                         <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Keterangan' name='Ket' value={BarangDetail.Ket} />
                         <label>Foto Barang:</label>
                         <Typography align={"center"}>
