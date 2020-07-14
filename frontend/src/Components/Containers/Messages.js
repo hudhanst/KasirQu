@@ -21,7 +21,7 @@ export class Messages extends React.Component {
         const { isMessages, MessagesType, MessagesCode, Messages } = this.props.messages
         return (
             <div>
-                <Snackbar open={isMessages} autoHideDuration={3600} onClose={this.handleClose} anchorOrigin={{ vertical, horizontal }}>
+                <Snackbar open={isMessages} autoHideDuration={2400} onClose={this.handleClose} anchorOrigin={{ vertical, horizontal }}>
                     <MuiAlert onClose={this.handleClose} severity={MessagesType ? MessagesType : 'info'} elevation={10} variant="filled">
                         {MessagesCode ? MessagesCode : ''} :&emsp;
                         {Messages ? Messages : ''}

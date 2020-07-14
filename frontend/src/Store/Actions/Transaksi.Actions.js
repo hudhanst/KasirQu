@@ -17,6 +17,7 @@ import {
     CLEAR_BARANG_IN_BELANJA,
     //////
     LIST_TRANSAKSI,
+    QUERY_LIST_TRANSAKSI,
     GET_TRANSAKSI_ID_FOR_DETAIL,
     TRANSAKSI_DETAIL,
 } from './Type.Actions'
@@ -169,6 +170,46 @@ export const Load_Transaksi_List = () => (dispatch, getState) => {
                 type: LIST_TRANSAKSI,
                 payload: res.data.ListTransaksi
             })
+            // dispatch({ type: TRANSAKSI_LOADED })
+        }).catch(err => {
+            console.log(err.response)
+            dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg ? err.response.data.msg : null))
+            // dispatch({ type: TRANSAKSI_LOADED })
+        })
+    dispatch({ type: TRANSAKSI_LOADED })
+}
+export const Load_Query_Transaksi_List = (data) => (dispatch, getState) => {
+    dispatch({ type: TRANSAKSI_LOADING })
+    const TransaksiID = data.TransaksiID
+    const UserName = data.UserName
+    const Jenis = data.Jenis
+    const isAllData = data.isAllData
+    const DateMin = isAllData === true ? '' : data.DateMin
+    const DateMax = isAllData === true ? '' : data.DateMax
+    const DiskonMin = data.DiskonMin
+    const DiskonMax = data.DiskonMax
+    const PotonganHargaMin = data.PotonganHargaMin
+    const PotonganHargaMax = data.PotonganHargaMax
+    const TotalTransaksiMin = data.TotalTransaksiMin
+    const TotalTransaksiMax = data.TotalTransaksiMax
+    const Ket = data.Ket
+
+    const body = JSON.stringify({ TransaksiID, UserName, Jenis, DateMin, DateMax, DiskonMin, DiskonMax, PotonganHargaMin, PotonganHargaMax, TotalTransaksiMin, TotalTransaksiMax, Ket })
+    axios.post('/api/transaksi/querylist', body, tokenConfig(getState))
+        .then(res => {
+            // console.log(res)
+            dispatch({
+                type: QUERY_LIST_TRANSAKSI,
+                payload: res.data.ListTransaksi
+            })
+            if (res.data.ListTransaksi) {
+                const ListTransaksi = res.data.ListTransaksi
+                if (ListTransaksi.length >= 1) {
+                    dispatch(Create_Success_Messages(res.status ? res.status : null, res.data.msg ? res.data.msg : null))
+                } else {
+                    dispatch(Create_Error_Messages(null, 'data tidak ditemukan'))
+                }
+            }
             // dispatch({ type: TRANSAKSI_LOADED })
         }).catch(err => {
             console.log(err.response)

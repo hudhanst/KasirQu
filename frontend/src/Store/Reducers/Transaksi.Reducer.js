@@ -13,6 +13,7 @@ import {
     CLEAR_BARANG_IN_BELANJA,
     //////
     LIST_TRANSAKSI,
+    QUERY_LIST_TRANSAKSI,
     GET_TRANSAKSI_ID_FOR_DETAIL,
     TRANSAKSI_DETAIL,
 } from '../Actions/Type.Actions'
@@ -110,6 +111,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
             }
+        case QUERY_LIST_TRANSAKSI:
         case LIST_TRANSAKSI:
             return {
                 ...state,

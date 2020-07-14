@@ -17,6 +17,7 @@ import PlaylistAddTwoToneIcon from '@material-ui/icons/PlaylistAddTwoTone'
 
 import LiveHelpTwoToneIcon from '@material-ui/icons/LiveHelpTwoTone'
 import AttachMoneyTwoToneIcon from '@material-ui/icons/AttachMoneyTwoTone'
+import EuroSymbolTwoToneIcon from '@material-ui/icons/EuroSymbolTwoTone'
 import TrendingUpTwoToneIcon from '@material-ui/icons/TrendingUpTwoTone'
 
 import AccountBoxTwoToneIcon from '@material-ui/icons/AccountBoxTwoTone'
@@ -110,15 +111,22 @@ class Home extends React.Component {
                         type: 'nonPrivacry',
                     },
                     {
-                        name: 'Laporan Penjualan Bulanan',
-                        link: 'help/penjualanbulanan',
+                        name: 'Laporan Penjualan',
+                        link: 'help/incomereport',
                         icon: <AttachMoneyTwoToneIcon />,
                         type: 'Privacry',
                         // type: 'nonPrivacry',
                     },
                     {
-                        name: 'Grafik Report',
-                        link: 'help/grafikreport',
+                        name: 'Laporan Belanja',
+                        link: 'help/outcomereport',
+                        icon: <EuroSymbolTwoToneIcon />,
+                        type: 'Privacry',
+                        // type: 'nonPrivacry',
+                    },
+                    {
+                        name: 'Laporan Grafik',
+                        link: 'help/graph',
                         icon: <TrendingUpTwoToneIcon />,
                         type: 'Privacry',
                         // type: 'nonPrivacry',

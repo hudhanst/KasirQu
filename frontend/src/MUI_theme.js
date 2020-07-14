@@ -191,15 +191,28 @@ export const MUI_st__Paper = ({
 export const MUI_FullWidth = ({
     width: '100%',
 })
+export const MUI_HalfWidth = ({
+    width: '40%',
+})
 export const MUI_VerticalMargin = ({
-    // width: '100%',
     marginTop: '10px',
     marginBottom: '10px',
 
 })
+export const MUI_HorizontalMargin = ({
+    marginLeft: '10px',
+    marginRight: '10px',
+})
+export const MUI_HorizontalHalfMargin = ({
+    marginLeft: '5%',
+    marginRight: '5%',
+})
 export const MUI_HorizontalsmButtonMargin = ({
     marginLeft: '5px',
     marginRight: '5px',
+})
+export const MUI_Shadown = ({
+    boxShadow: '2px 0 10px -3px #010101',
 })
 ////// END-STYLE-GLOBAL
 

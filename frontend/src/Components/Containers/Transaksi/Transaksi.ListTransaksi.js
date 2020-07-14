@@ -34,7 +34,8 @@ class ListTransaksi extends React.Component {
         const data = this.props.TransaksiList
         return (
             <Fragment>
-                {data ?
+                {data && data.length > 0 ?
+                // {data ?
                     <Table id='tabel_list_transaksi'>
                         <TableHead>
                             <TableRow>

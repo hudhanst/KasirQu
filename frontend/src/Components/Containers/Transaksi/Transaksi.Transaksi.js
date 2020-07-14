@@ -65,19 +65,24 @@ class TransaksiTransaksi extends React.Component {
         // console.log('EditingDone', this.state)
         const { JumlahBaru, SatuanBaru } = this.state
         // console.log('SatuanOptions', SatuanOptions)
-        const newSatuanBaru = SatuanOptions.find(satuanoptions => satuanoptions.NamaSatuan === SatuanBaru)
-        const NamaSatuan_SatuanBaru = newSatuanBaru.NamaSatuan
-        const MinBarang_SatuanBaru = newSatuanBaru.MinBarang
-        const HargaJual_SatuanBaru = newSatuanBaru.HargaJual
 
-        if ((JumlahBaru % 1 !== 0) && (isDecimal === false)) {
-            this.props.Create_Warning_Messages(null, 'jumlah barang harus bulat tidak bisa desimal')
+        if (JumlahBaru < 0) {
+            this.props.Create_Warning_Messages(null, 'satuan tidak bisa kurang dari 0')
         } else {
-            this.props.Change_Transaksi_Detail(index, JumlahBaru, NamaSatuan_SatuanBaru, MinBarang_SatuanBaru, HargaJual_SatuanBaru)
-            this.setState({ Transaksi: this.props.Transaksi.Transaksi })
-            this.setState({ JumlahBaru: '' })
-            this.setState({ SatuanBaru: '' })
-            this.setState({ isEditingOn: false })
+            const newSatuanBaru = SatuanOptions.find(satuanoptions => satuanoptions.NamaSatuan === SatuanBaru)
+            const NamaSatuan_SatuanBaru = newSatuanBaru.NamaSatuan
+            const MinBarang_SatuanBaru = newSatuanBaru.MinBarang
+            const HargaJual_SatuanBaru = newSatuanBaru.HargaJual
+
+            if ((JumlahBaru % 1 !== 0) && (isDecimal === false)) {
+                this.props.Create_Warning_Messages(null, 'jumlah barang harus bulat tidak bisa desimal')
+            } else {
+                this.props.Change_Transaksi_Detail(index, JumlahBaru, NamaSatuan_SatuanBaru, MinBarang_SatuanBaru, HargaJual_SatuanBaru)
+                this.setState({ Transaksi: this.props.Transaksi.Transaksi })
+                this.setState({ JumlahBaru: '' })
+                this.setState({ SatuanBaru: '' })
+                this.setState({ isEditingOn: false })
+            }
         }
     }
     Editingcancel() {
@@ -132,6 +137,8 @@ class TransaksiTransaksi extends React.Component {
                             <TableCell style={{ width: '25%' }} align="center" onClick={() => this.ButtonShortSTR(4)}>Nama Barang</TableCell>
                             <TableCell style={{ width: '15%' }} align="center" onClick={() => this.ButtonShortSTR(5)}>Satuan</TableCell>
                             <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(6)}>Jumlah</TableCell>
+                            {/* <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(6)}>Diskon</TableCell> */}
+                            {/* <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(6)}>Potongan Harga</TableCell> */}
                             <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(7)}>Harga Satuan&nbsp;(Rp)</TableCell>
                             <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(8)}>Total Barang</TableCell>
                             <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(9)}>Harga Total&nbsp;(Rp)</TableCell>
@@ -198,6 +205,12 @@ class TransaksiTransaksi extends React.Component {
                                         : item.Jumlah
                                     }
                                 </TableCell>
+                                {/* TODO ADD <TableCell align="right">
+                                    10%  
+                                </TableCell> */}
+                                {/* TODO add <TableCell align="right">
+                                    10000
+                                   </TableCell> */}
                                 <TableCell align="right">{this.ConverNumberToMoneyFormat(item.HargaSatuan)}</TableCell>
                                 <TableCell align="right">{item.TotalBarang} </TableCell>
                                 <TableCell align="right">{this.ConverNumberToMoneyFormat(item.HargaTotal)}</TableCell>

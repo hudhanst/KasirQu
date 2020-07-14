@@ -19,6 +19,9 @@ import KatagoriBarang from './Components/Layouts/Barang/katagoribarang'
 import KonfigurasiBarang from './Components/Layouts/Barang/KonfigurasiBarang'
 
 import Help from './Components/Layouts/Help/Help'
+import IncomeReport from './Components/Layouts/Help/IncomeReport'
+import OutcomeReport from './Components/Layouts/Help/OutcomeReport'
+import Graph from './Components/Layouts/Help/Graph'
 
 import Account from './Components/Layouts/Account/Account'
 import UserList from './Components/Layouts/Account/UserList'
@@ -32,21 +35,24 @@ const BaseRouter = () => {
             <PrivateRoute exact path="/transaksi" component={Transaksi} />
             <PrivateRoute exact path="/transaksi/belanja" component={Belanja} />
             <PrivateRoute exact path="/transaksi/transaksilist" component={TransaksiList} />
-            
+
             <PrivateRoute exact path="/barang" component={Barang} />
             <PrivateRoute exact path="/barang/katagoribarang" component={KatagoriBarang} />
             <PrivateRoute exact path="/barang/konfigurasibarang" component={KonfigurasiBarang} />
-            
+
             <PrivateRoute exact path="/help" component={Help} />
-            
+            <PrivateRoute exact path="/help/incomereport" component={IncomeReport} />
+            <PrivateRoute exact  path="/help/outcomereport" component={OutcomeReport} />
+            <PrivateRoute exact path="/help/graph" component={Graph} />
+
             <PrivateRoute exact path="/account" component={Account} />
             <PrivateRoute exact path="/account/userlist" component={UserList} />
             <PrivateRoute exact path="/account/tokodetail" component={TokoDetail} />
-            
+
             <Route exact path="/firsttimeuse" component={FirsTimeUse} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/logout" component={Logout} />
-        
+
         </Switch>
     )
 }

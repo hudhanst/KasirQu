@@ -50,7 +50,6 @@ class ListTransaksi extends React.Component {
                         <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Nama Kasir' name='NamaKasir' value={Data.NamaKasir ? Data.NamaKasir : ''} />
                         <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Tanggal Transaksi' name='TanggalTransaksi' value={Data.TanggalTransaksi ? Data.TanggalTransaksi : ''} />
                         <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Tipe Transaksi' name='Tipe' value={Data.Tipe ? Data.Tipe : ''} />
-                        {/* <Typography>{Data.DetailTransaksi}</Typography> */}
                         <hr />
                         {Data.DetailTransaksi ? (
                             <Table id='tabel_detail_transaksi'>
@@ -58,8 +57,8 @@ class ListTransaksi extends React.Component {
                                     <TableHead >
                                         <TableRow>
                                             <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>
-                                            <TableCell style={{ width: '10%' }} align="left" onClick={() => this.ButtonShortINT(1)}>Barcode</TableCell>
-                                            <TableCell style={{ width: '50%' }} align="left" onClick={() => this.ButtonShortSTR(2)}>Nama Barang</TableCell>
+                                            <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortINT(1)}>Barcode</TableCell>
+                                            <TableCell style={{ width: '50%' }} align="center" onClick={() => this.ButtonShortSTR(2)}>Nama Barang</TableCell>
                                             <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(3)}>Jumlah</TableCell>
                                             <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(4)}>Harga Modal&nbsp;(Rp)</TableCell>
                                             <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(5)}>Harga Jual&nbsp;(Rp)</TableCell>
@@ -70,11 +69,13 @@ class ListTransaksi extends React.Component {
                                         <TableHead>
                                             <TableRow>
                                                 <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>
-                                                <TableCell style={{ width: '10%' }} align="left" onClick={() => this.ButtonShortINT(1)}>Barcode</TableCell>
-                                                <TableCell style={{ width: '50%' }} align="left" onClick={() => this.ButtonShortSTR(2)}>Nama Barang</TableCell>
-                                                <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(3)}>Jumlah</TableCell>
-                                                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(4)}>Harga Satuan&nbsp;(Rp)</TableCell>
-                                                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(5)}>HargaTotal&nbsp;(Rp)</TableCell>
+                                                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortINT(1)}>Barcode</TableCell>
+                                                <TableCell style={{ width: '45%' }} align="center" onClick={() => this.ButtonShortSTR(2)}>Nama Barang</TableCell>
+                                                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(3)}>Satuan</TableCell>
+                                                <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(4)}>Jumlah</TableCell>
+                                                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(5)}>Harga Satuan&nbsp;(Rp)</TableCell>
+                                                <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(6)}>Total Barang</TableCell>
+                                                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(7)}>HargaTotal&nbsp;(Rp)</TableCell>
                                             </TableRow>
                                         </TableHead>
                                     )}
@@ -91,7 +92,7 @@ class ListTransaksi extends React.Component {
                                                 <TableCell align="center" >{index + 1}</TableCell>
                                                 <TableCell align="left" >{item.Barcode}</TableCell>
                                                 <TableCell align="left" >{item.NamaBarang}</TableCell>
-                                                <TableCell align="center" >{item.Jumlah}</TableCell>
+                                                <TableCell align="right" >{item.Jumlah}</TableCell>
                                                 <TableCell align="right" >{this.ConverNumberToMoneyFormat(item.HargaModal)}</TableCell>
                                                 <TableCell align="right" >{this.ConverNumberToMoneyFormat(item.HargaJual)}</TableCell>
                                                 <TableCell align="right" >{this.ConverNumberToMoneyFormat(item.TotalModal)}</TableCell>
@@ -106,8 +107,10 @@ class ListTransaksi extends React.Component {
                                                     <TableCell align="center" >{index + 1}</TableCell>
                                                     <TableCell align="left" >{item.Barcode}</TableCell>
                                                     <TableCell align="left" >{item.NamaBarang}</TableCell>
-                                                    <TableCell align="center" >{item.Jumlah}</TableCell>
+                                                    <TableCell align="right" >{item.Satuan}</TableCell>
+                                                    <TableCell align="right" >{item.Jumlah}</TableCell>
                                                     <TableCell align="right" >{this.ConverNumberToMoneyFormat(item.HargaSatuan)}</TableCell>
+                                                    <TableCell align="right" >{item.TotalBarang}</TableCell>
                                                     <TableCell align="right" >{this.ConverNumberToMoneyFormat(item.HargaTotal)}</TableCell>
                                                 </TableRow>
                                             ))}

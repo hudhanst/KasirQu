@@ -15,6 +15,14 @@ import {
     Create_Error_Messages,
 } from './Messages.Actions'
 
+// export const Get_IpAddres = () => { // TODO add base on ip
+//     const os = require('os')
+
+//     const networkInterfaces = os.networkInterfaces()
+//     console.log('networkInterfaces', networkInterfaces)
+//     return networkInterfaces
+// }
+
 export const defaultheader = () => {
     const config = {
         headers: {

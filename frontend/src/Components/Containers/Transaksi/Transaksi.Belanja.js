@@ -62,12 +62,16 @@ class TransaksiBelanja extends React.Component {
     }
     EditingDone(index) {
         const { Jumlah, HargaModal, HargaJual } = this.state
-        this.props.Change_Belanja_Detail(index, Jumlah, HargaModal, HargaJual)
-        this.setState({ Belanja: this.props.Belanja.Belanja })
-        this.setState({ Jumlah: '' })
-        this.setState({ HargaModal: '' })
-        this.setState({ HargaJual: '' })
-        this.setState({ isEditingOn: false })
+        if (Jumlah < 0 || HargaModal < 0 || HargaJual < 0) {
+            this.props.Create_Warning_Messages(null, 'satuan tidak bisa kurang dari 0')
+        } else {
+            this.props.Change_Belanja_Detail(index, Jumlah, HargaModal, HargaJual)
+            this.setState({ Belanja: this.props.Belanja.Belanja })
+            this.setState({ Jumlah: '' })
+            this.setState({ HargaModal: '' })
+            this.setState({ HargaJual: '' })
+            this.setState({ isEditingOn: false })
+        }
     }
     Editingcancel() {
         this.setState({ Belanja: this.props.Belanja.Belanja })
