@@ -17,7 +17,6 @@ router.get('/list', auth, (req, res) => {
     const currentdate = new Date(yyyy, mm, dd)
     const nextdate = new Date(yyyy, mm, dd + 1)
     Transaksi.find()
-        // .where('NamaKasir').equals('superuser')
         .where('TanggalTransaksi').gt(currentdate).lt(nextdate)
         .select('_id NamaKasir TanggalTransaksi Tipe TotalPembayaran')
         .sort({ TanggalTransaksi: -1 })
@@ -28,6 +27,86 @@ router.get('/list', auth, (req, res) => {
         .catch(err => {
             console.log(`Erorr saat pemanggilan list Transaksi => ${err}`)
             res.status(404).json({ msg: 'ada kesalahan pada proses pemanggilan list Transaksi', errorDetail: err })
+        })
+})
+
+//// @router  Post api/transaksi/querylist
+//// @desc    Post Transaksi query transaksi List
+//// @access  Private
+router.post('/querylist', auth, (req, res) => {
+    console.log('querylist', req.body)
+    const TransaksiID = req.body.TransaksiID ? req.body.TransaksiID : null
+    const UserName = req.body.UserName ? req.body.UserName : null
+    const Jenis = req.body.Jenis ? req.body.Jenis : null
+    const DateMin = req.body.DateMin ? req.body.DateMin : null
+    const DateMax = req.body.DateMax ? req.body.DateMax : null
+    const DiskonMin = req.body.DiskonMin ? req.body.DiskonMin : null
+    const DiskonMax = req.body.DiskonMax ? req.body.DiskonMax : null
+    const PotonganHargaMin = req.body.PotonganHargaMin ? req.body.PotonganHargaMin : null
+    const PotonganHargaMax = req.body.PotonganHargaMax ? req.body.PotonganHargaMax : null
+    const TotalTransaksiMin = req.body.TotalTransaksiMin ? req.body.TotalTransaksiMin : null
+    const TotalTransaksiMax = req.body.TotalTransaksiMax ? req.body.TotalTransaksiMax : null
+    const Ket = req.body.Ket ? req.body.Ket : null
+    const TransaksiQueryQueryList = {}
+    if (TransaksiID) {
+        Object.assign(TransaksiQueryQueryList, { _id: TransaksiID })
+    }
+    if (UserName) {
+        Object.assign(TransaksiQueryQueryList, { NamaKasir: UserName })
+    }
+    if (Jenis) {
+        Object.assign(TransaksiQueryQueryList, { Tipe: Jenis })
+    }
+    if (DateMin || DateMax) {
+        if (DateMin && DateMax) {
+            Object.assign(TransaksiQueryQueryList, { TanggalTransaksi: { $gt: DateMin, $lt: DateMax } })
+        } else if (DateMin) {
+            Object.assign(TransaksiQueryQueryList, { TanggalTransaksi: { $gt: DateMin } })
+        } else if (DateMax) {
+            Object.assign(TransaksiQueryQueryList, { TanggalTransaksi: { $lt: DateMax } })
+        }
+    }
+    if (DiskonMin || DiskonMax) {
+        if (DiskonMin && DiskonMax) {
+            Object.assign(TransaksiQueryQueryList, { Diskon: { $gt: DiskonMin, $lt: DiskonMax } })
+        } else if (DiskonMin) {
+            Object.assign(TransaksiQueryQueryList, { Diskon: { $gt: DiskonMin } })
+        } else if (DiskonMax) {
+            Object.assign(TransaksiQueryQueryList, { Diskon: { $lt: DiskonMax } })
+        }
+    }
+    if (PotonganHargaMin || PotonganHargaMax) {
+        if (PotonganHargaMin && PotonganHargaMax) {
+            Object.assign(TransaksiQueryQueryList, { PotonganHarga: { $gt: PotonganHargaMin, $lt: PotonganHargaMax } })
+        } else if (PotonganHargaMin) {
+            Object.assign(TransaksiQueryQueryList, { PotonganHarga: { $gt: PotonganHargaMin } })
+        } else if (PotonganHargaMax) {
+            Object.assign(TransaksiQueryQueryList, { PotonganHarga: { $lt: PotonganHargaMax } })
+        }
+    }
+    if (TotalTransaksiMin || TotalTransaksiMax) {
+        if (TotalTransaksiMin && TotalTransaksiMax) {
+            Object.assign(TransaksiQueryQueryList, { TotalPembayaran: { $gt: TotalTransaksiMin, $lt: TotalTransaksiMax } })
+        } else if (TotalTransaksiMin) {
+            Object.assign(TransaksiQueryQueryList, { TotalPembayaran: { $gt: TotalTransaksiMin } })
+        } else if (TotalTransaksiMax) {
+            Object.assign(TransaksiQueryQueryList, { TotalPembayaran: { $lt: TotalTransaksiMax } })
+        }
+    }
+    if (Ket) {
+        Object.assign(TransaksiQueryQueryList, { Ket: `/${Ket}/` })
+    }
+    console.log(TransaksiQueryQueryList)
+    Transaksi.find(TransaksiQueryQueryList)
+        .select('_id NamaKasir TanggalTransaksi Tipe TotalPembayaran')
+        .sort({ TanggalTransaksi: -1 })
+        .then((ListTransaksi) => {
+            console.log('Transaksi querylist dipanggil')
+            res.status(200).json({ ListTransaksi, msg: 'Transaksi querylist berhasil dipanggil' })
+        })
+        .catch(err => {
+            console.log(`Erorr saat pemanggilan querylist Transaksi => ${err}`)
+            res.status(404).json({ msg: 'ada kesalahan pada proses pemanggilan querylist Transaksi', errorDetail: err })
         })
 })
 
@@ -179,6 +258,7 @@ router.post('/transaksi/tambah', auth, (req, res) => {
                     req.body.DetailTransaksi = null
                     // throw Error(`stok barang tidak mencukupi barcode=${data.Barcode}`)
                     return res.status(400).json({ msg: `stok barang tidak mencukupi barcode=${data.Barcode}` })
+                    // kemungkinan error karna pengiriman lebih dari satu respon (array tidak berhenti ketika ada error) solusi hapus res.jsno
                 }
                 // if (isDuplicateBarcode === true) {
                 //     let jumlahitembarcode = 0
