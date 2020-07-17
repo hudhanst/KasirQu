@@ -23,6 +23,7 @@ import TrendingUpTwoToneIcon from '@material-ui/icons/TrendingUpTwoTone'
 import AccountBoxTwoToneIcon from '@material-ui/icons/AccountBoxTwoTone'
 import RecentActorsTwoToneIcon from '@material-ui/icons/RecentActorsTwoTone'
 import StoreTwoToneIcon from '@material-ui/icons/StoreTwoTone'
+import HistoryTwoToneIcon from '@material-ui/icons/HistoryTwoTone'
 
 class Home extends React.Component {
     render() {
@@ -45,21 +46,18 @@ class Home extends React.Component {
                         link: 'transaksi/belanja',
                         icon: <LocalMallTwoToneIcon />,
                         type: 'Privacry',
-                        // type: 'nonPrivacry',
                     },
                     {
                         name: 'List Transaksi',
                         link: 'transaksi/transaksilist',
                         icon: <ReceiptRoundedIcon />,
                         type: 'Privacry',
-                        // type: 'nonPrivacry',
                     },
                     {
                         name: 'Import/Export Transaksi',
                         link: 'transaksi/importexport',
                         icon: <SettingsApplicationsTwoToneIcon />,
                         type: 'SuperPrivacry',
-                        // type: 'nonPrivacry',
                     },
                 ]
             },
@@ -80,21 +78,24 @@ class Home extends React.Component {
                         link: 'barang/katagoribarang',
                         icon: <CategoryTwoToneIcon />,
                         type: 'Privacry',
-                        // type: 'nonPrivacry',
+                    },
+                    {
+                        name: 'Import/Export Kategori Barang',
+                        link: 'barang/katagoribarang/importexport',
+                        icon: <SettingsApplicationsTwoToneIcon />,
+                        type: 'SuperPrivacry',
                     },
                     {
                         name: 'Konfigurasi Barang',
                         link: 'barang/konfigurasibarang',
                         icon: <PlaylistAddTwoToneIcon />,
                         type: 'Privacry',
-                        // type: 'nonPrivacry',
                     },
                     {
                         name: 'Import/Export Barang',
-                        link: 'transaksi/importexport',
+                        link: 'barang/konfigurasibarang/importexport',
                         icon: <SettingsApplicationsTwoToneIcon />,
                         type: 'SuperPrivacry',
-                        // type: 'nonPrivacry',
                     },
                 ]
             },
@@ -115,21 +116,18 @@ class Home extends React.Component {
                         link: 'help/incomereport',
                         icon: <AttachMoneyTwoToneIcon />,
                         type: 'Privacry',
-                        // type: 'nonPrivacry',
                     },
                     {
                         name: 'Laporan Belanja',
                         link: 'help/outcomereport',
                         icon: <EuroSymbolTwoToneIcon />,
                         type: 'Privacry',
-                        // type: 'nonPrivacry',
                     },
                     {
                         name: 'Laporan Grafik',
                         link: 'help/graph',
                         icon: <TrendingUpTwoToneIcon />,
                         type: 'Privacry',
-                        // type: 'nonPrivacry',
                     },
                 ]
             },
@@ -150,14 +148,18 @@ class Home extends React.Component {
                         link: 'account/userlist',
                         icon: <RecentActorsTwoToneIcon />,
                         type: 'Privacry',
-                        // type: 'nonPrivacry',
                     },
                     {
                         name: 'Detail Toko',
                         link: 'account/tokodetail',
                         icon: <StoreTwoToneIcon />,
                         type: 'SuperPrivacry',
-                        // type: 'nonPrivacry',
+                    },
+                    {
+                        name: 'History',
+                        link: 'account/tokodetail/history',
+                        icon: <HistoryTwoToneIcon />,
+                        type: 'SuperPrivacry',
                     },
                 ]
             },

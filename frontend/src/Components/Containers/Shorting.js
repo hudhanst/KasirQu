@@ -1,5 +1,5 @@
 export const Short_Column_INT = (TableName, ColumnNumb) => {
-    var rows, switching, i, x, y, shouldSwitch, dir, switchcount
+    let rows, switching, i, x, y, shouldSwitch, dir, switchcount
     const table = document.getElementById(TableName)
     switching = true
     switchcount = 0
@@ -42,7 +42,7 @@ export const Short_Column_INT = (TableName, ColumnNumb) => {
     }
 }
 export const Short_Column_STR = (TableName, ColumnNumb) => {
-    var rows, switching, i, x, y, shouldSwitch, dir, switchcount
+    let rows, switching, i, x, y, shouldSwitch, dir, switchcount
     const table = document.getElementById(TableName)
     switching = true
     switchcount = 0

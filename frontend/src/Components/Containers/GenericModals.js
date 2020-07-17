@@ -97,6 +97,7 @@ const GenericModals = (props) => {
     return (
         <Fragment>
             <Button
+                type={props.Buttontype ? props.Buttontype : null}
                 disabled={props.Buttondisabled ? props.Buttondisabled : false}
                 variant={props.Buttonvariant ? props.Buttonvariant : "outlined"}
                 style={props.Buttonstyle ? props.Buttonstyle : null}

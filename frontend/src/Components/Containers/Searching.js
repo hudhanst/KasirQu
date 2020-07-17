@@ -14,7 +14,7 @@ const Searching = (props) => {
             const filter = textinput.toUpperCase()
             const usertable = document.getElementById(props.tablename)
             const tr = usertable.getElementsByTagName('tr')
-            var i, td, txtValue
+            let i, td, txtValue
 
             for (i = 0; i < tr.length; i++) {
                 td = tr[i].getElementsByTagName("td")[props.tdnumber]
