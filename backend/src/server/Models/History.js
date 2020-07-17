@@ -9,14 +9,18 @@ const HistorySchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    Location: {
+        type: String,
+        required: true
+    },
     Action: {
         type: String,
         required: true,
     },
-    Change:{
+    Change: {
         type: String,
     },
-    Status:{
+    Status: {
         type: Boolean,
     }
 })

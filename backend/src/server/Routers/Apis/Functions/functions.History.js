@@ -2,14 +2,15 @@ const History = require('../../../Models/History')
 const { Get_UsetbyID } = require('./functions.User')
 
 //// GENERIC
-exports.Add_to_History = async (UserID, UserName, Action, Change, Status) => {
+exports.Add_to_History = async (UserID, UserName, Location, Action, Change, Status) => {
     try {
-        if (!(UserID || UserName) || !Action) {
+        if (!(UserID || UserName) || !Location || !Action) {
             throw { msg: 'kesalahan pada proses penambahan History, data tidak lengkap' }
         }
         const User = UserName ? UserName : await Get_UsetbyID(UserID)
         const newHistory = new History({
             UserName: UserName ? UserName : User.UserName,
+            Location: Location,
             Action: Action,
             Change: Change ? Change : null,
             Status: Status ? Status : true,
