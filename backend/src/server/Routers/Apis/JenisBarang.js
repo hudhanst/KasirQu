@@ -1,10 +1,17 @@
 const express = require('express')
 const router = express.Router()
+// const fileSystem = require('fs')
+const path = require('path')
 
 const auth = require('../Middleware/auth')
 
 const JenisBarang = require('../../Models/JenisBarang')
 const Barang = require('../../Models/Barang')
+
+const { Create_Excel_File } = require('./Functions/functions.functions')
+const { Get_UsetbyID } = require('./Functions/functions.User')
+const { Get_JenisBarang_List, Add_JenisBarang } = require('./Functions/functions.JenisBarang')
+const { Add_to_History } = require('./Functions/functions.History')
 
 //// @router  Post api/jenisbarang/cek
 //// @desc    cek JenisBarang name
@@ -69,6 +76,49 @@ router.get('/list', auth, (req, res) => {
             console.log(`Erorr saat pemanggilan list JenisBarang => ${err}`)
             res.status(404).json({ msg: 'ada kesalahan pada proses pemanggilan list JenisBaran', errorDetail: err })
         })
+})
+
+//// @router  POST api/jenisbarang/querylist
+//// @desc    Post JenisBarang querylist
+//// @access  Private
+router.post('/querylist', auth, async (req, res) => {
+    // console.log('api/jenisbarang/querylist')
+    // console.log(req.body)
+    const JenisBarang = req.body.JenisBarang ? req.body.JenisBarang : []
+    const Kepemilikan = req.body.Kepemilikan ? req.body.Kepemilikan : null
+    const Ket = req.body.Ket ? req.body.Ket : null
+    try {
+        const JenisBarangQuery = {}
+        if (JenisBarang.length > 0) {
+            const ListNamaJenisBarang = JenisBarang.map(jenisbarang => jenisbarang.NamaJenisBarang)
+            Object.assign(JenisBarangQuery, { NamaJenisBarang: { $in: ListNamaJenisBarang } })
+        }
+        if (Kepemilikan) {
+            Object.assign(JenisBarangQuery, { Kepemilikan: Kepemilikan })
+        }
+        if (Ket) {
+            Object.assign(JenisBarangQuery, { Ket: `/${Ket}/` })
+        }
+
+        console.log('JenisBarangQuery', JenisBarangQuery)
+        const JenisBarangSelect = '_id NamaJenisBarang Kepemilikan'
+        const QueryListJenisBarang = await Get_JenisBarang_List(JenisBarangQuery, JenisBarangSelect)
+
+        console.log('JenisBarang querylist dipanggil')
+        return res.status(200)
+            .json({
+                QueryListJenisBarang: QueryListJenisBarang ? QueryListJenisBarang : [],
+                msg: 'JenisBarang querylist berhasil dipanggil'
+            })
+
+
+    } catch (err) {
+        console.log(`Erorr saat pemanggilan JenisBarang querylist => ${err.errorDetail ? err.errorDetail : err}`)
+        return res.status(400).json({
+            msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan JenisBarang querylist',
+            errorDetail: err.errorDetail ? err.errorDetail : err
+        })
+    }
 })
 
 //// @router  GET api/jenisbarang/detail/:id
@@ -140,6 +190,116 @@ router.delete('/detail/:id/delete', auth, (req, res) => {
             console.log(`Erorr saat delete JenisBarang => ${err}`)
             res.status(404).json({ msg: 'ada kesalahan pada proses delete JenisBaran', errorDetail: err })
         })
+})
+
+//// @router  POST api/jenisbarang/import
+//// @desc    Add Import new JenisBarang
+//// @access  Private
+router.post('/import', auth, async (req, res) => {
+    // console.log('jenisbarang/import')
+    // console.log(req.body)
+    // console.log(req.user)
+    const { ImportData } = req.body
+    const UserId = req.user.id
+    try {
+        if ((!ImportData || !ImportData.length > 0)) {
+            // return res.status(400).json({ msg: 'form tidak lengkap' })
+            throw {
+                msg: 'form tidak lengkap',
+            }
+        }
+        const FixedImportData = []
+        ////// recreate import data
+        for (const element of ImportData) {
+            if (FixedImportData.length > 0) {
+                const ExistImportData = FixedImportData.find(fixedimportdata => fixedimportdata.NamaJenisBarang.toString().toLocaleLowerCase() === element.NamaJenisBarang.toString().toLocaleLowerCase())
+                if (ExistImportData) {
+                    throw {
+                        msg: 'data input ganda',
+                    }
+                } else {
+                    FixedImportData.push(element)
+                }
+            } else {
+                FixedImportData.push(element)
+            }
+        }
+
+        ////// cek data if data alredy exist in database
+        for (const element of FixedImportData) {
+            const ExistJenisBarang = await JenisBarang.findOne({ NamaJenisBarang: element.NamaJenisBarang.toString().toLocaleLowerCase() })
+            if (ExistJenisBarang) {
+                throw {
+                    msg: 'data NamaJenisBarang sudah ada',
+                }
+            }
+        }
+
+        ////// add data to database
+        for (const element of FixedImportData) {
+            const newJenisBarang = {
+                NamaJenisBarang: element.NamaJenisBarang.toString().toLocaleLowerCase(),
+                Kepemilikan: element.Kepemilikan,
+                Ket: element.Ket ? element.Ket : null
+            }
+
+            Add_JenisBarang(newJenisBarang)
+            Add_to_History(UserId, null, 'Import/Add', JSON.stringify(newJenisBarang), true)
+        }
+        console.log('JenisBarang Import Berhasil')
+        return res.status(200)
+            .json({
+                msg: 'Proses Import JenisBarang Berhasil'
+            })
+    } catch (err) {
+        console.log(`Erorr saat pemanggilan JenisBarang Import => ${err.errorDetail ? err.errorDetail : err}`)
+        return res.status(400).json({
+            msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan JenisBarang Import',
+            errorDetail: err.errorDetail ? err.errorDetail : err
+        })
+    }
+})
+
+//// @router  POST api/jenisbarang/export
+//// @desc    Add Export JenisBarang
+//// @access  Private
+router.post('/export', auth, async (req, res) => {
+    // console.log('jenisbarang/export')
+    // console.log(req.body)
+    const UserId = req.user.id
+    const RequestExportList = req.body.ExportData
+    try {
+        if (!RequestExportList.length > 0) {
+            throw {
+                msg: 'form tidak lengkap',
+            }
+        }
+        const RequestNamaJenisBarangList = RequestExportList.map(requestexportlist => requestexportlist.NamaJenisBarang)
+
+        const ExportData = await Get_JenisBarang_List({ NamaJenisBarang: { $in: RequestNamaJenisBarangList } }, '_id NamaJenisBarang Kepemilikan Ket', true)
+        // console.log('__dirname',__dirname)
+
+        const UserDetail = await Get_UsetbyID(UserId)
+        const Location = 'JenisBarang'
+        const ExcelFile = await Create_Excel_File(UserDetail.UserName, Location, ExportData)
+        // console.log('ExcelFile',ExcelFile)
+        const filePath = path.join(__dirname, `../../../../downloads/${Location}/${ExcelFile}`)
+
+        // res.sendFile(filePath)
+        return res.download(filePath)
+        // return res.status(200)
+        //     .download(filePath)
+        //     .json({
+        //         FileName: ExcelFile ? ExcelFile : '',
+        //         msg: 'Proses Export JenisBarang Berhasil'
+        //     })
+    } catch (err) {
+        console.log(`Erorr saat pemanggilan JenisBarang Export => ${err.errorDetail ? err.errorDetail : err}`)
+        return res.status(400).json({
+            msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan JenisBarang Export',
+            errorDetail: err.errorDetail ? err.errorDetail : err
+        })
+    }
 })
 
 module.exports = router

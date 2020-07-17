@@ -50,10 +50,6 @@ const port = 5000
 
 app.listen(port, () => console.log(`server start on port ${port}`))
 
-
-////// TODO ADD HISTORY MODULE => USER|DATE|ACTION|CHANGE|STATUS
-
-
 // use route
 app.use('/api/auth', require('./Routers/Apis/Auth'))
 app.use('/api/users', require('./Routers/Apis/User'))
