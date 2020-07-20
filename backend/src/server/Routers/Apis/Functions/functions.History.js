@@ -41,9 +41,9 @@ exports.Add_to_History = async (UserID, UserName, Location, Action, Change, Stat
     }
 }
 
-exports.Get_History_List = async (query, select) => {
+exports.Get_History_List = async (query, select, lean) => {
     try {
-        const ListHistory = await History.find(query ? query : null, select ? select : null).exec()
+        const ListHistory = await History.find(query ? query : null, select ? select : null, { lean: lean ? lean : false }).exec()
         return ListHistory
     } catch (err) {
         console.log(`Erorr saat Get_History_List => ${err}`)

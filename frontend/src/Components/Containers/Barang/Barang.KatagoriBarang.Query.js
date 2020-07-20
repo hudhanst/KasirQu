@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 
 import { connect } from 'react-redux'
 
-import { Load_JenisBarang_List, Load_Query_KatagoriBarang } from '../../../Store/Actions/JenisBarang.Actions'
+import { Load_JenisBarang_List, Load_Export_Query_KatagoriBarang } from '../../../Store/Actions/JenisBarang.Actions'
 
 import { TextField, FormControl, InputLabel, Select, Button, Chip } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
@@ -33,7 +33,7 @@ class QueryKatagoriBarang extends React.Component {
             Ket: this.state.isAllData ? null : this.state.Ket,
         }
 
-        this.props.Load_Query_KatagoriBarang(data)
+        this.props.Load_Export_Query_KatagoriBarang(data)
     }
     render() {
         const st_textfield = { ...MUI_VerticalMargin, ...MUI_FullWidth }
@@ -102,4 +102,4 @@ const mapStateToProps = (state) => ({
     JenisBarangList: state.JenisBarang.JenisBarangList,
 })
 
-export default connect(mapStateToProps, { Load_JenisBarang_List, Load_Query_KatagoriBarang })(QueryKatagoriBarang)
+export default connect(mapStateToProps, { Load_JenisBarang_List, Load_Export_Query_KatagoriBarang })(QueryKatagoriBarang)

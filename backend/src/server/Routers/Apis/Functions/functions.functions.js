@@ -21,7 +21,7 @@ exports.Create_Excel_File = async (UserName, Location, ExcelData) => {
         // const ws_data = [['hallo', 'world']]
         const ws_data = ExcelData
         const FirstExcelData = ExcelData[0]
-        console.log('FirstExcelData',FirstExcelData)
+        // console.log('FirstExcelData', FirstExcelData)
         const ws_header = Object.keys(FirstExcelData)
         // const ws = XLSX.utils.aoa_to_sheet(ws_data)
         const ws = XLSX.utils.json_to_sheet(ws_data, ws_header)
@@ -30,7 +30,7 @@ exports.Create_Excel_File = async (UserName, Location, ExcelData) => {
         XLSX.writeFile(wb, `./downloads/${Location}/${FileName}`)
         return FileName
     } catch (err) {
-        console.log(`Erorr saat Create_Excel_File => ${err}`)
+        console.log(`Erorr saat Create_Excel_File => ${JSON.stringify(err)}`)
         throw { msg: 'ada kesalahan pada proses Create_Excel_File', errorDetail: err }
     }
 }

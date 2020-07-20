@@ -158,7 +158,7 @@ export const Load_JenisBarang_List = () => (dispatch, getState) => {
     dispatch({ type: JENISBARANG_LOADED })
 }
 
-export const Load_Query_KatagoriBarang = (Query) => (dispatch, getState) => {
+export const Load_Export_Query_KatagoriBarang = (Query) => (dispatch, getState) => {
     dispatch({ type: JENISBARANG_LOADED })
     const JenisBarang = Query.JenisBarang
     const Kepemilikan = Query.Kepemilikan
@@ -265,6 +265,7 @@ export const Export_KatagoriBarang = (Data, Auth) => (dispatch, getState) => {
                 }).catch(err => {
                     console.log(err.response)
                     // dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg))
+                    dispatch(Create_Error_Messages(null, 'Ada Kesalahan Pada Proses Export JenisBarang'))
                 })
         } else {
             dispatch(Create_Error_Messages(null, 'maaf anda tidak diperkenankan melakukan ini'))

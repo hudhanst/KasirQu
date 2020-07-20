@@ -11,6 +11,10 @@ import {
     ACCOUNT_DELETED,
     LIST_ACCOUNT,
     TOKO_DETAIL,
+    LIST_HISTORY,
+    GET_HISTORY_ID_FOR_DETAIL,
+    HISTORY_DETAIL,
+    LIST_QUERY_HISTORY_EXPORT,
 } from '../Actions/Type.Actions'
 
 import {
@@ -204,6 +208,123 @@ export const Update_Toko = (UpdateData, Auth) => (dispatch, getState) => {
                 }).catch(err => {
                     console.log(err.response)
                     dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg))
+                })
+        } else {
+            dispatch(Create_Error_Messages(null, 'maaf anda tidak diperkenankan melakukan ini'))
+        }
+    } else {
+        dispatch(Create_Error_Messages(null, 'anda harus login untuk melakukan ini'))
+    }
+    dispatch({ type: ACCOUNT_LOADED })
+}
+
+export const Load_History_List = () => (dispatch, getState) => {
+    // console.log(2)
+    dispatch({ type: ACCOUNT_LOADING })
+    axios.get(`/api/history/list`, tokenConfig(getState))
+        .then(res => {
+            // console.log(res)
+            dispatch({
+                type: LIST_HISTORY,
+                payload: res.data.HistoryList
+            })
+            // dispatch({ type: ACCOUNT_LOADED })
+        }).catch(err => {
+            console.log(err.response)
+            dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg ? err.response.data.msg : null))
+            // dispatch({ type: ACCOUNT_LOADED })
+        })
+    dispatch({ type: ACCOUNT_LOADED })
+}
+
+export const get_HistoryId_Detail = (HistoryID) => (dispatch) => {
+    // console.log(UserID)
+    dispatch({
+        type: GET_HISTORY_ID_FOR_DETAIL,
+        payload: HistoryID
+    })
+}
+
+export const get_HistoryDetail = (UserID) => (dispatch, getState) => {
+    dispatch({ type: ACCOUNT_LOADING })
+    axios.get(`/api/history/detail/${UserID}`, tokenConfig(getState))
+        .then(res => {
+            // console.log(res)
+            dispatch({
+                type: HISTORY_DETAIL,
+                payload: res.data.HistoryDetail,
+            })
+            // dispatch({ type: ACCOUNT_LOADED })
+        }).catch(err => {
+            console.log(err.response)
+            dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg ? err.response.data.msg : null))
+            // dispatch({ type: ACCOUNT_LOADED })
+        })
+    dispatch({ type: ACCOUNT_LOADED })
+}
+
+export const Load_Export_Query_History = (Query) => (dispatch, getState) => {
+    dispatch({ type: ACCOUNT_LOADING })
+    const UserName = Query.UserName
+    const DateMin = Query.DateMin
+    const DateMax = Query.DateMax
+    const Location = Query.Location
+    const Action = Query.Action
+    const Status = Query.Status
+
+    const body = JSON.stringify({ UserName, DateMin, DateMax, Location, Action, Status })
+    axios.post('/api/history/querylist', body, tokenConfig(getState))
+        .then(res => {
+            // console.log(res)
+            dispatch({
+                type: LIST_QUERY_HISTORY_EXPORT,
+                payload: res.data.QueryHistory
+            })
+            if (res.data.QueryListJenisBarang) {
+                const QueryListJenisBarang = res.data.QueryListJenisBarang
+                if (QueryListJenisBarang.length >= 1) {
+                    dispatch(Create_Success_Messages(res.status ? res.status : null, res.data.msg ? res.data.msg : null))
+                } else {
+                    dispatch(Create_Error_Messages(null, 'data tidak ditemukan'))
+                }
+            }
+            // dispatch({ type: ACCOUNT_LOADED })
+        }).catch(err => {
+            console.log(err.response)
+            dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg ? err.response.data.msg : null))
+            // dispatch({ type: ACCOUNT_LOADED })
+        })
+    dispatch({ type: ACCOUNT_LOADED })
+}
+
+export const Export_History = (Data, Auth) => (dispatch, getState) => {
+    dispatch({ type: ACCOUNT_LOADING })
+    if (Auth) {
+        const isSuperUser = Auth.isSuperUser
+        if (isSuperUser) {
+            const ExportData = Data
+
+            const body = JSON.stringify({ ExportData })
+
+            axios.post(`/api/history/export`, body, {
+                responseType: 'blob',
+                ...tokenConfig(getState)
+            })
+                .then(res => {
+                    // console.log(res)
+
+                    const url = window.URL.createObjectURL(new Blob([res.data]))
+                    const link = document.createElement('a')
+                    link.href = url
+                    link.setAttribute('download', 'Export.History.xlsx')
+                    document.body.appendChild(link)
+                    link.click()
+
+                    dispatch(Create_Success_Messages(null, 'Proses Export History Berhasil'))
+                }).catch(err => {
+                    console.log(err.response)
+                    // dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg))
+                    dispatch(Create_Error_Messages(null, 'Ada Kesalahan Pada Proses Export History'))
                 })
         } else {
             dispatch(Create_Error_Messages(null, 'maaf anda tidak diperkenankan melakukan ini'))

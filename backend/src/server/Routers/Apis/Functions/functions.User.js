@@ -1,7 +1,7 @@
 const User = require('../../../Models/User')
 
 ////// GENERIC
-exports.Get_UsetbyID = async (InputID) => {
+exports.Get_UserbyID = async (InputID) => {
     try {
         const UserDetail = await User.findById(InputID).exec()
         return UserDetail

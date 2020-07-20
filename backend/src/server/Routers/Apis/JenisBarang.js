@@ -9,11 +9,10 @@ const JenisBarang = require('../../Models/JenisBarang')
 const Barang = require('../../Models/Barang')
 
 const { Create_Excel_File } = require('./Functions/functions.functions')
-const { Get_UsetbyID } = require('./Functions/functions.User')
+const { Get_UserbyID } = require('./Functions/functions.User')
 const { Get_JenisBarang_List, Add_JenisBarang } = require('./Functions/functions.JenisBarang')
 const { Get_Barang_List } = require('./Functions/functions.Barang')
 const { Add_to_History } = require('./Functions/functions.History')
-const { findByIdAndDelete } = require('../../Models/JenisBarang')
 
 //// @router  Post api/jenisbarang/cek
 //// @desc    cek JenisBarang name
@@ -128,7 +127,7 @@ router.post('/querylist', auth, async (req, res) => {
             Object.assign(JenisBarangQuery, { Ket: `/${Ket}/` })
         }
 
-        console.log('JenisBarangQuery', JenisBarangQuery)
+        // console.log('JenisBarangQuery', JenisBarangQuery)
         const JenisBarangSelect = '_id NamaJenisBarang Kepemilikan'
         const QueryListJenisBarang = await Get_JenisBarang_List(JenisBarangQuery, JenisBarangSelect)
 
@@ -286,7 +285,7 @@ router.post('/import', auth, async (req, res) => {
             }
 
             Add_JenisBarang(newJenisBarang)
-            Add_to_History(UserId, null, 'Import/Add', JSON.stringify(newJenisBarang), true)
+            Add_to_History(UserId, null, 'JenisBarang', 'Import/Add', JSON.stringify(newJenisBarang), true)
         }
         console.log('JenisBarang Import Berhasil')
         return res.status(200)
@@ -321,7 +320,7 @@ router.post('/export', auth, async (req, res) => {
         const ExportData = await Get_JenisBarang_List({ NamaJenisBarang: { $in: RequestNamaJenisBarangList } }, '_id NamaJenisBarang Kepemilikan Ket', true)
         // console.log('__dirname',__dirname)
 
-        const UserDetail = await Get_UsetbyID(UserId)
+        const UserDetail = await Get_UserbyID(UserId)
         const Location = 'JenisBarang'
         const ExcelFile = await Create_Excel_File(UserDetail.UserName, Location, ExportData)
         // console.log('ExcelFile',ExcelFile)

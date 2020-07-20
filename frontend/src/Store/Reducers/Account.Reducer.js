@@ -7,6 +7,10 @@ import {
     ACCOUNT_DELETED,
     LIST_ACCOUNT,
     TOKO_DETAIL,
+    LIST_HISTORY,
+    HISTORY_DETAIL,
+    GET_HISTORY_ID_FOR_DETAIL,
+    LIST_QUERY_HISTORY_EXPORT,
 } from '../Actions/Type.Actions'
 
 const initialState = {
@@ -16,6 +20,10 @@ const initialState = {
     idUpdateAccount: null,
     AccountList: [],
     TokoDetail: null,
+    HistoryList: [],
+    idDetailHistory: null,
+    HistoryDetail: null,
+    ExportHistoryList: [],
 }
 
 export default function (state = initialState, action) {
@@ -56,9 +64,29 @@ export default function (state = initialState, action) {
                 AccountList: action.payload,
             }
         case TOKO_DETAIL:
-            return{
+            return {
                 ...state,
                 TokoDetail: action.payload,
+            }
+        case LIST_HISTORY:
+            return {
+                ...state,
+                HistoryList: action.payload,
+            }
+        case GET_HISTORY_ID_FOR_DETAIL:
+            return {
+                ...state,
+                idDetailHistory: action.payload,
+            }
+        case HISTORY_DETAIL:
+            return {
+                ...state,
+                HistoryDetail: action.payload,
+            }
+        case LIST_QUERY_HISTORY_EXPORT:
+            return {
+                ...state,
+                ExportHistoryList: action.payload,
             }
         default:
             return state
