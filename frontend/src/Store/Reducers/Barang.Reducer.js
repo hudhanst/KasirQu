@@ -6,6 +6,8 @@ import {
     GET_BARANG_ID_FOR_UPDATE,
     BARANG_DELETED,
     LIST_BARANG,
+    LIST_QUERY_BARANG_EXPORT,
+    CEK_IMPORT_BARANG,
 } from '../Actions/Type.Actions'
 
 const initialState = {
@@ -14,6 +16,8 @@ const initialState = {
     BarangDetail: null,
     idUpdateBarang: null,
     BarangList: [],
+    ExportBarangList: [],
+    BarangImportFile: null,
 }
 
 export default function (state = initialState, action) {
@@ -52,6 +56,16 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 BarangList: action.payload,
+            }
+        case LIST_QUERY_BARANG_EXPORT:
+            return {
+                ...state,
+                ExportBarangList: action.payload,
+            }
+        case CEK_IMPORT_BARANG:
+            return {
+                ...state,
+                BarangImportFile: action.payload,
             }
         default:
             return state

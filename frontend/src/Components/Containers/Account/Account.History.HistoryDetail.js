@@ -70,8 +70,8 @@ class HistoryDetail extends React.Component {
                                                 <TableCell align="center" >{index + 1}</TableCell>
                                                 {Object.keys(item).map((itemitem, indexindex) => (
                                                     <TableCell align="center" key={`${index}${indexindex}`} >
-                                                        {JSON.stringify(item[itemitem])}
-                                                        {/* {(typeof item[itemitem] === 'Array') ? JSON.stringify(item[itemitem]) : item[itemitem]} */}
+                                                        {/* {JSON.stringify(item[itemitem])} */}
+                                                        {(typeof item[itemitem] === 'object' && item[itemitem] !== null) ? JSON.stringify(item[itemitem]) : item[itemitem]}
                                                     </TableCell>
                                                 ))}
                                             </TableRow>

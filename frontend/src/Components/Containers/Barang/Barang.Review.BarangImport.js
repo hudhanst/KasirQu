@@ -2,7 +2,8 @@ import React, { Fragment } from 'react'
 
 import { connect } from 'react-redux'
 
-import { Load_JenisBarang_List, Import_KatagoriBarang } from '../../../Store/Actions/JenisBarang.Actions'
+import { Load_Barang_List, Import_Barang } from '../../../Store/Actions/Barang.Actions'
+import { Load_JenisBarang_List, } from '../../../Store/Actions/JenisBarang.Actions'
 import { Create_Error_Messages } from '../../../Store/Actions/Messages.Actions'
 
 import { Table, TableHead, TableBody, TableRow, TableCell, FormGroup, FormControlLabel, Checkbox, Button } from '@material-ui/core'
@@ -11,21 +12,20 @@ import { MUI_VerticalMargin, MUI_FullWidth } from '../../../MUI_theme'
 
 import { DataTidakDitemukan } from '../Page404'
 
-class ReviewKatagoriBarangImport extends React.Component {
+class ReviewBarangImport extends React.Component {
     state = {
         FileData: [],
         Confirm: false,
         isProblemInData: false,
     }
     componentDidMount() {
+        this.props.Load_Barang_List()
         this.props.Load_JenisBarang_List()
     }
     componentDidUpdate(prevProps) {
-        if (this.props.KatagoriBarangImportFile !== prevProps.KatagoriBarangImportFile) {
-            const { KatagoriBarangImportFile } = this.props
-            const FirstSheet = Object.values(KatagoriBarangImportFile)[0]
-            // console.log('FirstSheet', FirstSheet)
-            // this.setState({ FileData: KatagoriBarangImportFile })
+        if (this.props.BarangImportFile !== prevProps.BarangImportFile) {
+            const { BarangImportFile } = this.props
+            const FirstSheet = Object.values(BarangImportFile)[0]
             this.setState({ FileData: FirstSheet ? JSON.parse(FirstSheet) : [] })
         }
     }
@@ -44,7 +44,7 @@ class ReviewKatagoriBarangImport extends React.Component {
         if (isProblemInData === true) {
             this.props.Create_Error_Messages(null, 'ada kesalahan pada data yang dimasukkan')
         } else {
-            this.props.Import_KatagoriBarang(FileData, authdata)
+            this.props.Import_Barang(FileData, authdata)
         }
     }
     render() {
@@ -61,14 +61,17 @@ class ReviewKatagoriBarangImport extends React.Component {
         ////// for isProblemInDataExist
         const JenisBarangList = this.props.JenisBarangList
         const JenisBarangList_NamaJenisBarang = JenisBarangList.length > 0 ? JenisBarangList.map((item) => item.NamaJenisBarang) : []
-        const ListKepemilikan = ['pribadi', 'nonpribadi']
+        const BarangList = this.props.BarangList
+        const BarangList_Barcode = BarangList.length > 0 ? BarangList.map((item) => item.Barcode) : []
+        const BarangList_Name = BarangList.length > 0 ? BarangList.map((item) => item.Name) : []
         ////// function
         const CheckisDataCorrect = (Data, DataKeys) => {
             try {
                 if (Data.length > 0 && DataKeys.length > 0) {
-                    const NamaJenisBarangIndex = DataKeys.findIndex(datakeys => datakeys === 'NamaJenisBarang')
-                    const KepemilikanIndex = DataKeys.findIndex(datakeys => datakeys === 'Kepemilikan')
-                    if (NamaJenisBarangIndex < 0 || KepemilikanIndex < 0) {
+                    const DataKeys_Barcode = DataKeys.find(item => item === 'Barcode')
+                    const DataKeys_Name = DataKeys.find(item => item === 'Name')
+                    const DataKeys_Jenis = DataKeys.find(item => item === 'Jenis')
+                    if (!DataKeys_Barcode || !DataKeys_Name || !DataKeys_Jenis) {
                         return false
                     }
                     else {
@@ -128,7 +131,7 @@ class ReviewKatagoriBarangImport extends React.Component {
             <Fragment>
                 {isDataCorrect ? (
                     <Fragment>
-                        <Table id='tabel_review_import_katagoribarang'>
+                        <Table id='tabel_review_import_barang' >
                             <TableHead >
                                 <TableRow>
                                     <TableCell align="center">No</TableCell>
@@ -140,15 +143,33 @@ class ReviewKatagoriBarangImport extends React.Component {
                             <TableBody>
                                 {FileData.map((item, index) => (
                                     <TableRow hover key={index}
-                                        style={
-                                            (isDataAlreadyExist(item.NamaJenisBarang ? item.NamaJenisBarang.toString().toLocaleLowerCase() : null, JenisBarangList_NamaJenisBarang)
-                                                || isDataWrong(item.Kepemilikan ? item.Kepemilikan.toString().toLocaleLowerCase() : null, ListKepemilikan)
-                                            ) ? { backgroundColor: 'red' } : null
-                                        }
+                                    style={
+                                        (
+                                            ////// chek for big error
+                                            isDataAlreadyExist(item.Barcode ? item.Barcode.toString().toLocaleLowerCase() : null, BarangList_Barcode)
+                                            || isDataAlreadyExist(item.Name ? item.Name.toString().toLocaleLowerCase() : null, BarangList_Name)
+                                            || isDataWrong(item.Jenis ? item.Jenis.toString().toLocaleLowerCase() : null, JenisBarangList_NamaJenisBarang)
+                                        ) ? { backgroundColor: 'red' } : ((
+                                            ////// chek for warning
+                                            (item.Stok ? (item.Stok > 0 ? true : false) : null)
+                                            || (item.HargaModal ? (item.HargaModal > 0 ? true : false) : null)
+                                            || (item.HargaJual ? (item.HargaJual > 0 ? true : false) : null)
+                                            || (item.SatuanJual ? true : false)
+                                        ) ? { backgroundColor: 'yellow' } : null)
+                                    }
                                     >
                                         <TableCell align="center" >{index + 1}</TableCell>
                                         {Object.keys(item).map((itemitem, indexindex) => (
-                                            <TableCell align="center" key={`${index}${indexindex}`} >{item[itemitem]}</TableCell>
+                                            <TableCell align="center" key={`${index}${indexindex}`} >
+                                                {
+                                                    (typeof item[itemitem] === 'object' && item[itemitem] !== null) ? JSON.stringify(item[itemitem]) :
+                                                        ((typeof item[itemitem] === 'boolean') ? (
+                                                            (item[itemitem] === 'boolean') ? "Desimal" : "NonDesimal"
+                                                        ) : item[itemitem])
+                                                }
+                                                {/* {console.log(typeof item[itemitem])} */}
+                                                {/* {item[itemitem]} */}
+                                            </TableCell>
                                         ))}
                                     </TableRow>
                                 ))}
@@ -180,7 +201,8 @@ class ReviewKatagoriBarangImport extends React.Component {
 
 const mapStateToProps = (state) => ({
     User: state.Auth.User,
-    KatagoriBarangImportFile: state.JenisBarang.KatagoriBarangImportFile,
+    BarangImportFile: state.Barang.BarangImportFile,
+    BarangList: state.Barang.BarangList,
     JenisBarangList: state.JenisBarang.JenisBarangList,
 })
-export default connect(mapStateToProps, { Load_JenisBarang_List, Import_KatagoriBarang, Create_Error_Messages })(ReviewKatagoriBarangImport)
+export default connect(mapStateToProps, { Load_Barang_List, Load_JenisBarang_List, Import_Barang, Create_Error_Messages })(ReviewBarangImport)

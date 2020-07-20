@@ -280,9 +280,9 @@ export const Load_Export_Query_History = (Query) => (dispatch, getState) => {
                 type: LIST_QUERY_HISTORY_EXPORT,
                 payload: res.data.QueryHistory
             })
-            if (res.data.QueryListJenisBarang) {
-                const QueryListJenisBarang = res.data.QueryListJenisBarang
-                if (QueryListJenisBarang.length >= 1) {
+            if (res.data.QueryHistory) {
+                const QueryHistory = res.data.QueryHistory
+                if (QueryHistory.length >= 1) {
                     dispatch(Create_Success_Messages(res.status ? res.status : null, res.data.msg ? res.data.msg : null))
                 } else {
                     dispatch(Create_Error_Messages(null, 'data tidak ditemukan'))

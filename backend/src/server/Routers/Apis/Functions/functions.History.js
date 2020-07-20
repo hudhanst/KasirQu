@@ -1,5 +1,5 @@
 const History = require('../../../Models/History')
-const { Get_UsetbyID } = require('./functions.User')
+const { Get_UserbyID } = require('./functions.User')
 
 //// GENERIC
 exports.Add_to_History = async (UserID, UserName, Location, Action, Change, Status) => {
@@ -7,7 +7,7 @@ exports.Add_to_History = async (UserID, UserName, Location, Action, Change, Stat
         if (!(UserID || UserName) || !Location || !Action) {
             throw { msg: 'kesalahan pada proses penambahan History, data tidak lengkap' }
         }
-        const User = UserName ? UserName : await Get_UsetbyID(UserID)
+        const User = UserName ? UserName : await Get_UserbyID(UserID)
         const newHistory = new History({
             UserName: UserName ? UserName : User.UserName,
             Location: Location,
@@ -25,16 +25,7 @@ exports.Add_to_History = async (UserID, UserName, Location, Action, Change, Stat
             console.log(`Erorr saat penambahan History => ${err}`)
             throw { msg: 'ada kesalahan pada proses penambahan History', errorDetail: err }
         }
-
-        // newHistory.save()
-        //     .then((history) => {
-        //         console.log('History ditambah')
-        //         return isSaved = true
-        //     })
-        //     .catch(err => {
-        //         console.log(`Erorr saat penambahan History => ${err}`)
-        //         throw { msg: 'ada kesalahan pada proses penambahan History', errorDetail: err }
-        //     })
+        
     } catch (err) {
         console.log(`Erorr saat Add_to_History => ${err}`)
         throw { msg: 'ada kesalahan pada proses Add_to_History', errorDetail: err }

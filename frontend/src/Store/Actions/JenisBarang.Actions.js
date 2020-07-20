@@ -159,7 +159,7 @@ export const Load_JenisBarang_List = () => (dispatch, getState) => {
 }
 
 export const Load_Export_Query_KatagoriBarang = (Query) => (dispatch, getState) => {
-    dispatch({ type: JENISBARANG_LOADED })
+    dispatch({ type: JENISBARANG_LOADING })
     const JenisBarang = Query.JenisBarang
     const Kepemilikan = Query.Kepemilikan
     const Ket = Query.Ket
