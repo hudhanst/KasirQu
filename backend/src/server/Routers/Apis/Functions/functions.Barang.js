@@ -20,7 +20,7 @@ exports.Add_Barang = async (Data) => {
         const isDecimal = Data.isDecimal ? Data.isDecimal : true
         const HargaModal = Data.HargaModal ? Data.HargaModal : 0
         const HargaJual = Data.HargaJual ? Data.HargaJual : 0
-        const SatuanJual = Data.SatuanJual ? Data.SatuanJual : [{ NamaSatuan: 'satuan', MinBarang: 1, HargaJual: 0 }]
+        const SatuanJual = Data.SatuanJual ? Data.SatuanJual : { NamaSatuan: 'satuan', MinBarang: 1, HargaJual: 0 }
         const Ket = Data.Ket ? Data.Ket : null
         const BarangPic = Data.BarangPic ? Data.BarangPic : null
 

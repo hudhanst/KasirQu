@@ -16,8 +16,8 @@ const { Get_JenisBarang_List } = require('./Functions/functions.JenisBarang')
 router.get('/incomereport/reportbaranglist', auth, async (req, res) => {
     try {
         const date = new Date()
-        const mm = date.getUTCMonth()
-        const yyyy = date.getUTCFullYear()
+        const mm = date.getMonth()
+        const yyyy = date.getFullYear()
         const now = new Date(yyyy, mm)
         const next = new Date(yyyy, mm + 1)
 
@@ -121,10 +121,10 @@ router.get('/incomereport/reportkeuanganlist', auth, async (req, res) => {
     // console.log('/incomereport/reportkeuanganlist')
     try {
         const date = new Date()
-        const dd = date.getUTCDate()
+        const dd = date.getDate()
         // console.log(dd)
-        const mm = date.getUTCMonth()
-        const yyyy = date.getUTCFullYear()
+        const mm = date.getMonth()
+        const yyyy = date.getFullYear()
         let i = 1
         const ReportKeuanganList = []
         while (i <= dd) {
@@ -182,8 +182,8 @@ router.get('/outcomereport/reportbaranglist', auth, async (req, res) => {
     // console.log('/outcomereport/reportbaranglist')
     try {
         const date = new Date()
-        const mm = date.getUTCMonth()
-        const yyyy = date.getUTCFullYear()
+        const mm = date.getMonth()
+        const yyyy = date.getFullYear()
         const now = new Date(yyyy, mm)
         const next = new Date(yyyy, mm + 1)
 
@@ -256,10 +256,10 @@ router.get('/outcomereport/reportmodallist', auth, async (req, res) => {
     // console.log('/outcomereport/reportmodallist')
     try {
         const date = new Date()
-        const dd = date.getUTCDate()
+        const dd = date.getDate()
         // console.log(dd)
-        const mm = date.getUTCMonth()
-        const yyyy = date.getUTCFullYear()
+        const mm = date.getMonth()
+        const yyyy = date.getFullYear()
         let i = 1
         const ReportModalList = []
         while (i <= dd) {

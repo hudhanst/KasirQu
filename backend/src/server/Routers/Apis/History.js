@@ -16,9 +16,9 @@ const { Create_Excel_File } = require('./Functions/functions.functions')
 router.get('/list', auth, async (req, res) => {
     try {
         const date = new Date()
-        const dd = date.getUTCDate()
-        const mm = date.getUTCMonth()
-        const yyyy = date.getUTCFullYear()
+        const dd = date.getDate()
+        const mm = date.getMonth()
+        const yyyy = date.getFullYear()
         const currentdate = new Date(yyyy, mm, dd)
         const nextdate = new Date(yyyy, mm, dd + 1)
 

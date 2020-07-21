@@ -50,6 +50,7 @@ class QueryHistoryList extends React.Component {
         const LocationOptions = [
             'JenisBarang',
             'Barang/JenisBarang',
+            'Barang',
         ]
         const ActionOptions = [
             'Add',

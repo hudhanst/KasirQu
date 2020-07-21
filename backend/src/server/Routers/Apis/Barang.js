@@ -42,100 +42,143 @@ const JenisBarang = require('../../Models/JenisBarang')
 //// @router  Post api/barang/cek/barcode
 //// @desc    cek Barang barcode
 //// @access  Private
-router.post('/cek/barcode', auth, (req, res) => {
+router.post('/cek/barcode', auth, async (req, res) => {
+    // console.log('cek/barcode')
+    // console.log(req.body)
     const { Barcode } = req.body
-    Barang.findOne({ Barcode: Barcode })
-        .then((barcode) => {
-            if (barcode) {
-                return res.status(401).json({ msg: 'Barcode Barang sudah ada tidak bisa sama' })
-            } else {
-                return res.status(200).json({ msg: 'Barcode Barang bisa digunakan' })
-            }
+    try {
+        const ExistData = await Barang.findOne({ Barcode: Barcode })
+        if (ExistData) {
+            return res.status(401).json({ msg: 'Barcode Barang sudah ada tidak bisa sama' })
+        } else {
+            return res.status(200).json({ msg: 'Barcode Barang bisa digunakan' })
+        }
+    } catch (err) {
+        console.log(`Erorr saat pemanggilan Barang cek barcode => ${err.errorDetail ? err.errorDetail : err}`)
+        return res.status(400).json({
+            msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan Barang cek barcode',
+            errorDetail: err.errorDetail ? err.errorDetail : err
         })
+    }
 })
 
 //// @router  Post api/barang/cek/name
 //// @desc    cek Barang name
 //// @access  Private
-router.post('/cek/name', auth, (req, res) => {
+router.post('/cek/name', auth, async (req, res) => {
+    // console.log('cek/name')
+    // console.log(req.body)
     const { Name } = req.body
-    Barang.findOne({ Name: Name })
-        .then((name) => {
-            if (name) {
-                return res.status(401).json({ msg: 'Name Barang sudah ada tidak bisa sama' })
-            } else {
-                return res.status(200).json({ msg: 'Name Barang bisa digunakan' })
-            }
+    try {
+        const ExistData = await Barang.findOne({ Name: Name })
+        if (ExistData) {
+            return res.status(401).json({ msg: 'Name Barang sudah ada tidak bisa sama' })
+        } else {
+            return res.status(200).json({ msg: 'Name Barang bisa digunakan' })
+        }
+    } catch (err) {
+        console.log(`Erorr saat pemanggilan Barang cek name => ${err.errorDetail ? err.errorDetail : err}`)
+        return res.status(400).json({
+            msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan Barang cek name',
+            errorDetail: err.errorDetail ? err.errorDetail : err
         })
+    }
+
 })
 
 //// @router  POST api/barang/tambah
 //// @desc    Add new Barang
 //// @access  Private
-router.post('/tambah', upload.single('BarangPic'), auth, (req, res) => {
-    const { Barcode, Name, Jenis, Ket } = req.body
-    if ((!Barcode) || (!Name) || (!Jenis)) {
-        return res.status(400).json({ msg: 'mohon lengkapi form registrasi' })
-    }
-
-    if (req.body.isDecimal) {
-        if (req.body.isDecimal === 'true') {
-            req.body.isDecimal = true
-        } else if (req.body.isDecimal === 'false')
-            req.body.isDecimal = false
-    }
-
-    Barang.findOne({ $or: [{ Barcode: Barcode.toLocaleLowerCase() }, { Name: Name.toLocaleLowerCase() }] })
-        .then(barang => {
-            if (barang) {
-                return res.status(400).json({ msg: 'Barang sudah ada' })
-            } else {
-                const newBarang = req.file ?
-                    new Barang({
-                        Barcode: Barcode.toLocaleLowerCase(),
-                        Name: Name.toLocaleLowerCase(),
-                        Jenis,
-                        isDecimal: req.body.isDecimal ? req.body.isDecimal : false,
-                        SatuanJual: { NamaSatuan: 'satuan', MinBarang: 1, HargaJual: 0 },
-                        Ket,
-                        BarangPic: req.file.path
-                    }) :
-                    new Barang({
-                        Barcode: Barcode.toLocaleLowerCase(),
-                        Name: Name.toLocaleLowerCase(),
-                        Jenis,
-                        isDecimal: req.body.isDecimal ? req.body.isDecimal : false,
-                        SatuanJual: { NamaSatuan: 'satuan', MinBarang: 1, HargaJual: 0 },
-                        Ket,
-                    })
-
-                newBarang.save()
-                    .then((newbarang) => {
-                        console.log(`Barang ditambah = ${newbarang.Barcode} = ${newbarang.Name}`)
-                        res.status(200).json({ msg: 'Barang  berhasil ditambah' })
-                    })
-                    .catch(err => {
-                        console.log(`Erorr saat penambahan Barang => ${err}`)
-                        res.status(404).json({ msg: 'ada kesalahan pada proses penambahan Barang', errorDetail: err })
-                    })
+router.post('/tambah', upload.single('BarangPic'), auth, async (req, res) => {
+    // console.log('tambah')
+    // console.log(req.body)
+    const { Barcode, Name, Jenis } = req.body
+    const UserId = req.user.id
+    try {
+        ////// cek data
+        if ((!Barcode) || (!Name) || (!Jenis)) {
+            throw {
+                msg: 'mohon lengkapi form registrasi',
             }
+        }
+
+        ////// convert data
+        if (req.body.isDecimal) {
+            if (req.body.isDecimal === 'true') {
+                req.body.isDecimal = true
+            } else if (req.body.isDecimal === 'false')
+                req.body.isDecimal = false
+        }
+
+        ////// cek exist data
+        const ExistData = await Barang.findOne({ $or: [{ Barcode: Barcode.toString().toLocaleLowerCase() }, { Name: Name.toString().toLocaleLowerCase() }] })
+        if (ExistData) {
+            throw {
+                msg: 'Barang sudah ada',
+            }
+        }
+
+        ////// prepare data before save
+        const newBarang = req.file ?
+            new Barang({
+                Barcode: Barcode.toString().toLocaleLowerCase(),
+                Name: Name.toString().toLocaleLowerCase(),
+                Jenis: Jenis.toString().toLocaleLowerCase(),
+                isDecimal: req.body.isDecimal ? req.body.isDecimal : null,
+                SatuanJual: null,
+                Ket: req.body.Ket ? req.body.Ket : null,
+                BarangPic: req.file.path
+            }) :
+            new Barang({
+                Barcode: Barcode.toString().toLocaleLowerCase(),
+                Name: Name.toString().toLocaleLowerCase(),
+                Jenis: Jenis.toString().toLocaleLowerCase(),
+                isDecimal: req.body.isDecimal ? req.body.isDecimal : null,
+                SatuanJual: null,
+                Ket: req.body.Ket ? req.body.Ket : null,
+            })
+
+        Add_Barang(newBarang)
+        Add_to_History(UserId, null, 'Barang', 'Add', JSON.stringify(newBarang), true)
+
+        console.log('Barang ditambah')
+        return res.status(200)
+            .json({
+                msg: 'Barang  berhasil ditambah'
+            })
+
+    } catch (err) {
+        console.log(`Erorr saat pemanggilan Barang tambah => ${err.errorDetail ? err.errorDetail : err}`)
+        return res.status(400).json({
+            msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan Barang tambah',
+            errorDetail: err.errorDetail ? err.errorDetail : err
         })
+    }
+
 })
 
 //// @router  GET api/barang/list
 //// @desc    Get Barang List
 //// @access  Private
-router.get('/list', auth, (req, res) => {
-    Barang.find()
-        .select('-Ket -BarangPic')
-        .then((ListBarang) => {
-            console.log('Barang list dipanggil')
-            res.status(200).json({ ListBarang, msg: 'Barang list berhasil dipanggil' })
+router.get('/list', auth, async (req, res) => {
+    // console.log('list')
+    try {
+        const ListBarang = await Get_Barang_List(null, '-Ket -BarangPic')
+
+        console.log('Barang list dipanggil')
+        return res.status(200)
+            .json({
+                ListBarang: ListBarang ? ListBarang : [],
+                msg: 'Barang list berhasil dipanggil'
+            })
+
+    } catch (err) {
+        console.log(`Erorr saat pemanggilan list Barang => ${err.errorDetail ? err.errorDetail : err}`)
+        return res.status(400).json({
+            msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan list Barang',
+            errorDetail: err.errorDetail ? err.errorDetail : err
         })
-        .catch(err => {
-            console.log(`Erorr saat pemanggilan list Barang => ${err}`)
-            res.status(404).json({ msg: 'ada kesalahan pada proses pemanggilan list Barang', errorDetail: err })
-        })
+    }
 })
 
 //// @router  POST api/barang/querylist
@@ -246,97 +289,139 @@ router.post('/querylist', auth, async (req, res) => {
 //// @router  GET api/barang/jenisbaranglist/:id
 //// @desc    Get Barang List base on JenisBarang
 //// @access  Private
-router.get('/jenisbaranglist/:id', auth, (req, res) => {
-    JenisBarang.findById(req.params.id)
-        .then((jenisbarang) => {
-            console.log(`JenisBarang ${jenisbarang.NamaJenisBarang} list dipanggil`)
-            Barang.find()
-                .where('Jenis').equals(jenisbarang.NamaJenisBarang)
-                .select('-Ket -BarangPic -isDecimal -SatuanJual')
-                .then((ListBarang) => {
-                    console.log('Barang list dipanggil')
-                    res.status(200).json({ ListBarang, msg: 'Barang list berhasil dipanggil' })
-                })
-                .catch(err => {
-                    console.log(`Erorr saat pemanggilan list Barang => ${err}`)
-                    res.status(404).json({ msg: 'ada kesalahan pada proses pemanggilan list Barang', errorDetail: err })
-                })
+router.get('/jenisbaranglist/:id', auth, async (req, res) => {
+    // console.log('jenisbaranglist/:id')
+    try {
+        const JenisBarangDetail = await JenisBarang.findById(req.params.id)
+        if (!JenisBarang) {
+            throw {
+                msg: 'JenisBarang tidak dikenal',
+            }
+        }
+
+        const ListBarang = await Get_Barang_List({ Jenis: JenisBarangDetail.NamaJenisBarang }, '-Ket -BarangPic -isDecimal -SatuanJual')
+
+        console.log('Barang JenisBarang list dipanggil')
+        return res.status(200)
+            .json({
+                ListBarang: ListBarang ? ListBarang : [],
+                msg: 'Barang JenisBarang list berhasil dipanggil'
+            })
+
+    } catch (err) {
+        console.log(`Erorr saat pemanggilan list Barang JenisBarang => ${err.errorDetail ? err.errorDetail : err}`)
+        return res.status(400).json({
+            msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan list Barang JenisBarang',
+            errorDetail: err.errorDetail ? err.errorDetail : err
         })
-        .catch((err) => {
-            console.log(`Erorr saat pemanggilan list JenisBarang => ${err}`)
-            res.status(404).json({ msg: 'ada kesalahan pada proses pemanggilan list JenisBarang', errorDetail: err })
-        })
+    }
 })
 
 //// @router  GET api/barang/detail/:id
 //// @desc    Get Barang detail
 //// @access  Private
-router.get('/detail/:id', auth, (req, res) => {
-    Barang.findById(req.params.id)
-        .then((barang) => {
-            console.log(`Barang detail dipanggil = ${req.params.id}`)
-            res.status(200).json({ barang, msg: 'Barang detail berhasil dipanggil' })
+router.get('/detail/:id', auth, async (req, res) => {
+    // console.log('detail/:id')
+    try {
+        const barang = await Barang.findById(req.params.id)
+
+        console.log('Barang detail dipanggil')
+        return res.status(200)
+            .json({
+                barang: barang ? barang : null,
+                msg: 'Barang detail berhasil dipanggil'
+            })
+
+    } catch (err) {
+        console.log(`Erorr saat pemanggilan detail Barang => ${err.errorDetail ? err.errorDetail : err}`)
+        return res.status(400).json({
+            msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan detail Barang',
+            errorDetail: err.errorDetail ? err.errorDetail : err
         })
-        .catch(err => {
-            console.log(`Erorr saat pemanggilan detail Barang => ${err}`)
-            res.status(404).json({ msg: 'ada kesalahan pada proses pemanggilan detail Barang', errorDetail: err })
-        })
+    }
 })
 
 //// @router  Update api/barang/detail/:id/update
 //// @desc    Update Barang
 //// @access  Private
-router.patch('/detail/:id/update', upload.single('BarangPic'), auth, (req, res) => {
+router.patch('/detail/:id/update', upload.single('BarangPic'), auth, async (req, res) => {
+    // console.log('detail/:id/update')
     // console.log(req.body)
-    if (req.body.SatuanJual) {
-        const SatuanJual = []
-        req.body.SatuanJual.forEach(element => {
-            const objsatuanjual = JSON.parse(element)
-            SatuanJual.push(objsatuanjual)
-        })
-        req.body.SatuanJual = SatuanJual
-    }
     const { Barcode } = req.body
-    if (Barcode) {
-        return res.status(401).json({ msg: 'input yang anda masukkan tidak bisa diganti' })
-    }
-    if (req.body.isDecimal) {
-        if (req.body.isDecimal === 'true') {
-            req.body.isDecimal = true
-        } else if (req.body.isDecimal === 'false')
-            req.body.isDecimal = false
-    }
-    if (req.body.HargaJual) {
-        req.body.SatuanJual[0].HargaJual = req.body.HargaJual
-    }
-    if (req.file) {
-        req.body.BarangPic = req.file.path
-    }
-    Barang.findByIdAndUpdate(req.params.id, { $set: req.body })
-        .then((barangupdated) => {
-            // console.log(`Barang updated = ${req.params.id} = ${barangupdated} `)
-            console.log(`Barang updated = ${req.params.id}`)
-            res.status(200).json({ msg: 'Barang berhasil diupdate' })
+    const UserId = req.user.id
+
+    try {
+        ////// cek data
+        if (Barcode) {
+            throw {
+                msg: 'input yang anda masukkan tidak bisa diganti',
+            }
+        }
+
+        ////// convert data input
+        if (req.body.isDecimal) {
+            if (req.body.isDecimal === 'true') {
+                req.body.isDecimal = true
+            } else if (req.body.isDecimal === 'false')
+                req.body.isDecimal = false
+        }
+        if (req.body.SatuanJual) {
+            const SatuanJual = []
+            req.body.SatuanJual.forEach(element => {
+                const objsatuanjual = JSON.parse(element)
+                SatuanJual.push(objsatuanjual)
+            })
+            req.body.SatuanJual = SatuanJual
+        }
+        if (req.body.HargaJual) {
+            req.body.SatuanJual[0].HargaJual = req.body.HargaJual
+        }
+        if (req.file) {
+            req.body.BarangPic = req.file.path
+        }
+        const OldBarang = await Barang.findByIdAndUpdate(req.params.id, { $set: req.body })
+        Add_to_History(UserId, null, 'Barang', 'Update', JSON.stringify(OldBarang), true)
+
+        console.log('Barang updated')
+        return res.status(200)
+            .json({
+                msg: 'Barang berhasil diupdate'
+            })
+
+    } catch (err) {
+        console.log(`Erorr saat update Barang => ${err.errorDetail ? err.errorDetail : err}`)
+        return res.status(400).json({
+            msg: err.msg ? err.msg : 'ada kesalahan pada proses Update Barang',
+            errorDetail: err.errorDetail ? err.errorDetail : err
         })
-        .catch(err => {
-            console.log(`Erorr saat update Barang ${req.params.id} => ${err}`)
-            res.status(404).json({ msg: 'ada kesalahan pada proses Update Barang', errorDetail: err })
-        })
+    }
+
 })
 
 //// @router  Delete api/barang/detail/:id/delete
 //// @desc    Delete Barang
 //// @access  Private
-router.delete('/detail/:id/delete', auth, (req, res) => {
-    Barang.findByIdAndDelete(req.params.id)
-        .then(() => {
-            console.log(`Barang ${req.params.id} deleted`)
-            res.status(200).json({ msg: 'Barang berhasil didelete' })
+router.delete('/detail/:id/delete', auth, async (req, res) => {
+    // console.log('detail/:id/delete')
+    const UserId = req.user.id
+    try {
+        const DeletedBarang = await Barang.findByIdAndDelete(req.params.id)
+
+        Add_to_History(UserId, null, 'Barang', 'Delete', JSON.stringify(DeletedBarang), true)
+
+        console.log(`Barang ${req.params.id} deleted`)
+        return res.status(200)
+            .json({
+                msg: 'Barang berhasil didelete'
+            })
+
+    } catch (err) {
+        console.log(`Erorr saat delete Barang => ${err.errorDetail ? err.errorDetail : err}`)
+        return res.status(400).json({
+            msg: err.msg ? err.msg : 'ada kesalahan pada proses delete Barang',
+            errorDetail: err.errorDetail ? err.errorDetail : err
         })
-        .catch(err => {
-            console.log(`Erorr saat delete Barang => ${err}`)
-            res.status(404).json({ msg: 'ada kesalahan pada proses delete Barang', errorDetail: err })
-        })
+    }
 })
 
 //// @router  POST api/barang/export

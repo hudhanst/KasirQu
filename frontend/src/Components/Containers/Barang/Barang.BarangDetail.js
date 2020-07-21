@@ -85,7 +85,7 @@ class BarangDetail extends React.Component {
                                 <hr />
                             </Fragment>
                             : null}
-                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Keterangan' name='Ket' value={BarangDetail.Ket} />
+                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Keterangan' name='Ket' value={BarangDetail.Ket ? BarangDetail.Ket : ''} />
                         <label>Foto Barang:</label>
                         <Typography align={"center"}>
                             <img src={BarangDetail.BarangPic ? `http://127.0.0.1:5000/${BarangDetail.BarangPic}` : null} style={{ ...MUI_st_AccountDetail_Avatar, border: '2px solid black' }} alt={`logo barang ${BarangDetail.Name}`} />

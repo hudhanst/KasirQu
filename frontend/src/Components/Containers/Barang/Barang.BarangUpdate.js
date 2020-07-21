@@ -93,6 +93,7 @@ class BarangUpdate extends React.Component {
     Form_OnSubmit = E => {
         E.preventDefault()
         const { User, idUpdateBarang } = this.props
+        const SatuanJual = this.state.SatuanJual
         const updatedata = {
             Barcode: this.state.Barcode,
             Name: this.state.Name,
@@ -111,7 +112,20 @@ class BarangUpdate extends React.Component {
             isSuperUser: User.isSuperUser,
         }
         // console.log('updatedata', updatedata)
-        this.props.Update_Barang(idUpdateBarang, updatedata, authdata)
+        try {
+            if (
+                (SatuanJual[SatuanJual.length - 1].NamaSatuan)
+                && (SatuanJual[SatuanJual.length - 1].MinBarang > 0)
+                && (SatuanJual[SatuanJual.length - 1].HargaJual > 0)
+            ) {
+                this.props.Update_Barang(idUpdateBarang, updatedata, authdata)
+            } else {
+                console.log(SatuanJual[SatuanJual.length - 1].NamaSatuan)
+                this.props.Create_Warning_Messages(null, 'mohon lengkapi proses penambahan SatuanJual terlebih dahulu')
+            }
+        } catch (err) {
+            console.log(err)
+        }
     }
     ButtonShortSTR(ColumnNumb) {
         Short_Column_STR('tabel_barang_satuan', ColumnNumb)
@@ -130,7 +144,7 @@ class BarangUpdate extends React.Component {
             SatuanJual.push(satuanbaru)
             this.setState({ SatuanJual: SatuanJual })
         } else {
-            this.props.Create_Warning_Messages(null, 'mohon lengkapi proses penambahanCreate_Warning_Messages terlebih dahulu')
+            this.props.Create_Warning_Messages(null, 'mohon lengkapi proses penambahan SatuanJual terlebih dahulu')
         }
     }
     EditRow(index) {
@@ -150,15 +164,19 @@ class BarangUpdate extends React.Component {
     onEditChange = e => this.setState({ [[e.target.name]]: e.target.value })
     EditingDone(index) {
         const { SatuanJual, NamaSatuanBaru, MinBarangBaru, HargaJualBaru } = this.state
-        SatuanJual[index].isEditAble = false
-        SatuanJual[index].NamaSatuan = NamaSatuanBaru
-        SatuanJual[index].MinBarang = MinBarangBaru
-        SatuanJual[index].HargaJual = HargaJualBaru
-        this.setState({ SatuanJual: SatuanJual })
-        this.setState({ NamaSatuanBaru: '' })
-        this.setState({ MinBarangBaru: 0 })
-        this.setState({ HargaJualBaru: 0 })
-        this.setState({ isEditingOn: false })
+        if (!NamaSatuanBaru || MinBarangBaru < 1 || HargaJualBaru < 1) {
+            this.props.Create_Warning_Messages(null, 'input salah, tidak bisa kosong atau kurang dari samadengan 0')
+        } else {
+            SatuanJual[index].isEditAble = false
+            SatuanJual[index].NamaSatuan = NamaSatuanBaru
+            SatuanJual[index].MinBarang = MinBarangBaru
+            SatuanJual[index].HargaJual = HargaJualBaru
+            this.setState({ SatuanJual: SatuanJual })
+            this.setState({ NamaSatuanBaru: '' })
+            this.setState({ MinBarangBaru: 0 })
+            this.setState({ HargaJualBaru: 0 })
+            this.setState({ isEditingOn: false })
+        }
     }
     Editingcancel(index) {
         const { SatuanJual } = this.state
@@ -329,7 +347,7 @@ class BarangUpdate extends React.Component {
                                     <hr />
                                 </Fragment>
                                 : null}
-                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Keterangan' name='Ket' value={Ket} />
+                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Keterangan' name='Ket' value={Ket ? Ket : ''} />
                             <label>Barang Profile:</label><br />
                             <input type='file' accept='image/*' onChange={this.File_OnChange} name='BarangPic' /><br />
                             <hr />

@@ -158,7 +158,7 @@ router.get('/detail/:id', auth, async (req, res) => {
         console.log(`JenisBarang detail dipanggil = ${req.params.id}`)
         return res.status(200)
             .json({
-                jenisbarang: jenisbarang ? jenisbarang : [],
+                jenisbarang: jenisbarang ? jenisbarang : null,
                 msg: 'JenisBarang detail berhasil dipanggil'
             })
     } catch (err) {

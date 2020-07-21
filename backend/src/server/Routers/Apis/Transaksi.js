@@ -11,9 +11,9 @@ const Barang = require('../../Models/Barang')
 //// @access  Private
 router.get('/list', auth, (req, res) => {
     const date = new Date()
-    const dd = date.getUTCDate()
-    const mm = date.getUTCMonth()
-    const yyyy = date.getUTCFullYear()
+    const dd = date.getDate()
+    const mm = date.getMonth()
+    const yyyy = date.getFullYear()
     const currentdate = new Date(yyyy, mm, dd)
     const nextdate = new Date(yyyy, mm, dd + 1)
     Transaksi.find()
