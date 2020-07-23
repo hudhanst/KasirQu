@@ -52,12 +52,18 @@ class QueryHistoryList extends React.Component {
             'JenisBarang',
             'Barang/JenisBarang',
             'Barang',
+            'Transaksi/Transaksi',
+            'Transaksi/Belanja',
+            'Barang/Transaksi/Belanja',
+            'Barang/Transaksi/Transaksi',
         ]
         const ActionOptions = [
             'Add',
             'Update',
             'Delete',
             'Import/Add',
+            'Belanja/Update',
+            'Transaksi/Update',
         ]
         const StatusOption = [
             { text: 'Sukses', value: true },

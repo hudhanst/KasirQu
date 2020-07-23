@@ -142,7 +142,7 @@ router.post('/export', auth, async (req, res) => {
 
         return res.download(filePath)
     } catch (err) {
-        console.log(`Erorr saat pemanggilan History Export => ${err.errorDetail ? err.errorDetail : err}`)
+        console.log(`Erorr saat pemanggilan History Export => ${err.errorDetail ? err.errorDetail : typeof err === 'object' ? JSON.stringify(err) : err}`)
         return res.status(400).json({
             msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan History Export',
             errorDetail: err.errorDetail ? err.errorDetail : err

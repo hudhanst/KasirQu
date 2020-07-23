@@ -41,7 +41,7 @@ exports.Add_Barang = async (Data) => {
         })
         newBarang.save()
     } catch (err) {
-        console.log(`Erorr saat Add_Barang => ${err}`)
+        console.log(`Erorr saat Add_Barang => ${typeof err === 'object' ? JSON.stringify(err) : err}`)
         throw {
             msg: err.msg ? err.msg : 'ada kesalahan pada proses Add_Barang',
             errorDetail: err

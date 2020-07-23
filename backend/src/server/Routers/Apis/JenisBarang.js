@@ -75,7 +75,7 @@ router.post('/tambah', auth, async (req, res) => {
                 msg: 'JenisBarang  berhasil ditambah'
             })
     } catch (err) {
-        console.log(`Erorr saat pemanggilan JenisBarang tambah => ${err.errorDetail ? err.errorDetail : err}`)
+        console.log(`Erorr saat pemanggilan JenisBarang tambah => ${err.errorDetail ? err.errorDetail : typeof err === 'object' ? JSON.stringify(err) : err}`)
         return res.status(400).json({
             msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan JenisBarang tambah',
             errorDetail: err.errorDetail ? err.errorDetail : err
@@ -191,7 +191,7 @@ router.patch('/detail/:id/update', auth, async (req, res) => {
                 msg: 'JenisBarang berhasil diupdate'
             })
     } catch (err) {
-        console.log(`Erorr saat update JenisBarang => ${err.errorDetail ? err.errorDetail : err}`)
+        console.log(`Erorr saat update JenisBarang => ${err.errorDetail ? err.errorDetail : typeof err === 'object' ? JSON.stringify(err) : err}`)
         return res.status(400).json({
             msg: err.msg ? err.msg : 'ada kesalahan pada proses Update JenisBaran',
             errorDetail: err.errorDetail ? err.errorDetail : err
@@ -304,7 +304,7 @@ router.post('/import', auth, async (req, res) => {
                 msg: 'Proses Import JenisBarang Berhasil'
             })
     } catch (err) {
-        console.log(`Erorr saat pemanggilan JenisBarang Import => ${err.errorDetail ? err.errorDetail : err}`)
+        console.log(`Erorr saat pemanggilan JenisBarang Import => ${err.errorDetail ? err.errorDetail : typeof err === 'object' ? JSON.stringify(err) : err}`)
         return res.status(400).json({
             msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan JenisBarang Import',
             errorDetail: err.errorDetail ? err.errorDetail : err
@@ -346,7 +346,7 @@ router.post('/export', auth, async (req, res) => {
         //         msg: 'Proses Export JenisBarang Berhasil'
         //     })
     } catch (err) {
-        console.log(`Erorr saat pemanggilan JenisBarang Export => ${err.errorDetail ? err.errorDetail : err}`)
+        console.log(`Erorr saat pemanggilan JenisBarang Export => ${err.errorDetail ? err.errorDetail : typeof err === 'object' ? JSON.stringify(err) : err}`)
         return res.status(400).json({
             msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan JenisBarang Export',
             errorDetail: err.errorDetail ? err.errorDetail : err

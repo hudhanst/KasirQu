@@ -56,7 +56,7 @@ exports.Create_Excel_File = async (UserName, Location, ExcelData, NestedArray) =
             return FileName
         }
     } catch (err) {
-        console.log(`Erorr saat Create_Excel_File => ${JSON.stringify(err)}`)
+        console.log(`Erorr saat Create_Excel_File => ${typeof err === 'object' ? JSON.stringify(err) : err}`)
         throw { msg: 'ada kesalahan pada proses Create_Excel_File', errorDetail: err }
     }
 }

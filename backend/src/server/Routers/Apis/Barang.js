@@ -119,24 +119,22 @@ router.post('/tambah', upload.single('BarangPic'), auth, async (req, res) => {
         }
 
         ////// prepare data before save
-        const newBarang = req.file ?
-            new Barang({
-                Barcode: Barcode.toString().toLocaleLowerCase(),
-                Name: Name.toString().toLocaleLowerCase(),
-                Jenis: Jenis.toString().toLocaleLowerCase(),
-                isDecimal: req.body.isDecimal ? req.body.isDecimal : null,
-                SatuanJual: null,
-                Ket: req.body.Ket ? req.body.Ket : null,
-                BarangPic: req.file.path
-            }) :
-            new Barang({
-                Barcode: Barcode.toString().toLocaleLowerCase(),
-                Name: Name.toString().toLocaleLowerCase(),
-                Jenis: Jenis.toString().toLocaleLowerCase(),
-                isDecimal: req.body.isDecimal ? req.body.isDecimal : null,
-                SatuanJual: null,
-                Ket: req.body.Ket ? req.body.Ket : null,
-            })
+        const newBarang = req.file ? ({
+            Barcode: Barcode.toString().toLocaleLowerCase(),
+            Name: Name.toString().toLocaleLowerCase(),
+            Jenis: Jenis.toString().toLocaleLowerCase(),
+            isDecimal: req.body.isDecimal ? req.body.isDecimal : null,
+            SatuanJual: null,
+            Ket: req.body.Ket ? req.body.Ket : null,
+            BarangPic: req.file.path
+        }) : ({
+            Barcode: Barcode.toString().toLocaleLowerCase(),
+            Name: Name.toString().toLocaleLowerCase(),
+            Jenis: Jenis.toString().toLocaleLowerCase(),
+            isDecimal: req.body.isDecimal ? req.body.isDecimal : null,
+            SatuanJual: null,
+            Ket: req.body.Ket ? req.body.Ket : null,
+        })
 
         Add_Barang(newBarang)
         Add_to_History(UserId, null, 'Barang', 'Add', JSON.stringify(newBarang), true)
@@ -148,7 +146,7 @@ router.post('/tambah', upload.single('BarangPic'), auth, async (req, res) => {
             })
 
     } catch (err) {
-        console.log(`Erorr saat pemanggilan Barang tambah => ${err.errorDetail ? err.errorDetail : err}`)
+        console.log(`Erorr saat pemanggilan Barang tambah => ${err.errorDetail ? err.errorDetail : typeof err === 'object' ? JSON.stringify(err) : err}`)
         return res.status(400).json({
             msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan Barang tambah',
             errorDetail: err.errorDetail ? err.errorDetail : err
@@ -309,7 +307,7 @@ router.get('/jenisbaranglist/:id', auth, async (req, res) => {
             })
 
     } catch (err) {
-        console.log(`Erorr saat pemanggilan list Barang JenisBarang => ${err.errorDetail ? err.errorDetail : err}`)
+        console.log(`Erorr saat pemanggilan list Barang JenisBarang => ${err.errorDetail ? err.errorDetail : typeof err === 'object' ? JSON.stringify(err) : err}`)
         return res.status(400).json({
             msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan list Barang JenisBarang',
             errorDetail: err.errorDetail ? err.errorDetail : err
@@ -389,7 +387,7 @@ router.patch('/detail/:id/update', upload.single('BarangPic'), auth, async (req,
             })
 
     } catch (err) {
-        console.log(`Erorr saat update Barang => ${err.errorDetail ? err.errorDetail : err}`)
+        console.log(`Erorr saat update Barang => ${err.errorDetail ? err.errorDetail : typeof err === 'object' ? JSON.stringify(err) : err}`)
         return res.status(400).json({
             msg: err.msg ? err.msg : 'ada kesalahan pada proses Update Barang',
             errorDetail: err.errorDetail ? err.errorDetail : err
@@ -450,7 +448,7 @@ router.post('/export', auth, async (req, res) => {
 
         return res.download(filePath)
     } catch (err) {
-        console.log(`Erorr saat pemanggilan Barang Export => ${err.errorDetail ? err.errorDetail : err}`)
+        console.log(`Erorr saat pemanggilan Barang Export => ${err.errorDetail ? err.errorDetail : typeof err === 'object' ? JSON.stringify(err) : err}`)
         return res.status(400).json({
             msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan Barang Export',
             errorDetail: err.errorDetail ? err.errorDetail : err
@@ -565,7 +563,7 @@ router.post('/import', auth, async (req, res) => {
                 msg: 'Proses Import Barang Berhasil'
             })
     } catch (err) {
-        console.log(`Erorr saat pemanggilan Barang Import => ${err.errorDetail ? err.errorDetail : err}`)
+        console.log(`Erorr saat pemanggilan Barang Import => ${err.errorDetail ? err.errorDetail : typeof err === 'object' ? JSON.stringify(err) : err}`)
         return res.status(400).json({
             msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan Barang Import',
             errorDetail: err.errorDetail ? err.errorDetail : err

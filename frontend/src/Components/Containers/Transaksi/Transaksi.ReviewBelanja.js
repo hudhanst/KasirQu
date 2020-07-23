@@ -76,9 +76,11 @@ class ReviewBelanja extends React.Component {
                             </TableHead>
                             <TableBody>
                                 {Data.map((item, index) => (
-                                    <TableRow hover key={index + 1} style={(item.HargaModal === 0 || item.HargaJual === 0) ? { backgroundColor: 'red' } :
-                                        (item.HargaModal <= item.HargaJual) ? { backgroundColor: 'yellow' }
-                                            : null}
+                                    <TableRow hover key={index + 1}
+                                        style={
+                                            (item.HargaModal < 1 || item.HargaJual < 1) ? { backgroundColor: 'red' } :
+                                                (item.HargaJual < item.HargaModal) ? { backgroundColor: 'yellow' }
+                                                    : null}
                                     >
                                         <TableCell align="center" >{index + 1}</TableCell>
                                         <TableCell align="left" >{item.Barcode}</TableCell>

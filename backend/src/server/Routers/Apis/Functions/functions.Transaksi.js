@@ -18,7 +18,7 @@ exports.Get_Transaksi_List = async (query, select, lean) => {
 ////// NONGENERIC
 exports.Add_Transaksi_Belanja = async (Data, UserId) => {
     try {
-        const Id = Data.Id ? Data.Id : null
+        // const Id = Data.Id ? Data.Id : null
         const NamaKasir = Data.NamaKasir ? Data.NamaKasir : null
         const TanggalTransaksi = Data.TanggalTransaksi ? new Date(Data.TanggalTransaksi) : null
         const Tipe = Data.Tipe ? Data.Tipe : null
@@ -28,7 +28,7 @@ exports.Add_Transaksi_Belanja = async (Data, UserId) => {
         const TotalPembayaran = Data.TotalPembayaran ? Data.TotalPembayaran : 0
         const Ket = Data.Ket ? Data.Ket : null
 
-        if (!NamaKasir || !Tipe || DetailTransaksi.length < 1 || TotalPembayaran < 1) {
+        if (!UserId || !NamaKasir || !Tipe || DetailTransaksi.length < 1 || TotalPembayaran < 1) {
             throw { msg: 'ada kesalahan pada proses Add_Transaksi_Belanja, data tidak lengkap' }
         }
 
@@ -56,7 +56,7 @@ exports.Add_Transaksi_Belanja = async (Data, UserId) => {
             Add_to_History(UserId, null, 'Barang/Transaksi/Belanja', 'Belanja/Update', JSON.stringify(OldBarang), true)
         }
         const newTransaksi = new Transaksi({
-            _id: Id,
+            // _id: Id,
             NamaKasir: NamaKasir,
             TanggalTransaksi: TanggalTransaksi - 1 > 0 ? TanggalTransaksi : null,
             Tipe: Tipe,
@@ -70,7 +70,7 @@ exports.Add_Transaksi_Belanja = async (Data, UserId) => {
         // console.log('newTransaksi', newTransaksi)
         newTransaksi.save()
     } catch (err) {
-        console.log(`Erorr saat Add_Transaksi_Belanja => ${err}`)
+        console.log(`Erorr saat Add_Transaksi_Belanja =>  ${typeof err === 'object' ? JSON.stringify(err) : err}`)
         throw {
             msg: err.msg ? err.msg : 'ada kesalahan pada proses Add_Transaksi_Belanja',
             errorDetail: err
@@ -79,8 +79,9 @@ exports.Add_Transaksi_Belanja = async (Data, UserId) => {
 }
 
 exports.Add_Transaksi_Transaksi = async (Data, UserId) => {
+    // console.log('Add_Transaksi_Transaksi')
     try {
-        const Id = Data.Id ? Data.Id : null
+        // const Id = Data.Id ? Data.Id : null
         const NamaKasir = Data.NamaKasir ? Data.NamaKasir : null
         const TanggalTransaksi = Data.TanggalTransaksi ? new Date(Data.TanggalTransaksi) : null
         const Tipe = Data.Tipe ? Data.Tipe : null
@@ -90,7 +91,7 @@ exports.Add_Transaksi_Transaksi = async (Data, UserId) => {
         const TotalPembayaran = Data.TotalPembayaran ? Data.TotalPembayaran : 0
         const Ket = Data.Ket ? Data.Ket : null
 
-        if (!NamaKasir || !Tipe || DetailTransaksi.length < 1 || TotalPembayaran < 1) {
+        if (!UserId || !NamaKasir || !Tipe || DetailTransaksi.length < 1 || TotalPembayaran < 1) {
             throw { msg: 'ada kesalahan pada proses Add_Transaksi_Transaksi, data tidak lengkap' }
         }
 
@@ -107,7 +108,7 @@ exports.Add_Transaksi_Transaksi = async (Data, UserId) => {
         }
 
         const newTransaksi = new Transaksi({
-            _id: Id,
+            // _id: Id,
             NamaKasir: NamaKasir,
             TanggalTransaksi: TanggalTransaksi - 1 > 0 ? TanggalTransaksi : null,
             Tipe: Tipe,
@@ -121,7 +122,7 @@ exports.Add_Transaksi_Transaksi = async (Data, UserId) => {
         // console.log('newTransaksi', newTransaksi)
         newTransaksi.save()
     } catch (err) {
-        console.log(`Erorr saat Add_Transaksi_Transaksi => ${err}`)
+        console.log(`Erorr saat Add_Transaksi_Transaksi => ${typeof err === 'object' ? JSON.stringify(err) : err}`)
         throw {
             msg: err.msg ? err.msg : 'ada kesalahan pada proses Add_Transaksi_Transaksi',
             errorDetail: err

@@ -29,7 +29,7 @@ exports.Add_JenisBarang = async (Data) => {
         newJenisBarang.save()
         // return SaveStatus = true
     } catch (err) {
-        console.log(`Erorr saat Get_JenisBarang_List => ${err}`)
+        console.log(`Erorr saat Get_JenisBarang_List => ${typeof err === 'object' ? JSON.stringify(err) : err}`)
         throw {
             msg: err.msg ? err.msg : 'ada kesalahan pada proses Get_JenisBarang_List',
             // SaveStatus: err.SaveStatus ? err.SaveStatus : false, 

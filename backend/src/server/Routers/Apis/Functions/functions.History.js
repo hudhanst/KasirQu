@@ -22,12 +22,12 @@ exports.Add_to_History = async (UserID, UserName, Location, Action, Change, Stat
             return isSaved = true
         } else {
             // return isSaved = false
-            console.log(`Erorr saat penambahan History => ${err}`)
-            throw { msg: 'ada kesalahan pada proses penambahan History', errorDetail: err }
+            // console.log(`Erorr saat penambahan History => ${err}`)
+            throw { msg: 'ada kesalahan pada proses penambahan History' }
         }
-        
+
     } catch (err) {
-        console.log(`Erorr saat Add_to_History => ${err}`)
+        console.log(`Erorr saat Add_to_History => ${typeof err === 'object' ? JSON.stringify(err) : err}`)
         throw { msg: 'ada kesalahan pada proses Add_to_History', errorDetail: err }
     }
 }
