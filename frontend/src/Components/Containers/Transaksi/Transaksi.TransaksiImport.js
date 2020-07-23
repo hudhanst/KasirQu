@@ -4,9 +4,9 @@ import XLSX from 'xlsx'
 
 import { connect } from 'react-redux'
 
-import ReviewBarangImport from './Barang.Review.BarangImport'
+import ReviewTransaksiImport from './Transaksi.Review.TransaksiImport'
 
-import { Cek_Import_Barang } from '../../../Store/Actions/Barang.Actions'
+import { Cek_Import_Transaksi } from '../../../Store/Actions/Transaksi.Actions'
 
 import { DropzoneArea } from 'material-ui-dropzone'
 
@@ -14,7 +14,7 @@ import GenericModals from '../GenericModals'
 
 import { MUI_VerticalMargin, MUI_FullWidth } from '../../../MUI_theme'
 
-class BarangImport extends React.Component {
+class TransaksiImport extends React.Component {
     state = {
         MaxFileSize: 1000000 * 50,
         ExcelData: null,
@@ -46,7 +46,7 @@ class BarangImport extends React.Component {
     Form_OnSubmit = E => {
         E.preventDefault()
         const { ExcelData } = this.state
-        this.props.Cek_Import_Barang(ExcelData)
+        this.props.Cek_Import_Transaksi(ExcelData)
     }
 
     render() {
@@ -66,14 +66,14 @@ class BarangImport extends React.Component {
                         showFileNames={true}
                         maxFileSize={MaxFileSize}
                         acceptedFiles={['.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel']}
-                        dropzoneText={"Masukkan atau Pilih File excel/sejenisnya untuk Import Barang"}
+                        dropzoneText={"Masukkan atau Pilih File excel/sejenisnya untuk Import Transaksi"}
                         onChange={(files) => this.loadFileXLSX(files)}
                     />
                     <GenericModals
                         size='xl'
                         uncontrollsize={true}
-                        header='Review Import Katagori Barang'
-                        body={<ReviewBarangImport />}
+                        header='Review Import Transaksi'
+                        body={<ReviewTransaksiImport />}
                         Buttontype='submit'
                         Buttonstyle={st_textfield}
                         Buttonsize='large'
@@ -89,4 +89,4 @@ class BarangImport extends React.Component {
     }
 }
 
-export default connect(null, { Cek_Import_Barang })(BarangImport)
+export default connect(null, { Cek_Import_Transaksi })(TransaksiImport)

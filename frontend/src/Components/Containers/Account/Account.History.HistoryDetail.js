@@ -41,11 +41,10 @@ class HistoryDetail extends React.Component {
             <Fragment>
                 {Detail ? (
                     <Fragment>
-                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='User Name' name='UserName' value={Detail.UserName} />
-                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Tanggal' name='Tanggal' value={Detail.Tanggal} />
-                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Lokasi' name='Location' value={Detail.Location} />
-                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Aksi' name='Action' value={Detail.Action} />
-                        {/* <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Change' name='Change' value={Detail.Change} /> */}
+                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='User Name' name='UserName' value={Detail.UserName ? Detail.UserName : ''} />
+                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Tanggal' name='Tanggal' value={Detail.Tanggal ? new Date(Detail.Tanggal).toLocaleString() : ''} />
+                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Lokasi' name='Location' value={Detail.Location ? Detail.Location : ''} />
+                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Aksi' name='Action' value={Detail.Action ? Detail.Action : ''} />
                         <label>Perubahan:</label>
                         {DataChange && DataChange.length > 0 ? (
                             <Fragment>

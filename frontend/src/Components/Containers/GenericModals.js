@@ -14,7 +14,9 @@ const GenericModals = (props) => {
     const useStyles = makeStyles((theme) => ({
         paper: {
             position: 'absolute',
-            width: `${modalsize}%`,
+            // width: `${modalsize}%`,
+            width: props.uncontrollsize === true ? null : `${modalsize}%`,
+            minWidth: props.uncontrollsize === true ? `${modalsize}%` : null,
             backgroundColor: theme.palette.background.paper,
             border: '2px solid #000',
             boxShadow: theme.shadows[5],

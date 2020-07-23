@@ -69,9 +69,9 @@ class TokoUpdate extends React.Component {
                 {TokoDetail ?
                     <Fragment>
                         <form onSubmit={this.Form_OnSubmit}>
-                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Nama Toko' name='NamaToko' value={NamaToko} />
-                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Alamat' name='Alamat' value={Alamat} />
-                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Kontak' name='Kontak' value={Kontak} />
+                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Nama Toko' name='NamaToko' value={NamaToko?NamaToko:''} />
+                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Alamat' name='Alamat' value={Alamat?Alamat:''} />
+                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Kontak' name='Kontak' value={Kontak?Kontak:''} />
 
                             <label>Logo:</label><br />
                             <input type='file' accept='image/*' onChange={this.File_OnChange} name='Logo' /><br />

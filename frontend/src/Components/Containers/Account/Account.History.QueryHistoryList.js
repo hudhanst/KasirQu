@@ -17,6 +17,7 @@ const yyyy = date.getFullYear()
 
 class QueryHistoryList extends React.Component {
     state = {
+        isAllData: false,
         UserName: '',
         isAllDate: false,
         DateMin: `${yyyy}-${mm}-${dd}T00:01`,
@@ -34,12 +35,12 @@ class QueryHistoryList extends React.Component {
     Form_OnSubmit = E => {
         E.preventDefault()
         const data = {
-            UserName: this.state.UserName,
-            DateMin: this.state.isAllDate ? null : this.state.DateMin,
-            DateMax: this.state.isAllDate ? null : this.state.DateMax,
-            Location: this.state.Location,
-            Action: this.state.Action,
-            Status: this.state.Status,
+            UserName: this.state.isAllData ? null : this.state.UserName,
+            DateMin: this.state.isAllData ? null : this.state.isAllDate ? null : this.state.DateMin,
+            DateMax: this.state.isAllData ? null : this.state.isAllDate ? null : this.state.DateMax,
+            Location: this.state.isAllData ? null : this.state.Location,
+            Action: this.state.isAllData ? null : this.state.Action,
+            Status: this.state.isAllData ? null : this.state.Status,
         }
 
         this.props.Load_Export_Query_History(data)
@@ -63,6 +64,7 @@ class QueryHistoryList extends React.Component {
             { text: 'Gagal', value: false }
         ]
         const {
+            isAllData,
             UserName,
             isAllDate,
             DateMin,
@@ -74,81 +76,91 @@ class QueryHistoryList extends React.Component {
         return (
             <Fragment>
                 <form onSubmit={this.Form_OnSubmit}>
-                    <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Berdasarkan UserName' name='UserName' value={UserName} />
-
-                    <label>Cari dari Keseluruhan Tanggal:</label><br />
+                    <label>Cari dari Keseluruhan Data:</label><br />
                     <div className='switch' style={MUI_VerticalMargin}>
-                        <input type="checkbox" onChange={this.CheckBox_OnChange} name='isAllDate' checked={isAllDate} /><span></span><br />
+                        <input type="checkbox" onChange={this.CheckBox_OnChange} name='isAllData' checked={isAllData} /><span></span><br />
                     </div><br />
-                    {!isAllDate ? (
+
+                    {!isAllData ? (
                         <Fragment>
-                            <label>Cari Berdasarkan Tanggal:</label><br />
-                            <TextField style={st_halftextfield} variant='outlined' onChange={this.Form_OnChange} type='datetime-local' label='tanggal Minimum' name='DateMin' value={DateMin} InputLabelProps={{ shrink: true }} /><br />
-                            <TextField style={st_halftextfield} variant='outlined' onChange={this.Form_OnChange} type='datetime-local' label='tanggal Maksimum' name='DateMax' value={DateMax} InputLabelProps={{ shrink: true }} /><br />
+                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Berdasarkan UserName' name='UserName' value={UserName} />
+
+                            <label>Cari dari Keseluruhan Tanggal:</label><br />
+                            <div className='switch' style={MUI_VerticalMargin}>
+                                <input type="checkbox" onChange={this.CheckBox_OnChange} name='isAllDate' checked={isAllDate} /><span></span><br />
+                            </div><br />
+                            {!isAllDate ? (
+                                <Fragment>
+                                    <label>Cari Berdasarkan Tanggal:</label><br />
+                                    <TextField style={st_halftextfield} variant='outlined' onChange={this.Form_OnChange} type='datetime-local' label='tanggal Minimum' name='DateMin' value={DateMin} InputLabelProps={{ shrink: true }} /><br />
+                                    <TextField style={st_halftextfield} variant='outlined' onChange={this.Form_OnChange} type='datetime-local' label='tanggal Maksimum' name='DateMax' value={DateMax} InputLabelProps={{ shrink: true }} /><br />
+                                </Fragment>
+                            ) : null}
+
+                            <Autocomplete
+                                multiple
+                                value={Location}
+                                onChange={(event, newLocation) => {
+                                    this.setState({ Location: newLocation })
+                                }}
+
+                                options={LocationOptions.sort((a, b) => (a > b) ? 1 : ((b > a) ? -1 : 0))}
+                                // getOptionLabel={option => typeof option === 'string' ? option : option.NamaJenisBarang}
+                                getOptionLabel={option => option}
+                                // groupBy={(option) => option.Kepemilikan}
+                                renderTags={(tagValue, getTagProps) =>
+                                    tagValue.map((option, index) => (
+                                        <Chip
+                                            // label={option.NamaJenisBarang}
+                                            label={option}
+                                            {...getTagProps({ index })}
+                                        />
+                                    ))
+                                }
+                                style={{ width: '100%' }}
+                                renderInput={(params) => (
+                                    <TextField {...params} style={st_textfield} name='Location' label="Lokasi" variant="outlined" placeholder="Lokasi" />
+                                )}
+                            />
+
+                            <Autocomplete
+                                multiple
+                                value={Action}
+                                onChange={(event, newAction) => {
+                                    this.setState({ Action: newAction })
+                                }}
+
+                                options={ActionOptions.sort((a, b) => (a > b) ? 1 : ((b > a) ? -1 : 0))}
+                                // getOptionLabel={option => typeof option === 'string' ? option : option.NamaJenisBarang}
+                                getOptionLabel={option => option}
+                                // groupBy={(option) => option.Kepemilikan}
+                                renderTags={(tagValue, getTagProps) =>
+                                    tagValue.map((option, index) => (
+                                        <Chip
+                                            // label={option.NamaJenisBarang}
+                                            label={option}
+                                            {...getTagProps({ index })}
+                                        />
+                                    ))
+                                }
+                                style={{ width: '100%' }}
+                                renderInput={(params) => (
+                                    <TextField {...params} style={st_textfield} name='Action' label="Aksi" variant="outlined" placeholder="Aksi" />
+                                )}
+                            />
+
+                            <FormControl style={st_textfield} variant="filled">
+                                <InputLabel shrink >Status</InputLabel>
+                                <Select native onChange={this.Form_OnChange} label="Status" name='Status' value={Status} labelWidth={100} >
+                                    <option value="" > -- select an option -- </option>
+                                    {StatusOption.map((item, index) =>
+                                        <option key={index} value={item.value}>{item.text}</option>
+                                    )}
+                                </Select>
+                            </FormControl>
                         </Fragment>
                     ) : null}
 
-                    <Autocomplete
-                        multiple
-                        value={Location}
-                        onChange={(event, newLocation) => {
-                            this.setState({ Location: newLocation })
-                        }}
-
-                        options={LocationOptions.sort((a, b) => (a > b) ? 1 : ((b > a) ? -1 : 0))}
-                        // getOptionLabel={option => typeof option === 'string' ? option : option.NamaJenisBarang}
-                        getOptionLabel={option => option}
-                        // groupBy={(option) => option.Kepemilikan}
-                        renderTags={(tagValue, getTagProps) =>
-                            tagValue.map((option, index) => (
-                                <Chip
-                                    // label={option.NamaJenisBarang}
-                                    label={option}
-                                    {...getTagProps({ index })}
-                                />
-                            ))
-                        }
-                        style={{ width: '100%' }}
-                        renderInput={(params) => (
-                            <TextField {...params} style={st_textfield} name='Location' label="Lokasi" variant="outlined" placeholder="Lokasi" />
-                        )}
-                    />
-
-                    <Autocomplete
-                        multiple
-                        value={Action}
-                        onChange={(event, newAction) => {
-                            this.setState({ Action: newAction })
-                        }}
-
-                        options={ActionOptions.sort((a, b) => (a > b) ? 1 : ((b > a) ? -1 : 0))}
-                        // getOptionLabel={option => typeof option === 'string' ? option : option.NamaJenisBarang}
-                        getOptionLabel={option => option}
-                        // groupBy={(option) => option.Kepemilikan}
-                        renderTags={(tagValue, getTagProps) =>
-                            tagValue.map((option, index) => (
-                                <Chip
-                                    // label={option.NamaJenisBarang}
-                                    label={option}
-                                    {...getTagProps({ index })}
-                                />
-                            ))
-                        }
-                        style={{ width: '100%' }}
-                        renderInput={(params) => (
-                            <TextField {...params} style={st_textfield} name='Action' label="Aksi" variant="outlined" placeholder="Aksi" />
-                        )}
-                    />
-
-                    <FormControl style={st_textfield} variant="filled">
-                        <InputLabel shrink >Status</InputLabel>
-                        <Select native onChange={this.Form_OnChange} label="Status" name='Status' value={Status} labelWidth={100} >
-                            <option value="" > -- select an option -- </option>
-                            {StatusOption.map((item, index) =>
-                                <option key={index} value={item.value}>{item.text}</option>
-                            )}
-                        </Select>
-                    </FormControl>
                     <Button type='submit' style={st_textfield} size="large" variant='contained' color='primary' >Cari</Button>
                 </form>
             </Fragment>

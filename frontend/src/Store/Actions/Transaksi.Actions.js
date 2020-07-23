@@ -5,6 +5,7 @@ import { tokenConfig } from './Auth.Actions'
 import {
     TRANSAKSI_LOADING,
     TRANSAKSI_LOADED,
+    CEK_IMPORT_TRANSAKSI,
     ////// TRANSAKSI
     ADD_BARANG_TO_TRANSAKSI,
     CHANGE_TRANSAKSI_DETAIL,
@@ -183,9 +184,8 @@ export const Load_Query_Transaksi_List = (data) => (dispatch, getState) => {
     const TransaksiID = data.TransaksiID
     const UserName = data.UserName
     const Jenis = data.Jenis
-    const isAllData = data.isAllData
-    const DateMin = isAllData === true ? '' : data.DateMin
-    const DateMax = isAllData === true ? '' : data.DateMax
+    const DateMin = data.DateMin
+    const DateMax = data.DateMax
     const DiskonMin = data.DiskonMin
     const DiskonMax = data.DiskonMax
     const PotonganHargaMin = data.PotonganHargaMin
@@ -240,5 +240,81 @@ export const get_TransaksiDetail = (TransaksiID) => (dispatch, getState) => {
             dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg ? err.response.data.msg : null))
             // dispatch({ type: TRANSAKSI_LOADED })
         })
+    dispatch({ type: TRANSAKSI_LOADED })
+}
+
+export const Export_Transaksi = (Data, Auth) => (dispatch, getState) => {
+    dispatch({ type: TRANSAKSI_LOADING })
+    if (Auth) {
+        const isSuperUser = Auth.isSuperUser
+        if (isSuperUser) {
+            const ExportData = Data
+
+            const body = JSON.stringify({ ExportData })
+
+            axios.post(`/api/transaksi/export`, body, {
+                responseType: 'blob',
+                ...tokenConfig(getState)
+            })
+                .then(res => {
+                    console.log(res)
+
+                    const url = window.URL.createObjectURL(new Blob([res.data]))
+                    const link = document.createElement('a')
+                    link.href = url
+                    link.setAttribute('download', 'Export.Transaksi.xlsx')
+                    document.body.appendChild(link)
+                    link.click()
+
+                    dispatch(Create_Success_Messages(null, 'Proses Export Transaksi Berhasil'))
+                }).catch(err => {
+                    console.log(err.response)
+                    // dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg))
+                    dispatch(Create_Error_Messages(null, 'Ada Kesalahan Pada Proses Export Transaksi'))
+                })
+        } else {
+            dispatch(Create_Error_Messages(null, 'maaf anda tidak diperkenankan melakukan ini'))
+        }
+    } else {
+        dispatch(Create_Error_Messages(null, 'anda harus login untuk melakukan ini'))
+    }
+    dispatch({ type: TRANSAKSI_LOADED })
+}
+
+export const Cek_Import_Transaksi = (Data) => (dispatch, getState) => {
+    dispatch({ type: TRANSAKSI_LOADING })
+    // console.log('Data', typeof Data)
+    // console.log('Data', Data)
+    dispatch({
+        type: CEK_IMPORT_TRANSAKSI,
+        payload: Data
+    })
+    dispatch({ type: TRANSAKSI_LOADED })
+}
+
+export const Import_Transaksi = (Data, Auth) => (dispatch, getState) => {
+    // console.log('Data',Data)
+    dispatch({ type: TRANSAKSI_LOADING })
+    if (Auth) {
+        const isSuperUser = Auth.isSuperUser
+        if (isSuperUser) {
+            const ImportData = Data
+
+            const body = JSON.stringify({ ImportData })
+
+            axios.post(`/api/transaksi/import`, body, tokenConfig(getState))
+                .then(res => {
+                    // console.log(res)
+                    dispatch(Create_Success_Messages(res.status ? res.status : null, res.data.msg ? res.data.msg : null))
+                }).catch(err => {
+                    console.log(err.response)
+                    dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg))
+                })
+        } else {
+            dispatch(Create_Error_Messages(null, 'maaf anda tidak diperkenankan melakukan ini'))
+        }
+    } else {
+        dispatch(Create_Error_Messages(null, 'anda harus login untuk melakukan ini'))
+    }
     dispatch({ type: TRANSAKSI_LOADED })
 }

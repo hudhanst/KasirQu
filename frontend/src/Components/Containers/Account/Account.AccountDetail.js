@@ -41,30 +41,30 @@ class AccountDetail extends React.Component {
                 {AccountDetail ?
                     <Fragment>
                         <Avatar alt="Remy Sharp" src={AccountDetail.ProfilePicture ? `http://127.0.0.1:5000/${AccountDetail.ProfilePicture}` : null} style={MUI_st_AccountDetail_Avatar} />
-                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='User Name' name='UserName' value={AccountDetail.UserName} />
-                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Name' name='Name' value={AccountDetail.Name} />
-                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='password' label='Password' name='password' value={AccountDetail.Password} />
+                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='User Name' name='UserName' value={AccountDetail.UserName ? AccountDetail.UserName : ''} />
+                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Name' name='Name' value={AccountDetail.Name ? AccountDetail.Name : ''} />
+                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='password' label='Password' name='password' value={AccountDetail.Password ? AccountDetail.Password : ''} />
                         {(User.isSuperUser || User.isAdmin) ?
                             <Fragment>
                                 <hr />
                                 <label>Active:</label><br />
                                 <div className='switch'>
-                                    <input type="checkbox" style={st_switch} disabled name='isActive' checked={AccountDetail.isActive} /><span></span><br />
+                                    <input type="checkbox" style={st_switch} disabled name='isActive' checked={AccountDetail.isActive ? AccountDetail.isActive : false} /><span></span><br />
                                 </div><br />
                                 <label>Kasir:</label><br />
                                 <div className='switch'>
-                                    <input type="checkbox" disabled name='isKasir' checked={AccountDetail.isKasir} /><span></span><br />
+                                    <input type="checkbox" disabled name='isKasir' checked={AccountDetail.isKasir ? AccountDetail.isKasir : false} /><span></span><br />
                                 </div><br />
                                 <label>Admin:</label><br />
                                 <div className='switch'>
-                                    <input type="checkbox" disabled name='isAdmin' checked={AccountDetail.isAdmin} /><span></span><br />
+                                    <input type="checkbox" disabled name='isAdmin' checked={AccountDetail.isAdmin ? AccountDetail.isAdmin : false} /><span></span><br />
                                 </div><br />
                                 <label>SuperUser:</label><br />
                                 <div className='switch'>
-                                    <input type="checkbox" disabled name='isSuperUser' checked={AccountDetail.isSuperUser} /><span></span><br />
+                                    <input type="checkbox" disabled name='isSuperUser' checked={AccountDetail.isSuperUser ? AccountDetail.isSuperUser : false} /><span></span><br />
                                 </div><br />
-                                <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='tanggal pembuatan akun' name='RegisterDate' value={AccountDetail.RegisterDate} />
-                                <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Terakhir kali login' name='LastActive' value={AccountDetail.LastActive} />
+                                <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='tanggal pembuatan akun' name='RegisterDate' value={AccountDetail.RegisterDate ? AccountDetail.RegisterDate : ''} />
+                                <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Terakhir kali login' name='LastActive' value={AccountDetail.LastActive ? AccountDetail.LastActive : ''} />
                             </Fragment>
                             : null
                         }

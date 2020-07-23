@@ -1,6 +1,7 @@
 import {
     TRANSAKSI_LOADING,
     TRANSAKSI_LOADED,
+    CEK_IMPORT_TRANSAKSI,
     ////// TRANSAKSI
     ADD_BARANG_TO_TRANSAKSI,
     CHANGE_TRANSAKSI_DETAIL,
@@ -25,6 +26,7 @@ const initialState = {
     TransaksiList: [],
     idDetailTransaksi: null,
     TransaksiDetail: null,
+    TransaksiImportFile: null,
 }
 
 export default function (state = initialState, action) {
@@ -126,6 +128,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 TransaksiDetail: action.payload,
+            }
+        case CEK_IMPORT_TRANSAKSI:
+            return {
+                ...state,
+                TransaksiImportFile: action.payload,
             }
         default:
             return state

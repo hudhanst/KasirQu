@@ -266,6 +266,17 @@ router.post('/import', auth, async (req, res) => {
             }
         }
 
+        ////// cek if data struktur are correct
+        for (const element of FixedImportData) {
+            const FixedImportData_NamaJenisBarang = element.NamaJenisBarang
+            const FixedImportData_Kepemilikan = element.Kepemilikan
+            if (!FixedImportData_NamaJenisBarang || !FixedImportData_Kepemilikan) {
+                throw {
+                    msg: 'data struktur tidak lengkap',
+                }
+            }
+        }
+
         ////// cek data if data alredy exist in database
         for (const element of FixedImportData) {
             const ExistJenisBarang = await JenisBarang.findOne({ NamaJenisBarang: element.NamaJenisBarang.toString().toLocaleLowerCase() })

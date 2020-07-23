@@ -107,8 +107,8 @@ class AccountUpdate extends React.Component {
                 {AccountDetail ?
                     <Fragment>
                         <form onSubmit={this.Form_OnSubmit}>
-                            <TextField style={{ ...st_textfield, ...theme.customTheme.readonlytextfield }} variant='outlined' disabled type='text' label='User Name' name='UserName' value={UserName} />
-                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Name' name='Name' value={Name} required />
+                            <TextField style={{ ...st_textfield, ...theme.customTheme.readonlytextfield }} variant='outlined' disabled type='text' label='User Name' name='UserName' value={UserName ? UserName : ''} />
+                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Name' name='Name' value={Name ? Name : ''} required />
                             <FormGroup row>
                                 <FormControlLabel
                                     control={<Checkbox color='primary' onChange={this.CheckBox_OnChange} name="ChangePassword" value={ChangePassword} />}
@@ -132,19 +132,19 @@ class AccountUpdate extends React.Component {
                                     <hr />
                                     <label>Active:</label><br />
                                     <div className='switch'>
-                                        <input type="checkbox" style={st_switch} onChange={this.CheckBox_OnChange} name='isActive' checked={isActive} /><span></span><br />
+                                        <input type="checkbox" style={st_switch} onChange={this.CheckBox_OnChange} name='isActive' checked={isActive ? isActive : false} /><span></span><br />
                                     </div><br />
                                     <label>Kasir:</label><br />
                                     <div className='switch'>
-                                        <input type="checkbox" onChange={this.CheckBox_OnChange} name='isKasir' checked={isKasir} /><span></span><br />
+                                        <input type="checkbox" onChange={this.CheckBox_OnChange} name='isKasir' checked={isKasir ? isKasir : false} /><span></span><br />
                                     </div><br />
                                     <label>Admin:</label><br />
                                     <div className='switch'>
-                                        <input type="checkbox" onChange={this.CheckBox_OnChange} name='isAdmin' checked={isAdmin} /><span></span><br />
+                                        <input type="checkbox" onChange={this.CheckBox_OnChange} name='isAdmin' checked={isAdmin ? isAdmin : false} /><span></span><br />
                                     </div><br />
                                     <label>SuperUser:</label><br />
                                     <div className='switch'>
-                                        <input type="checkbox" onChange={this.CheckBox_OnChange} name='isSuperUser' checked={isSuperUser} /><span></span><br />
+                                        <input type="checkbox" onChange={this.CheckBox_OnChange} name='isSuperUser' checked={isSuperUser ? isSuperUser : false} /><span></span><br />
                                     </div><br />
                                 </Fragment>
                                 : null

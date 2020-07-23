@@ -15,7 +15,10 @@ import TransaksiDetail from './Transaksi.TransaksiDetail'
 
 class ListTransaksi extends React.Component {
     componentDidMount() {
-        this.props.Load_Transaksi_List()
+        if (this.props.DisableLoad !== true) {
+            console.log('this.props.DisableLoad')
+            this.props.Load_Transaksi_List()
+        }
     }
     ButtonShortSTR(ColumnNumb) {
         Short_Column_STR('tabel_list_transaksi', ColumnNumb)
@@ -35,7 +38,7 @@ class ListTransaksi extends React.Component {
         return (
             <Fragment>
                 {data && data.length > 0 ?
-                // {data ?
+                    // {data ?
                     <Table id='tabel_list_transaksi'>
                         <TableHead>
                             <TableRow>
@@ -52,7 +55,7 @@ class ListTransaksi extends React.Component {
                             {data.map((item, index) => (
                                 <TableRow hover key={index + 1}>
                                     <TableCell align="center">{index + 1}</TableCell>
-                                    <TableCell align="left">{item.TanggalTransaksi}</TableCell>
+                                    <TableCell align="left">{new Date(item.TanggalTransaksi).toLocaleString()}</TableCell>
                                     <TableCell align="left">{item._id}</TableCell>
                                     <TableCell align="left">{item.NamaKasir}</TableCell>
                                     <TableCell align="left">{item.Tipe}</TableCell>

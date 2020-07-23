@@ -48,7 +48,7 @@ class ListTransaksi extends React.Component {
                     <Fragment>
                         <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='ID' name='_id' value={Data._id ? Data._id : ''} />
                         <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Nama Kasir' name='NamaKasir' value={Data.NamaKasir ? Data.NamaKasir : ''} />
-                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Tanggal Transaksi' name='TanggalTransaksi' value={Data.TanggalTransaksi ? Data.TanggalTransaksi : ''} />
+                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Tanggal Transaksi' name='TanggalTransaksi' value={Data.TanggalTransaksi ? new Date(Data.TanggalTransaksi).toLocaleString() : ''} />
                         <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Tipe Transaksi' name='Tipe' value={Data.Tipe ? Data.Tipe : ''} />
                         <hr />
                         {Data.DetailTransaksi ? (
@@ -121,9 +121,8 @@ class ListTransaksi extends React.Component {
                             : null
                         }
                         <hr />
-                        {Data.Tipe === 'Transaksi' ? (
-                            <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Diskon' name='Diskon' value={Data.Diskon ? Data.Diskon : ''} />
-                        ) : null}
+                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Diskon' name='Diskon' value={Data.Diskon ? Data.Diskon : 0} />
+                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='PotonganHarga' name='PotonganHarga' value={Data.PotonganHarga ? Data.PotonganHarga : 0} />
                         {Data.Tipe === 'Transaksi' ? (
                             <Fragment>
                                 <label>Jumlah Pendapatan:</label>

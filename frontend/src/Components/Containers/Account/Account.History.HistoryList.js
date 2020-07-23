@@ -79,13 +79,14 @@ class HistoryList extends React.Component {
                                     <TableRow hover key={index + 1}>
                                         <TableCell align='center'>{index + 1}</TableCell>
                                         <TableCell align='left'>{item.UserName}</TableCell>
-                                        <TableCell align='left'>{item.Tanggal}</TableCell>
+                                        <TableCell align='left'>{new Date(item.Tanggal).toLocaleString()}</TableCell>
                                         <TableCell align='center'>{item.Location}</TableCell>
                                         <TableCell align='center'>{item.Action}</TableCell>
                                         <TableCell align='center'>{item.Status ? "Sukses" : "Gagal"}</TableCell>
                                         <TableCell align='center'>
                                             <GenericModals
                                                 size='xl'
+                                                uncontrollsize={true}
                                                 header='Account Detail'
                                                 body={<HistoryDetail />}
                                                 Buttoncolor='primary'

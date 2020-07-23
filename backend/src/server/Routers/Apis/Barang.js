@@ -490,6 +490,17 @@ router.post('/import', auth, async (req, res) => {
         }
         ////// cek if data struktur are correct
         for (const element of FixedImportData) {
+
+            const FixedImportData_Barcode = element.Barcode
+            const FixedImportData_Name = element.Name
+            const FixedImportData_Jenis = element.Jenis
+
+            if (!FixedImportData_Barcode || !FixedImportData_Name || !FixedImportData_Jenis) {
+                throw {
+                    msg: 'data struktur tidak lengkap',
+                }
+            }
+
             // console.log('SatuanJual', element.SatuanJual)
             const FixedImportData_SatuanJual = element.SatuanJual ? JSON.parse(element.SatuanJual) : []
 

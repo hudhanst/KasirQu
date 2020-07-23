@@ -25,15 +25,9 @@ class AccountDetail extends React.Component {
                 {TokoDetail ?
                     <Fragment>
                         <Avatar alt="Remy Sharp" src={TokoDetail.Logo ? `http://127.0.0.1:5000/${TokoDetail.Logo}` : null} style={MUI_st_AccountDetail_Avatar} />
-                        {TokoDetail.NamaToko ?
-                            <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Nama Toko' name='NamaToko' value={TokoDetail.NamaToko} />
-                            : null}
-                        {TokoDetail.Alamat ?
-                            <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Alamat' name='Alamat' value={TokoDetail.Alamat} />
-                            : null}
-                        {TokoDetail.Kontak ?
-                            <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Kontak' name='Kontak' value={TokoDetail.Kontak} />
-                            : null}
+                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Nama Toko' name='NamaToko' value={TokoDetail.NamaToko ? TokoDetail.NamaToko : ''} />
+                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Alamat' name='Alamat' value={TokoDetail.Alamat ? TokoDetail.Alamat : ''} />
+                        <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Kontak' name='Kontak' value={TokoDetail.Kontak ? TokoDetail.Kontak : ''} />
                     </Fragment>
                     : <DataTidakDitemukan />
                 }

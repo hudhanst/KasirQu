@@ -16,10 +16,11 @@ const yyyy = date.getFullYear()
 
 class ListTransaksiQuery extends React.Component {
     state = {
+        isAllData: false,
         TransaksiID: '',
         UserName: '',
         Jenis: '',
-        isAllData: false,
+        isAllDate: false,
         // DateMin: '',
         DateMin: `${yyyy}-${mm}-${dd}T00:01`,
         DateMax: '',
@@ -39,22 +40,22 @@ class ListTransaksiQuery extends React.Component {
     }
     Form_OnSubmit = E => {
         E.preventDefault()
+        const { isAllData, isAllDate } = this.state
         const data = {
-            TransaksiID: this.state.TransaksiID,
-            UserName: this.state.UserName,
-            Jenis: this.state.Jenis,
-            isAllData: this.state.isAllData,
-            DateMin: this.state.DateMin,
-            DateMax: this.state.DateMax,
-            DiskonMin: this.state.DiskonMin,
-            DiskonMax: this.state.DiskonMax,
-            PotonganHargaMin: this.state.PotonganHargaMin,
-            PotonganHargaMax: this.state.PotonganHargaMax,
-            TotalTransaksiMin: this.state.TotalTransaksiMin,
-            TotalTransaksiMax: this.state.TotalTransaksiMax,
-            Ket: this.state.Ket,
+            TransaksiID: this.state.isAllData ? null : this.state.TransaksiID,
+            UserName: this.state.isAllData ? null : this.state.UserName,
+            Jenis: this.state.isAllData ? null : this.state.Jenis,
+            DateMin: this.state.isAllData ? null : (this.state.isAllDate ? null : this.state.DateMin),
+            DateMax: this.state.isAllData ? null : (this.state.isAllDate ? null : this.state.DateMax),
+            DiskonMin: this.state.isAllData ? null : this.state.DiskonMin,
+            DiskonMax: this.state.isAllData ? null : this.state.DiskonMax,
+            PotonganHargaMin: this.state.isAllData ? null : this.state.PotonganHargaMin,
+            PotonganHargaMax: this.state.isAllData ? null : this.state.PotonganHargaMax,
+            TotalTransaksiMin: this.state.isAllData ? null : this.state.TotalTransaksiMin,
+            TotalTransaksiMax: this.state.isAllData ? null : this.state.TotalTransaksiMax,
+            Ket: this.state.isAllData ? null : this.state.Ket,
         }
-        if ((!data.DateMin && !data.DateMax) || (data.isAllData)) {
+        if ((!data.DateMin && !data.DateMax) || (isAllData) || (isAllDate)) {
             this.props.Create_Info_Messages(null, 'anda mencoba memfilter semua data, mungkin akan memakan waktu proses cukup lama')
         }
         if (((data.DateMax < data.DateMin) && (data.DateMax && data.DateMin)) ||
@@ -71,10 +72,11 @@ class ListTransaksiQuery extends React.Component {
         const st_halftextfield = { ...MUI_VerticalMargin, ...MUI_HorizontalHalfMargin, ...MUI_HalfWidth }
         const choices = ['Belanja', 'Transaksi']
         const {
+            isAllData,
             TransaksiID,
             UserName,
             Jenis,
-            isAllData,
+            isAllDate,
             DateMin,
             DateMax,
             DiskonMin,
@@ -88,123 +90,139 @@ class ListTransaksiQuery extends React.Component {
         return (
             <Fragment>
                 <form onSubmit={this.Form_OnSubmit}>
-                    <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Transaksi ID' name='TransaksiID' value={TransaksiID} />
-                    <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='UserName' name='UserName' value={UserName} />
-                    {/* <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Jenis Transaksi' name='Jenis' value={Jenis} /> */}
-                    <FormControl style={st_textfield} variant="filled">
-                        <InputLabel shrink >Jenis Transaksi</InputLabel>
-                        <Select native onChange={this.Form_OnChange} label="Jenis Transaksi" name='Jenis' value={Jenis} labelWidth={100} >
-                            <option value="" disabled> -- select an option -- </option>
-                            {choices.map((item, index) =>
-                                <option key={index} value={item}>{item}</option>
-                            )}
-                        </Select>
-                    </FormControl>
                     <label>Cari dari Keseluruhan Data:</label><br />
                     <div className='switch' style={MUI_VerticalMargin}>
                         <input type="checkbox" onChange={this.CheckBox_OnChange} name='isAllData' checked={isAllData} /><span></span><br />
                     </div><br />
-                    {!isAllData ? (
+
+                    {isAllData ? null : (
                         <Fragment>
+                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Transaksi ID' name='TransaksiID' value={TransaksiID} />
+
+                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='UserName' name='UserName' value={UserName} />
+
+                            <FormControl style={st_textfield} variant="filled">
+                                <InputLabel shrink >Jenis Transaksi</InputLabel>
+                                <Select native onChange={this.Form_OnChange} label="Jenis Transaksi" name='Jenis' value={Jenis} labelWidth={100} >
+                                    <option value=""> -- select an option -- </option>
+                                    {choices.map((item, index) =>
+                                        <option key={index} value={item}>{item}</option>
+                                    )}
+                                </Select>
+                            </FormControl>
+
+                            <label>Cari dari Keseluruhan Tanggal:</label><br />
+                            <div className='switch' style={MUI_VerticalMargin}>
+                                <input type="checkbox" onChange={this.CheckBox_OnChange} name='isAllDate' checked={isAllDate} /><span></span><br />
+                            </div><br />
+                            {!isAllDate ? (
+                                <Fragment>
+                                    <label>Cari Berdasarkan Tanggal:</label><br />
+                                    <TextField style={st_halftextfield} variant='outlined' onChange={this.Form_OnChange} type='datetime-local' label='tanggal Minimum' name='DateMin' value={DateMin} InputLabelProps={{ shrink: true }} /><br />
+                                    <TextField style={st_halftextfield} variant='outlined' onChange={this.Form_OnChange} type='datetime-local' label='tanggal Maksimum' name='DateMax' value={DateMax} InputLabelProps={{ shrink: true }} /><br />
+                                </Fragment>
+                            ) : null}
+
+                            <label>Cari Berdasarkan Diskon di Transaksi:</label><br />
+                            <TextField
+                                style={st_halftextfield}
+                                variant='outlined'
+                                onChange={this.Form_OnChange}
+                                type='number'
+                                label='Diskon Minimum'
+                                name='DiskonMin'
+                                value={DiskonMin}
+                                InputProps={{
+                                    startAdornment:
+                                        <InputAdornment position="start">
+                                            %
+                            </InputAdornment>,
+                                }}
+                            /><br />
+                            <TextField
+                                style={st_halftextfield}
+                                variant='outlined'
+                                onChange={this.Form_OnChange}
+                                type='number'
+                                label='Diskon Maksimum'
+                                name='DiskonMax'
+                                value={DiskonMax}
+                                InputProps={{
+                                    startAdornment:
+                                        <InputAdornment position="start">
+                                            %
+                            </InputAdornment>,
+                                }}
+                            /><br />
+
+                            <label>Cari Berdasarkan Total Potongan Harga di Transaksi:</label><br />
+                            <TextField
+                                style={st_halftextfield}
+                                variant='outlined'
+                                onChange={this.Form_OnChange}
+                                type='number'
+                                label='Potongan Harga Minimum'
+                                name='PotonganHargaMin'
+                                value={PotonganHargaMin}
+                                InputProps={{
+                                    startAdornment:
+                                        <InputAdornment position="start">
+                                            Rp
+                            </InputAdornment>,
+                                }}
+                            /><br />
+                            <TextField
+                                style={st_halftextfield}
+                                variant='outlined'
+                                onChange={this.Form_OnChange}
+                                type='number'
+                                label='Potongan Harga Maksimum'
+                                name='PotonganHargaMax'
+                                value={PotonganHargaMax}
+                                InputProps={{
+                                    startAdornment:
+                                        <InputAdornment position="start">
+                                            Rp
+                            </InputAdornment>,
+                                }}
+                            /><br />
+
                             <label>Cari Berdasarkan Total Transaksi:</label><br />
-                            <TextField style={st_halftextfield} variant='outlined' onChange={this.Form_OnChange} type='datetime-local' label='tanggal Minimum' name='DateMin' value={DateMin} InputLabelProps={{ shrink: true }} /><br />
-                            <TextField style={st_halftextfield} variant='outlined' onChange={this.Form_OnChange} type='datetime-local' label='tanggal Maksimum' name='DateMax' value={DateMax} InputLabelProps={{ shrink: true }} /><br />
+                            <TextField
+                                style={st_halftextfield}
+                                variant='outlined'
+                                onChange={this.Form_OnChange}
+                                type='number'
+                                label='Total Transaksi Minimum'
+                                name='TotalTransaksiMin'
+                                value={TotalTransaksiMin}
+                                InputProps={{
+                                    startAdornment:
+                                        <InputAdornment position="start">
+                                            Rp
+                            </InputAdornment>,
+                                }}
+                            /><br />
+                            <TextField
+                                style={st_halftextfield}
+                                variant='outlined'
+                                onChange={this.Form_OnChange}
+                                type='number'
+                                label='Total Transaksi Maksimum'
+                                name='TotalTransaksiMax'
+                                value={TotalTransaksiMax}
+                                InputProps={{
+                                    startAdornment:
+                                        <InputAdornment position="start">
+                                            Rp
+                            </InputAdornment>,
+                                }}
+                            /><br />
+
+                            <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Keteragan' name='Ket' value={Ket} />
+
                         </Fragment>
-                    ) : null}
-                    <label>Cari Berdasarkan Diskon Transaksi:</label><br />
-                    <TextField
-                        style={st_halftextfield}
-                        variant='outlined'
-                        onChange={this.Form_OnChange}
-                        type='number'
-                        label='Diskon Minimum'
-                        name='DiskonMin'
-                        value={DiskonMin}
-                        InputProps={{
-                            startAdornment:
-                                <InputAdornment position="start">
-                                    %
-                            </InputAdornment>,
-                        }}
-                    /><br />
-                    <TextField
-                        style={st_halftextfield}
-                        variant='outlined'
-                        onChange={this.Form_OnChange}
-                        type='number'
-                        label='Diskon Maksimum'
-                        name='DiskonMax'
-                        value={DiskonMax}
-                        InputProps={{
-                            startAdornment:
-                                <InputAdornment position="start">
-                                    %
-                            </InputAdornment>,
-                        }}
-                    /><br />
-                    <label>Cari Berdasarkan Total Potongan Harga Transaksi:</label><br />
-                    <TextField
-                        style={st_halftextfield}
-                        variant='outlined'
-                        onChange={this.Form_OnChange}
-                        type='number'
-                        label='Potongan Harga Minimum'
-                        name='PotonganHargaMin'
-                        value={PotonganHargaMin}
-                        InputProps={{
-                            startAdornment:
-                                <InputAdornment position="start">
-                                    Rp
-                            </InputAdornment>,
-                        }}
-                    /><br />
-                    <TextField
-                        style={st_halftextfield}
-                        variant='outlined'
-                        onChange={this.Form_OnChange}
-                        type='number'
-                        label='Potongan Harga Maksimum'
-                        name='PotonganHargaMax'
-                        value={PotonganHargaMax}
-                        InputProps={{
-                            startAdornment:
-                                <InputAdornment position="start">
-                                    Rp
-                            </InputAdornment>,
-                        }}
-                    /><br />
-                    <label>Cari Berdasarkan Total Transaksi:</label><br />
-                    <TextField
-                        style={st_halftextfield}
-                        variant='outlined'
-                        onChange={this.Form_OnChange}
-                        type='number'
-                        label='Total Transaksi Minimum'
-                        name='TotalTransaksiMin'
-                        value={TotalTransaksiMin}
-                        InputProps={{
-                            startAdornment:
-                                <InputAdornment position="start">
-                                    Rp
-                            </InputAdornment>,
-                        }}
-                    /><br />
-                    <TextField
-                        style={st_halftextfield}
-                        variant='outlined'
-                        onChange={this.Form_OnChange}
-                        type='number'
-                        label='Total Transaksi Maksimum'
-                        name='TotalTransaksiMax'
-                        value={TotalTransaksiMax}
-                        InputProps={{
-                            startAdornment:
-                                <InputAdornment position="start">
-                                    Rp
-                            </InputAdornment>,
-                        }}
-                    /><br />
-                    <TextField style={st_textfield} variant='outlined' onChange={this.Form_OnChange} type='text' label='Keteragan' name='Ket' value={Ket} />
+                    )}
 
                     <Button type='submit' style={st_textfield} size="large" variant='contained' color='primary' >Cari</Button>
                 </form>

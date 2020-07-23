@@ -92,7 +92,8 @@ class ImportKatagoriBarang extends React.Component {
                     />
                     {/* <input type="file" onChange={this.loadFileXLSX.bind(this)} value={this.state.UploadFile} /> */}
                     <GenericModals
-                        size='l'
+                        size='xl'
+                        uncontrollsize={true}
                         header='Review Import Katagori Barang'
                         body={<ReviewKatagoriBarangImport />}
                         Buttontype='submit'
