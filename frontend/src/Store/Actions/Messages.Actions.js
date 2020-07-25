@@ -8,8 +8,8 @@ import {
 
 export const Create_Success_Messages = (StatusCode, msg) => (dispatch) => {
     const data = {
-        Status: StatusCode,
-        msg: msg
+        Status: StatusCode ? StatusCode : null,
+        msg: msg ? msg : null
     }
     dispatch({
         type: SUCCESS_MESSAGES,
@@ -19,8 +19,8 @@ export const Create_Success_Messages = (StatusCode, msg) => (dispatch) => {
 
 export const Create_Info_Messages = (StatusCode, msg) => (dispatch) => {
     const data = {
-        Status: StatusCode,
-        msg: msg
+        Status: StatusCode ? StatusCode : null,
+        msg: msg ? msg : null
     }
     dispatch({
         type: INFO_MESSAGES,
@@ -30,8 +30,8 @@ export const Create_Info_Messages = (StatusCode, msg) => (dispatch) => {
 
 export const Create_Warning_Messages = (StatusCode, msg) => (dispatch) => {
     const data = {
-        Status: StatusCode,
-        msg: msg
+        Status: StatusCode ? StatusCode : null,
+        msg: msg ? msg : null
     }
     dispatch({
         type: WARNING_MESSAGES,
@@ -41,8 +41,8 @@ export const Create_Warning_Messages = (StatusCode, msg) => (dispatch) => {
 
 export const Create_Error_Messages = (StatusCode, msg) => (dispatch) => {
     const data = {
-        Status: StatusCode,
-        msg: msg
+        Status: StatusCode ? StatusCode : null,
+        msg: msg ? msg : null
     }
     dispatch({
         type: ERROR_MESSAGES,

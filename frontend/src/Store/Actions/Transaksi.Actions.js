@@ -1,10 +1,11 @@
 import axios from 'axios'
 
-import { tokenConfig } from './Auth.Actions'
+import { tokenConfig, Get_IpAddres } from './Auth.Actions'
 
 import {
     TRANSAKSI_LOADING,
     TRANSAKSI_LOADED,
+    RELOADE_PAGE,
     CEK_IMPORT_TRANSAKSI,
     ////// TRANSAKSI
     ADD_BARANG_TO_TRANSAKSI,
@@ -30,6 +31,7 @@ import {
 
 ////// TRANSAKSI
 export const Add_Barang_To_Transaksi = (Barang) => (dispatch) => {
+    // console.log('Log: Add_Barang_To_Transaksi -> Barang', Barang)
     dispatch({ type: TRANSAKSI_LOADING })
     dispatch({
         type: ADD_BARANG_TO_TRANSAKSI,
@@ -38,6 +40,11 @@ export const Add_Barang_To_Transaksi = (Barang) => (dispatch) => {
     dispatch({ type: TRANSAKSI_LOADED })
 }
 export const Change_Transaksi_Detail = (Index, Jumlah, NamaSatuan, MinBarang, HargaSatuan) => (dispatch) => {
+    // console.log('Log: Change_Transaksi_Detail -> Index', Index)
+    // console.log('Log: Change_Transaksi_Detail -> Jumlah', Jumlah)
+    // console.log('Log: Change_Transaksi_Detail -> NamaSatuan', NamaSatuan)
+    // console.log('Log: Change_Transaksi_Detail -> MinBarang', MinBarang)
+    // console.log('Log: Change_Transaksi_Detail -> HargaSatuan', HargaSatuan)
     dispatch({ type: TRANSAKSI_LOADING })
     const TotalBarang = Jumlah * MinBarang
     const HargaTotal = TotalBarang * HargaSatuan
@@ -48,7 +55,7 @@ export const Change_Transaksi_Detail = (Index, Jumlah, NamaSatuan, MinBarang, Ha
     dispatch({ type: TRANSAKSI_LOADED })
 }
 export const Clear_A_Barang_From_Transaksi = (Index) => (dispatch) => {
-    // console.log(Index )
+    // console.log('Log: Clear_A_Barang_From_Transaksi -> Index', Index)
     dispatch({ type: TRANSAKSI_LOADING })
     dispatch({
         type: CLEAR_A_BARANG_FROM_TRANSAKSI,
@@ -57,18 +64,34 @@ export const Clear_A_Barang_From_Transaksi = (Index) => (dispatch) => {
     dispatch({ type: TRANSAKSI_LOADED })
 }
 export const Clear_Barang_In_Transaksi = () => (dispatch) => {
-    // console.log(2)
     dispatch({ type: TRANSAKSI_LOADING })
     dispatch({ type: CLEAR_BARANG_IN_TRANSAKSI })
     dispatch({ type: TRANSAKSI_LOADED })
 }
 
-export const Transaksi_Transaksi = (Data, Diskon, PotonganHarga, Ket, Auth) => (dispatch, getState) => {
-    // console.log(2)
+export const Transaksi_Transaksi = (Data, Diskon, PotonganHarga, Ket, Auth) => async (dispatch, getState) => {
+    // console.log('Log: Transaksi_Transaksi -> Data', Data)
+    // console.log('Log: Transaksi_Transaksi -> Diskon', Diskon)
+    // console.log('Log: Transaksi_Transaksi -> PotonganHarga', PotonganHarga)
+    // console.log('Log: Transaksi_Transaksi -> Ket', Ket)
+    // console.log('Log: Transaksi_Transaksi -> Auth', Auth)
     dispatch({ type: TRANSAKSI_LOADING })
-    if (Auth) {
+    try {
+        if (!Auth) {
+            const newerr = {
+                response: {
+                    data: {
+                        msg: 'anda harus login untuk melakukan ini'
+                    }
+                }
+            }
+            throw newerr
+        }
+
+        const IpAddres = Get_IpAddres()
+        // console.log('Log: Transaksi_Transaksi -> IpAddres', IpAddres)
+
         const NamaKasir = Auth.UserName
-        // const NamaKasir = null
         const DetailTransaksi = Data.map(({ SatuanOptions, isDecimal, isEditAble, ...item }) => item)
         const Total = DetailTransaksi.reduce((prev, cur) => {
             return prev + cur.HargaTotal
@@ -86,23 +109,32 @@ export const Transaksi_Transaksi = (Data, Diskon, PotonganHarga, Ket, Auth) => (
         }
 
         const body = JSON.stringify({ NamaKasir, DetailTransaksi, Diskon, PotonganHarga, TotalPembayaran, Ket })
-        axios.post('/api/transaksi/transaksi/tambah', body, tokenConfig(getState))
-            .then(res => {
-                // console.log(res)
-                dispatch(Create_Success_Messages(res.status ? res.status : null, res.data.msg ? res.data.msg : null))
-            }).catch(err => {
-                console.log(err)
-                dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg))
-            })
-    } else {
-        dispatch(Create_Error_Messages(null, 'anda harus login untuk melakukan ini'))
+        const Responses = await axios.post(`${IpAddres}/api/transaksi/transaksi/tambah`, body, tokenConfig(getState))
+        // console.log('Log: Transaksi_Transaksi -> Responses', Responses)
+        if (Responses) {
+            dispatch(Create_Success_Messages(Responses.status ? Responses.status : null, Responses.data.msg ? Responses.data.msg : null))
+            dispatch({ type: TRANSAKSI_LOADED })
+            dispatch({ type: RELOADE_PAGE })
+        }
+    } catch (err) {
+        console.log('Log: Transaksi_Transaksi -> err', err)
+        dispatch(
+            Create_Error_Messages(
+                err.response ? (
+                    err.response.status ? err.response.status
+                        : null) : null,
+                err.response ? (
+                    err.response.data.msg ? err.response.data.msg
+                        : null) : 'anda tidak terhubung dengan server'
+            ))
+        dispatch({ type: TRANSAKSI_LOADED })
     }
-    dispatch({ type: TRANSAKSI_LOADED })
 }
 
 ////// BELANJA
 
 export const Add_Barang_To_Belanja = (Barang) => (dispatch) => {
+    // console.log('Log: Add_Barang_To_Belanja -> Barang', Barang)
     dispatch({ type: TRANSAKSI_LOADING })
     dispatch({
         type: ADD_BARANG_TO_BELANJA,
@@ -111,6 +143,10 @@ export const Add_Barang_To_Belanja = (Barang) => (dispatch) => {
     dispatch({ type: TRANSAKSI_LOADED })
 }
 export const Change_Belanja_Detail = (Index, Jumlah, HargaModal, HargaJual) => (dispatch) => {
+    // console.log('Log: Change_Belanja_Detail -> Index', Index)
+    // console.log('Log: Change_Belanja_Detail -> Jumlah', Jumlah)
+    // console.log('Log: Change_Belanja_Detail -> HargaModal', HargaModal)
+    // console.log('Log: Change_Belanja_Detail -> HargaJual', HargaJual)
     dispatch({ type: TRANSAKSI_LOADING })
     const TotalModal = Jumlah * HargaModal
     dispatch({
@@ -120,7 +156,7 @@ export const Change_Belanja_Detail = (Index, Jumlah, HargaModal, HargaJual) => (
     dispatch({ type: TRANSAKSI_LOADED })
 }
 export const Clear_A_Barang_From_Belanja = (Index) => (dispatch) => {
-    // console.log(Index )
+    // console.log('Log: Clear_A_Barang_From_Belanja -> Index', Index)
     dispatch({ type: TRANSAKSI_LOADING })
     dispatch({
         type: CLEAR_A_BARANG_FROM_BELANJA,
@@ -129,162 +165,239 @@ export const Clear_A_Barang_From_Belanja = (Index) => (dispatch) => {
     dispatch({ type: TRANSAKSI_LOADED })
 }
 export const Clear_Barang_In_Belanja = () => (dispatch) => {
-    // console.log(2)
     dispatch({ type: TRANSAKSI_LOADING })
     dispatch({ type: CLEAR_BARANG_IN_BELANJA })
     dispatch({ type: TRANSAKSI_LOADED })
 }
 
-export const Transaksi_Belanja = (Data, Ket, Auth) => (dispatch, getState) => {
-    // console.log(2)
+export const Transaksi_Belanja = (Data, Ket, Auth) => async (dispatch, getState) => {
+    // console.log('Log: Transaksi_Belanja -> Data', Data)
+    // console.log('Log: Transaksi_Belanja -> Ket', Ket)
+    // console.log('Log: Transaksi_Belanja -> Auth', Auth)
     dispatch({ type: TRANSAKSI_LOADING })
-    if (Auth) {
+    try {
+        if (!Auth) {
+            const newerr = {
+                response: {
+                    data: {
+                        msg: 'anda harus login untuk melakukan ini'
+                    }
+                }
+            }
+            throw newerr
+        }
+        const IpAddres = Get_IpAddres()
+        // console.log('Log: Transaksi_Belanja -> IpAddres', IpAddres)
+
         const NamaKasir = Auth.UserName
-        // const NamaKasir = null
         const DetailTransaksi = Data.map(({ isEditAble, ...item }) => item)
         const TotalPembayaran = DetailTransaksi.reduce((prev, cur) => {
             return prev + cur.TotalModal
         }, 0)
 
         const body = JSON.stringify({ NamaKasir, DetailTransaksi, TotalPembayaran, Ket })
-        // console.log(body)
-        axios.post('/api/transaksi/belanja/tambah', body, tokenConfig(getState))
-            .then(res => {
-                // console.log(res)
-                dispatch(Create_Success_Messages(res.status ? res.status : null, res.data.msg ? res.data.msg : null))
-            }).catch(err => {
-                console.log(err)
-                dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg))
-            })
-    } else {
-        dispatch(Create_Error_Messages(null, 'anda harus login untuk melakukan ini'))
+        const Responses = await axios.post(`${IpAddres}/api/transaksi/belanja/tambah`, body, tokenConfig(getState))
+        // console.log('Log: Transaksi_Belanja -> Responses', Responses)
+        if (Responses) {
+            dispatch(Create_Success_Messages(Responses.status ? Responses.status : null, Responses.data.msg ? Responses.data.msg : null))
+            dispatch({ type: TRANSAKSI_LOADED })
+            dispatch({ type: RELOADE_PAGE })
+        }
+    } catch (err) {
+        console.log('Log: Transaksi_Belanja -> err', err)
+        dispatch(
+            Create_Error_Messages(
+                err.response ? (
+                    err.response.status ? err.response.status
+                        : null) : null,
+                err.response ? (
+                    err.response.data.msg ? err.response.data.msg
+                        : null) : 'anda tidak terhubung dengan server'
+            ))
+        dispatch({ type: TRANSAKSI_LOADED })
     }
-    dispatch({ type: TRANSAKSI_LOADED })
 }
 
-export const Load_Transaksi_List = () => (dispatch, getState) => {
+export const Load_Transaksi_List = () => async (dispatch, getState) => {
     dispatch({ type: TRANSAKSI_LOADING })
-    axios.get('/api/transaksi/list', tokenConfig(getState))
-        .then(res => {
-            // console.log(res)
+    try {
+        const IpAddres = Get_IpAddres()
+        // console.log('Log: Load_Transaksi_List -> IpAddres', IpAddres)
+
+        const Responses = await axios.get(`${IpAddres}/api/transaksi/list`, tokenConfig(getState))
+        // console.log('Log: Load_Transaksi_List -> Responses', Responses)
+        if (Responses) {
             dispatch({
                 type: LIST_TRANSAKSI,
-                payload: res.data.ListTransaksi
+                payload: Responses.data.ListTransaksi
             })
-            // dispatch({ type: TRANSAKSI_LOADED })
-        }).catch(err => {
-            console.log(err.response)
-            dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg ? err.response.data.msg : null))
-            // dispatch({ type: TRANSAKSI_LOADED })
-        })
-    dispatch({ type: TRANSAKSI_LOADED })
+            dispatch({ type: TRANSAKSI_LOADED })
+        }
+    } catch (err) {
+        console.log('Log: Load_Transaksi_List -> err', err)
+        dispatch(
+            Create_Error_Messages(
+                err.response ? (
+                    err.response.status ? err.response.status
+                        : null) : null,
+                err.response ? (
+                    err.response.data.msg ? err.response.data.msg
+                        : null) : 'anda tidak terhubung dengan server'
+            ))
+        dispatch({ type: TRANSAKSI_LOADED })
+    }
 }
-export const Load_Query_Transaksi_List = (data) => (dispatch, getState) => {
+export const Load_Query_Transaksi_List = (data) => async (dispatch, getState) => {
+    // console.log('Log: Load_Query_Transaksi_List -> data', data)
     dispatch({ type: TRANSAKSI_LOADING })
-    const TransaksiID = data.TransaksiID
-    const UserName = data.UserName
-    const Jenis = data.Jenis
-    const DateMin = data.DateMin
-    const DateMax = data.DateMax
-    const DiskonMin = data.DiskonMin
-    const DiskonMax = data.DiskonMax
-    const PotonganHargaMin = data.PotonganHargaMin
-    const PotonganHargaMax = data.PotonganHargaMax
-    const TotalTransaksiMin = data.TotalTransaksiMin
-    const TotalTransaksiMax = data.TotalTransaksiMax
-    const Ket = data.Ket
+    try {
+        const IpAddres = Get_IpAddres()
+        // console.log('Log: Load_Query_Transaksi_List -> IpAddres', IpAddres)
 
-    const body = JSON.stringify({ TransaksiID, UserName, Jenis, DateMin, DateMax, DiskonMin, DiskonMax, PotonganHargaMin, PotonganHargaMax, TotalTransaksiMin, TotalTransaksiMax, Ket })
-    axios.post('/api/transaksi/querylist', body, tokenConfig(getState))
-        .then(res => {
-            // console.log(res)
+        const TransaksiID = data.TransaksiID
+        const UserName = data.UserName
+        const Jenis = data.Jenis
+        const DateMin = data.DateMin
+        const DateMax = data.DateMax
+        const DiskonMin = data.DiskonMin
+        const DiskonMax = data.DiskonMax
+        const PotonganHargaMin = data.PotonganHargaMin
+        const PotonganHargaMax = data.PotonganHargaMax
+        const TotalTransaksiMin = data.TotalTransaksiMin
+        const TotalTransaksiMax = data.TotalTransaksiMax
+        const Ket = data.Ket
+
+        const body = JSON.stringify({ TransaksiID, UserName, Jenis, DateMin, DateMax, DiskonMin, DiskonMax, PotonganHargaMin, PotonganHargaMax, TotalTransaksiMin, TotalTransaksiMax, Ket })
+        const Responses = await axios.post(`${IpAddres}/api/transaksi/querylist`, body, tokenConfig(getState))
+        // console.log('Log: Load_Query_Transaksi_List -> Responses', Responses)
+        if (Responses) {
             dispatch({
                 type: QUERY_LIST_TRANSAKSI,
-                payload: res.data.ListTransaksi
+                payload: Responses.data.ListTransaksi
             })
-            if (res.data.ListTransaksi) {
-                const ListTransaksi = res.data.ListTransaksi
+            if (Responses.data.ListTransaksi) {
+                const ListTransaksi = Responses.data.ListTransaksi
                 if (ListTransaksi.length >= 1) {
-                    dispatch(Create_Success_Messages(res.status ? res.status : null, res.data.msg ? res.data.msg : null))
+                    dispatch(Create_Success_Messages(Responses.status ? Responses.status : null, Responses.data.msg ? Responses.data.msg : null))
                 } else {
                     dispatch(Create_Error_Messages(null, 'data tidak ditemukan'))
                 }
             }
-            // dispatch({ type: TRANSAKSI_LOADED })
-        }).catch(err => {
-            console.log(err.response)
-            dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg ? err.response.data.msg : null))
-            // dispatch({ type: TRANSAKSI_LOADED })
-        })
-    dispatch({ type: TRANSAKSI_LOADED })
+            dispatch({ type: TRANSAKSI_LOADED })
+        }
+    } catch (err) {
+        console.log('Log: Load_Query_Transaksi_List -> err', err)
+        dispatch(
+            Create_Error_Messages(
+                err.response ? (
+                    err.response.status ? err.response.status
+                        : null) : null,
+                err.response ? (
+                    err.response.data.msg ? err.response.data.msg
+                        : null) : 'anda tidak terhubung dengan server'
+            ))
+        dispatch({ type: TRANSAKSI_LOADED })
+    }
 }
 export const get_TransaksiId_Detail = (TransaksiID) => (dispatch) => {
-    // console.log('TransaksiID', TransaksiID)
+    // console.log('Log: get_TransaksiId_Detail -> TransaksiID', TransaksiID)
     dispatch({
         type: GET_TRANSAKSI_ID_FOR_DETAIL,
         payload: TransaksiID
     })
 }
-export const get_TransaksiDetail = (TransaksiID) => (dispatch, getState) => {
+export const get_TransaksiDetail = (TransaksiID) => async (dispatch, getState) => {
+    // console.log('Log: get_TransaksiDetail -> TransaksiID', TransaksiID)
     dispatch({ type: TRANSAKSI_LOADING })
-    axios.get(`/api/transaksi/detail/${TransaksiID}`, tokenConfig(getState))
-        .then(res => {
-            // console.log(res)
+    try {
+        const IpAddres = Get_IpAddres()
+        // console.log('Log: get_TransaksiDetail -> IpAddres', IpAddres)
+
+        const Responses = await axios.get(`${IpAddres}/api/transaksi/detail/${TransaksiID}`, tokenConfig(getState))
+        // console.log('Log: get_TransaksiDetail -> Responses', Responses)
+        if (Responses) {
             dispatch({
                 type: TRANSAKSI_DETAIL,
-                payload: res.data.transaksi,
+                payload: Responses.data.transaksi,
             })
-            // dispatch({ type: TRANSAKSI_LOADED })
-        }).catch(err => {
-            console.log(err.response)
-            dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg ? err.response.data.msg : null))
-            // dispatch({ type: TRANSAKSI_LOADED })
-        })
-    dispatch({ type: TRANSAKSI_LOADED })
+            dispatch({ type: TRANSAKSI_LOADED })
+        }
+    } catch (err) {
+        console.log('Log: get_TransaksiDetail -> err', err)
+        dispatch(
+            Create_Error_Messages(
+                err.response ? (
+                    err.response.status ? err.response.status
+                        : null) : null,
+                err.response ? (
+                    err.response.data.msg ? err.response.data.msg
+                        : null) : 'anda tidak terhubung dengan server'
+            ))
+        dispatch({ type: TRANSAKSI_LOADED })
+    }
 }
 
-export const Export_Transaksi = (Data, Auth) => (dispatch, getState) => {
+export const Export_Transaksi = (Data, Auth) => async (dispatch, getState) => {
+    // console.log('Log: Export_Transaksi -> Data', Data)
+    // console.log('Log: Export_Transaksi -> Auth', Auth)
     dispatch({ type: TRANSAKSI_LOADING })
-    if (Auth) {
-        const isSuperUser = Auth.isSuperUser
-        if (isSuperUser) {
-            const ExportData = Data
-
-            const body = JSON.stringify({ ExportData })
-
-            axios.post(`/api/transaksi/export`, body, {
-                responseType: 'blob',
-                ...tokenConfig(getState)
-            })
-                .then(res => {
-                    console.log(res)
-
-                    const url = window.URL.createObjectURL(new Blob([res.data]))
-                    const link = document.createElement('a')
-                    link.href = url
-                    link.setAttribute('download', 'Export.Transaksi.xlsx')
-                    document.body.appendChild(link)
-                    link.click()
-
-                    dispatch(Create_Success_Messages(null, 'Proses Export Transaksi Berhasil'))
-                }).catch(err => {
-                    console.log(err.response)
-                    // dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg))
-                    dispatch(Create_Error_Messages(null, 'Ada Kesalahan Pada Proses Export Transaksi'))
-                })
-        } else {
-            dispatch(Create_Error_Messages(null, 'maaf anda tidak diperkenankan melakukan ini'))
+    try {
+        if (!Auth) {
+            const newerr = {
+                response: {
+                    data: {
+                        msg: 'anda harus login untuk melakukan ini'
+                    }
+                }
+            }
+            throw newerr
         }
-    } else {
-        dispatch(Create_Error_Messages(null, 'anda harus login untuk melakukan ini'))
+
+        const isSuperUser = Auth.isSuperUser
+        if (!isSuperUser) {
+            const newerr = {
+                response: {
+                    data: {
+                        msg: 'maaf anda tidak diperkenankan melakukan ini'
+                    }
+                }
+            }
+            throw newerr
+        }
+
+        const IpAddres = Get_IpAddres()
+        // console.log('Log: Export_Transaksi -> IpAddres', IpAddres)
+
+        const ExportData = Data
+
+        const body = JSON.stringify({ ExportData })
+
+        const Responses = await axios.post(`${IpAddres}/api/transaksi/export`, body, {
+            responseType: 'blob',
+            ...tokenConfig(getState)
+        })
+        // console.log('Log: Export_Transaksi -> Responses', Responses)
+        if (Responses) {
+            const url = window.URL.createObjectURL(new Blob([Responses.data]))
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', 'Export.Transaksi.xlsx')
+            document.body.appendChild(link)
+            link.click()
+
+            dispatch(Create_Success_Messages(null, 'Proses Export Transaksi Berhasil'))
+            dispatch({ type: TRANSAKSI_LOADED })
+        }
+    } catch (err) {
+        console.log('Log: Export_Transaksi -> err', err)
+        dispatch(Create_Error_Messages(null, 'Ada Kesalahan Pada Proses Export Transaksi'))
+        dispatch({ type: TRANSAKSI_LOADED })
     }
-    dispatch({ type: TRANSAKSI_LOADED })
 }
 
 export const Cek_Import_Transaksi = (Data) => (dispatch, getState) => {
+    // console.log('Log: Cek_Import_Transaksi -> Data', Data)
     dispatch({ type: TRANSAKSI_LOADING })
-    // console.log('Data', typeof Data)
-    // console.log('Data', Data)
     dispatch({
         type: CEK_IMPORT_TRANSAKSI,
         payload: Data
@@ -292,29 +405,59 @@ export const Cek_Import_Transaksi = (Data) => (dispatch, getState) => {
     dispatch({ type: TRANSAKSI_LOADED })
 }
 
-export const Import_Transaksi = (Data, Auth) => (dispatch, getState) => {
-    // console.log('Data',Data)
+export const Import_Transaksi = (Data, Auth) => async (dispatch, getState) => {
+    // console.log('Log: Import_Transaksi -> Data', Data)
+    // console.log('Log: Import_Transaksi -> Auth', Auth)
     dispatch({ type: TRANSAKSI_LOADING })
-    if (Auth) {
-        const isSuperUser = Auth.isSuperUser
-        if (isSuperUser) {
-            const ImportData = Data
-
-            const body = JSON.stringify({ ImportData })
-
-            axios.post(`/api/transaksi/import`, body, tokenConfig(getState))
-                .then(res => {
-                    // console.log(res)
-                    dispatch(Create_Success_Messages(res.status ? res.status : null, res.data.msg ? res.data.msg : null))
-                }).catch(err => {
-                    console.log(err.response)
-                    dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg))
-                })
-        } else {
-            dispatch(Create_Error_Messages(null, 'maaf anda tidak diperkenankan melakukan ini'))
+    try {
+        if (!Auth) {
+            const newerr = {
+                response: {
+                    data: {
+                        msg: 'anda harus login untuk melakukan ini'
+                    }
+                }
+            }
+            throw newerr
         }
-    } else {
-        dispatch(Create_Error_Messages(null, 'anda harus login untuk melakukan ini'))
+
+        const isSuperUser = Auth.isSuperUser
+        if (!isSuperUser) {
+            const newerr = {
+                response: {
+                    data: {
+                        msg: 'maaf anda tidak diperkenankan melakukan ini'
+                    }
+                }
+            }
+            throw newerr
+        }
+
+        const IpAddres = Get_IpAddres()
+        // console.log('Log: Import_Transaksi -> IpAddres', IpAddres)
+
+        const ImportData = Data
+
+        const body = JSON.stringify({ ImportData })
+
+        const Responses = await axios.post(`${IpAddres}/api/transaksi/import`, body, tokenConfig(getState))
+        // console.log('Log: Import_Transaksi -> Responses', Responses)
+        if (Responses) {
+            dispatch(Create_Success_Messages(Responses.status ? Responses.status : null, Responses.data.msg ? Responses.data.msg : null))
+            dispatch({ type: TRANSAKSI_LOADED })
+            dispatch({ type: RELOADE_PAGE })
+        }
+    } catch (err) {
+        console.log('Log: Import_Transaksi -> err', err)
+        dispatch(
+            Create_Error_Messages(
+                err.response ? (
+                    err.response.status ? err.response.status
+                        : null) : null,
+                err.response ? (
+                    err.response.data.msg ? err.response.data.msg
+                        : null) : 'anda tidak terhubung dengan server'
+            ))
+        dispatch({ type: TRANSAKSI_LOADED })
     }
-    dispatch({ type: TRANSAKSI_LOADED })
 }

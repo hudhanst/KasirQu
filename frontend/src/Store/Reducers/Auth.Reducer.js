@@ -3,6 +3,8 @@ import {
     DARKMODE_CONFIG,
     AUTH_LOADING,
     AUTH_LOADED,
+    RELOADE_PAGE,
+    SET_NEW_IP,
     LOGIN_SUCCESS,
     USER_LOADED,
     USER_EXPIRED,
@@ -12,6 +14,7 @@ import {
 const initialState = {
     token: localStorage.getItem('KasirQU_token'),
     isAuth: localStorage.getItem('KasirQU_isAuth'),
+    IpAddres: localStorage.getItem('KasirQU_Server_IpAddres'),
     isUserLoading: false,
     User: null,
     isDarkMode: localStorage.getItem('KasirQU_isDarkMode')
@@ -49,6 +52,17 @@ export default function (state = initialState, action) {
                 ...state,
                 User: action.payload
             }
+        case RELOADE_PAGE:
+            window.location.reload(true)
+            return {
+                ...state,
+            }
+        case SET_NEW_IP: {
+            localStorage.setItem('KasirQU_Server_IpAddres', action.payload)
+            return {
+                ...state,
+            }
+        }
         case LOGIN_SUCCESS:
             localStorage.setItem('KasirQU_token', action.payload.token)
             localStorage.setItem('KasirQU_isAuth', true)
