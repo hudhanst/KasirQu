@@ -56,6 +56,8 @@ class QueryHistoryList extends React.Component {
             'Transaksi/Belanja',
             'Barang/Transaksi/Belanja',
             'Barang/Transaksi/Transaksi',
+            'Toko',
+            'User',
         ]
         const ActionOptions = [
             'Add',
@@ -64,6 +66,7 @@ class QueryHistoryList extends React.Component {
             'Import/Add',
             'Belanja/Update',
             'Transaksi/Update',
+            'Create',
         ]
         const StatusOption = [
             { text: 'Sukses', value: true },

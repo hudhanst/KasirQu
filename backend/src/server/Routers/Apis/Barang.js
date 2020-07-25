@@ -45,8 +45,8 @@ const JenisBarang = require('../../Models/JenisBarang')
 router.post('/cek/barcode', auth, async (req, res) => {
     // console.log('cek/barcode')
     // console.log(req.body)
-    const { Barcode } = req.body
     try {
+        const { Barcode } = req.body
         const ExistData = await Barang.findOne({ Barcode: Barcode })
         if (ExistData) {
             return res.status(401).json({ msg: 'Barcode Barang sudah ada tidak bisa sama' })
@@ -68,8 +68,8 @@ router.post('/cek/barcode', auth, async (req, res) => {
 router.post('/cek/name', auth, async (req, res) => {
     // console.log('cek/name')
     // console.log(req.body)
-    const { Name } = req.body
     try {
+        const { Name } = req.body
         const ExistData = await Barang.findOne({ Name: Name })
         if (ExistData) {
             return res.status(401).json({ msg: 'Name Barang sudah ada tidak bisa sama' })
@@ -92,9 +92,9 @@ router.post('/cek/name', auth, async (req, res) => {
 router.post('/tambah', upload.single('BarangPic'), auth, async (req, res) => {
     // console.log('tambah')
     // console.log(req.body)
-    const { Barcode, Name, Jenis } = req.body
-    const UserId = req.user.id
     try {
+        const { Barcode, Name, Jenis } = req.body
+        const UserId = req.user.id
         ////// cek data
         if ((!Barcode) || (!Name) || (!Jenis)) {
             throw {
@@ -185,17 +185,18 @@ router.get('/list', auth, async (req, res) => {
 router.post('/querylist', auth, async (req, res) => {
     // console.log('api/barang/querylist')
     // console.log(req.body)
-    const NamaBarang = req.body.NamaBarang ? req.body.NamaBarang : []
-    const JenisBarang = req.body.JenisBarang ? req.body.JenisBarang : []
-    const Kepemilikan = req.body.Kepemilikan ? req.body.Kepemilikan : null
-    const StokMin = req.body.StokMin ? req.body.StokMin : null
-    const StokMax = req.body.StokMax ? req.body.StokMax : null
-    const HargaModalMin = req.body.HargaModalMin ? req.body.HargaModalMin : null
-    const HargaModalMax = req.body.HargaModalMax ? req.body.HargaModalMax : null
-    const HargaJualMin = req.body.HargaJualMin ? req.body.HargaJualMin : null
-    const HargaJualMax = req.body.HargaJualMax ? req.body.HargaJualMax : null
-    const Ket = req.body.Ket ? req.body.Ket : null
     try {
+        const NamaBarang = req.body.NamaBarang ? req.body.NamaBarang : []
+        const JenisBarang = req.body.JenisBarang ? req.body.JenisBarang : []
+        const Kepemilikan = req.body.Kepemilikan ? req.body.Kepemilikan : null
+        const StokMin = req.body.StokMin ? req.body.StokMin : null
+        const StokMax = req.body.StokMax ? req.body.StokMax : null
+        const HargaModalMin = req.body.HargaModalMin ? req.body.HargaModalMin : null
+        const HargaModalMax = req.body.HargaModalMax ? req.body.HargaModalMax : null
+        const HargaJualMin = req.body.HargaJualMin ? req.body.HargaJualMin : null
+        const HargaJualMax = req.body.HargaJualMax ? req.body.HargaJualMax : null
+        const Ket = req.body.Ket ? req.body.Ket : null
+
         const BarangQuery = {}
         if (NamaBarang.length > 0) {
             const ListBarcode = NamaBarang.map(namabarang => namabarang.Barcode)
@@ -345,10 +346,10 @@ router.get('/detail/:id', auth, async (req, res) => {
 router.patch('/detail/:id/update', upload.single('BarangPic'), auth, async (req, res) => {
     // console.log('detail/:id/update')
     // console.log(req.body)
-    const { Barcode } = req.body
-    const UserId = req.user.id
-
     try {
+        const { Barcode } = req.body
+        const UserId = req.user.id
+
         ////// cek data
         if (Barcode) {
             throw {
@@ -401,8 +402,8 @@ router.patch('/detail/:id/update', upload.single('BarangPic'), auth, async (req,
 //// @access  Private
 router.delete('/detail/:id/delete', auth, async (req, res) => {
     // console.log('detail/:id/delete')
-    const UserId = req.user.id
     try {
+        const UserId = req.user.id
         const DeletedBarang = await Barang.findByIdAndDelete(req.params.id)
 
         Add_to_History(UserId, null, 'Barang', 'Delete', JSON.stringify(DeletedBarang), true)
@@ -428,9 +429,9 @@ router.delete('/detail/:id/delete', auth, async (req, res) => {
 router.post('/export', auth, async (req, res) => {
     // console.log('barang/export')
     // console.log(req.body)
-    const UserId = req.user.id
-    const RequestExportList = req.body.ExportData
     try {
+        const UserId = req.user.id
+        const RequestExportList = req.body.ExportData
         if (!RequestExportList.length > 0) {
             throw {
                 msg: 'form tidak lengkap',
@@ -462,9 +463,9 @@ router.post('/export', auth, async (req, res) => {
 router.post('/import', auth, async (req, res) => {
     // console.log('barang/import')
     // console.log(req.body)
-    const { ImportData } = req.body
-    const UserId = req.user.id
     try {
+        const { ImportData } = req.body
+        const UserId = req.user.id
         if ((!ImportData || !ImportData.length > 0)) {
             throw {
                 msg: 'form tidak lengkap',

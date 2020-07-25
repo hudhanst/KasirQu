@@ -45,13 +45,13 @@ router.get('/list', auth, async (req, res) => {
 router.post('/querylist', auth, async (req, res) => {
     // console.log('api/history/querylist')
     // console.log(req.body)
-    const UserName = req.body.UserName ? req.body.UserName : null
-    const DateMin = req.body.DateMin ? req.body.DateMin : null
-    const DateMax = req.body.DateMax ? req.body.DateMax : null
-    const Location = req.body.Location ? req.body.Location : []
-    const Action = req.body.Action ? req.body.Action : []
-    const Status = ((req.body.Status === true || req.body.Status === 'true') || (req.body.Status === false || req.body.Status === 'false')) ? req.body.Status : null
     try {
+        const UserName = req.body.UserName ? req.body.UserName : null
+        const DateMin = req.body.DateMin ? req.body.DateMin : null
+        const DateMax = req.body.DateMax ? req.body.DateMax : null
+        const Location = req.body.Location ? req.body.Location : []
+        const Action = req.body.Action ? req.body.Action : []
+        const Status = ((req.body.Status === true || req.body.Status === 'true') || (req.body.Status === false || req.body.Status === 'false')) ? req.body.Status : null
         const HistoryQuery = {}
         if (UserName) {
             Object.assign(HistoryQuery, { UserName: UserName })
@@ -123,9 +123,9 @@ router.get('/detail/:id', auth, async (req, res) => {
 router.post('/export', auth, async (req, res) => {
     // console.log('history/export')
     // console.log(req.body)
-    const UserId = req.user.id
-    const RequestExportList = req.body.ExportData
     try {
+        const UserId = req.user.id
+        const RequestExportList = req.body.ExportData
         if (!RequestExportList.length > 0) {
             throw {
                 msg: 'form tidak lengkap',

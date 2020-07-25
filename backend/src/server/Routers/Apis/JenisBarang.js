@@ -41,9 +41,9 @@ router.post('/cek', auth, async (req, res) => {
 //// @access  Private
 router.post('/tambah', auth, async (req, res) => {
     // console.log('api/jenisbarang/tambah')
-    const { NamaJenisBarang, Kepemilikan, Ket } = req.body
-    const UserId = req.user.id
     try {
+        const { NamaJenisBarang, Kepemilikan, Ket } = req.body
+        const UserId = req.user.id
         ////// varifikasi data
         if ((!NamaJenisBarang) || (!Kepemilikan)) {
             throw {
@@ -111,10 +111,10 @@ router.get('/list', auth, async (req, res) => {
 router.post('/querylist', auth, async (req, res) => {
     // console.log('api/jenisbarang/querylist')
     // console.log(req.body)
-    const JenisBarang = req.body.JenisBarang ? req.body.JenisBarang : []
-    const Kepemilikan = req.body.Kepemilikan ? req.body.Kepemilikan : null
-    const Ket = req.body.Ket ? req.body.Ket : null
     try {
+        const JenisBarang = req.body.JenisBarang ? req.body.JenisBarang : []
+        const Kepemilikan = req.body.Kepemilikan ? req.body.Kepemilikan : null
+        const Ket = req.body.Ket ? req.body.Ket : null
         const JenisBarangQuery = {}
         if (JenisBarang.length > 0) {
             const ListNamaJenisBarang = JenisBarang.map(jenisbarang => jenisbarang.NamaJenisBarang)
@@ -175,9 +175,9 @@ router.get('/detail/:id', auth, async (req, res) => {
 //// @access  Private
 router.patch('/detail/:id/update', auth, async (req, res) => {
     // console.log('api/jenisbarang/detail/:id/update')
-    const { NamaJenisBarang } = req.body
-    const UserId = req.user.id
     try {
+        const { NamaJenisBarang } = req.body
+        const UserId = req.user.id
         if (NamaJenisBarang) {
             throw {
                 msg: 'input yang anda masukkan tidak bisa diganti'
@@ -204,8 +204,8 @@ router.patch('/detail/:id/update', auth, async (req, res) => {
 //// @access  Private
 router.delete('/detail/:id/delete', auth, async (req, res) => {
     // console.log('api/jenisbarang/detail/:id/delete')
-    const UserId = req.user.id
     try {
+        const UserId = req.user.id
         const DeletedJenisBarang = await JenisBarang.findByIdAndDelete(req.params.id)
 
         Add_to_History(UserId, null, 'JenisBarang', 'Delete', JSON.stringify(DeletedJenisBarang), true)
@@ -240,9 +240,9 @@ router.post('/import', auth, async (req, res) => {
     // console.log('jenisbarang/import')
     // console.log(req.body)
     // console.log(req.user)
-    const { ImportData } = req.body
-    const UserId = req.user.id
     try {
+        const { ImportData } = req.body
+        const UserId = req.user.id
         if ((!ImportData || !ImportData.length > 0)) {
             // return res.status(400).json({ msg: 'form tidak lengkap' })
             throw {
@@ -318,9 +318,9 @@ router.post('/import', auth, async (req, res) => {
 router.post('/export', auth, async (req, res) => {
     // console.log('jenisbarang/export')
     // console.log(req.body)
-    const UserId = req.user.id
-    const RequestExportList = req.body.ExportData
     try {
+        const UserId = req.user.id
+        const RequestExportList = req.body.ExportData
         if (!RequestExportList.length > 0) {
             throw {
                 msg: 'form tidak lengkap',

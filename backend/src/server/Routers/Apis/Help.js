@@ -327,16 +327,16 @@ router.get('/graph/asetlist', auth, async (req, res) => {
 router.post('/graph/queryasetlist', auth, async (req, res) => {
     // console.log('/graph/queryasetlist', req.body)
 
-    const Kepemilikan = req.body.Kepemilikan ? req.body.Kepemilikan : null
-    const Barang = req.body.Barang ? req.body.Barang : []
-    const JenisBarang = req.body.JenisBarang ? req.body.JenisBarang : []
-    const StokMin = req.body.StokMin ? req.body.StokMin : null
-    const StokMax = req.body.StokMax ? req.body.StokMax : null
-    const HargaJualMin = req.body.HargaJualMin ? req.body.HargaJualMin : null
-    const HargaJualMax = req.body.HargaJualMax ? req.body.HargaJualMax : null
-    const Ket = req.body.Ket ? req.body.Ket : null
 
     try {
+        const Kepemilikan = req.body.Kepemilikan ? req.body.Kepemilikan : null
+        const Barang = req.body.Barang ? req.body.Barang : []
+        const JenisBarang = req.body.JenisBarang ? req.body.JenisBarang : []
+        const StokMin = req.body.StokMin ? req.body.StokMin : null
+        const StokMax = req.body.StokMax ? req.body.StokMax : null
+        const HargaJualMin = req.body.HargaJualMin ? req.body.HargaJualMin : null
+        const HargaJualMax = req.body.HargaJualMax ? req.body.HargaJualMax : null
+        const Ket = req.body.Ket ? req.body.Ket : null
         ////// create query
         const AsetQuery = {}
         if (Kepemilikan || JenisBarang.length > 0) {

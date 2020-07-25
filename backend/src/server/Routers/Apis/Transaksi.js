@@ -18,13 +18,13 @@ const Barang = require('../../Models/Barang')
 //// @access  Private
 router.get('/list', auth, async (req, res) => {
     // console.log('list')
-    const date = new Date()
-    const dd = date.getDate()
-    const mm = date.getMonth()
-    const yyyy = date.getFullYear()
-    const currentdate = new Date(yyyy, mm, dd)
-    const nextdate = new Date(yyyy, mm, dd + 1)
     try {
+        const date = new Date()
+        const dd = date.getDate()
+        const mm = date.getMonth()
+        const yyyy = date.getFullYear()
+        const currentdate = new Date(yyyy, mm, dd)
+        const nextdate = new Date(yyyy, mm, dd + 1)
         const ListTransaksi = await Get_Transaksi_List({ TanggalTransaksi: { $gt: currentdate, $lt: nextdate } }, '_id NamaKasir TanggalTransaksi Tipe TotalPembayaran')
 
         console.log('Transaksi list dipanggil')
@@ -49,20 +49,20 @@ router.get('/list', auth, async (req, res) => {
 router.post('/querylist', auth, async (req, res) => {
     // console.log('querylist')
     // console.log(req.body)
-    const TransaksiID = req.body.TransaksiID ? req.body.TransaksiID : null
-    const UserName = req.body.UserName ? req.body.UserName : null
-    const Jenis = req.body.Jenis ? req.body.Jenis : null
-    const DateMin = req.body.DateMin ? req.body.DateMin : null
-    const DateMax = req.body.DateMax ? req.body.DateMax : null
-    const DiskonMin = req.body.DiskonMin ? req.body.DiskonMin : null
-    const DiskonMax = req.body.DiskonMax ? req.body.DiskonMax : null
-    const PotonganHargaMin = req.body.PotonganHargaMin ? req.body.PotonganHargaMin : null
-    const PotonganHargaMax = req.body.PotonganHargaMax ? req.body.PotonganHargaMax : null
-    const TotalTransaksiMin = req.body.TotalTransaksiMin ? req.body.TotalTransaksiMin : null
-    const TotalTransaksiMax = req.body.TotalTransaksiMax ? req.body.TotalTransaksiMax : null
-    const Ket = req.body.Ket ? req.body.Ket : null
-    const TransaksiQueryQueryList = {}
     try {
+        const TransaksiID = req.body.TransaksiID ? req.body.TransaksiID : null
+        const UserName = req.body.UserName ? req.body.UserName : null
+        const Jenis = req.body.Jenis ? req.body.Jenis : null
+        const DateMin = req.body.DateMin ? req.body.DateMin : null
+        const DateMax = req.body.DateMax ? req.body.DateMax : null
+        const DiskonMin = req.body.DiskonMin ? req.body.DiskonMin : null
+        const DiskonMax = req.body.DiskonMax ? req.body.DiskonMax : null
+        const PotonganHargaMin = req.body.PotonganHargaMin ? req.body.PotonganHargaMin : null
+        const PotonganHargaMax = req.body.PotonganHargaMax ? req.body.PotonganHargaMax : null
+        const TotalTransaksiMin = req.body.TotalTransaksiMin ? req.body.TotalTransaksiMin : null
+        const TotalTransaksiMax = req.body.TotalTransaksiMax ? req.body.TotalTransaksiMax : null
+        const Ket = req.body.Ket ? req.body.Ket : null
+        const TransaksiQueryQueryList = {}
         if (TransaksiID) {
             Object.assign(TransaksiQueryQueryList, { _id: TransaksiID })
         }
@@ -161,9 +161,9 @@ router.get('/detail/:id', auth, async (req, res) => {
 router.post('/transaksi/tambah', auth, async (req, res) => {
     // console.log('transaksi/tambah')
     // console.log(req.body)
-    const { NamaKasir, DetailTransaksi, TotalPembayaran } = req.body
-    const UserId = req.user.id
     try {
+        const { NamaKasir, DetailTransaksi, TotalPembayaran } = req.body
+        const UserId = req.user.id
         if (!NamaKasir || DetailTransaksi.length < 1 || TotalPembayaran < 1) {
             throw {
                 msg: 'data yang dikirimkan kurang'
@@ -243,9 +243,9 @@ router.post('/transaksi/tambah', auth, async (req, res) => {
 router.post('/belanja/tambah', auth, async (req, res) => {
     // console.log('belanja/tambah')
     // console.log(req.body)
-    const { NamaKasir, DetailTransaksi, TotalPembayaran } = req.body
-    const UserId = req.user.id
     try {
+        const { NamaKasir, DetailTransaksi, TotalPembayaran } = req.body
+        const UserId = req.user.id
         if ((!NamaKasir) || DetailTransaksi.length < 1 || TotalPembayaran < 1) {
             throw {
                 msg: 'data yang dikirimkan kurang'
@@ -303,9 +303,9 @@ router.post('/belanja/tambah', auth, async (req, res) => {
 router.post('/export', auth, async (req, res) => {
     // console.log('transaksi/export')
     // console.log(req.body)
-    const UserId = req.user.id
-    const RequestExportList = req.body.ExportData
     try {
+        const UserId = req.user.id
+        const RequestExportList = req.body.ExportData
         if (!RequestExportList.length > 0) {
             throw {
                 msg: 'form tidak lengkap',
@@ -337,9 +337,9 @@ router.post('/export', auth, async (req, res) => {
 router.post('/import', auth, async (req, res) => {
     // console.log('transaksi/import')
     // console.log(req.body)
-    const { ImportData } = req.body
-    const UserId = req.user.id
     try {
+        const { ImportData } = req.body
+        const UserId = req.user.id
         if ((!ImportData || ImportData.length < 1)) {
             throw {
                 msg: 'form tidak lengkap',
