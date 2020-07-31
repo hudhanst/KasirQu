@@ -20,11 +20,11 @@ exports.Add_Transaksi_Belanja = async (Data, UserId) => {
     try {
         // const Id = Data.Id ? Data.Id : null
         const NamaKasir = Data.NamaKasir ? Data.NamaKasir : null
-        const TanggalTransaksi = Data.TanggalTransaksi ? new Date(Data.TanggalTransaksi) : null
+        const TanggalTransaksi = Data.TanggalTransaksi ? new Date(Data.TanggalTransaksi) : undefined
         const Tipe = Data.Tipe ? Data.Tipe : null
         const DetailTransaksi = Data.DetailTransaksi ? Data.DetailTransaksi : []
-        const Diskon = Data.Diskon ? Data.Diskon : 0
-        const PotonganHarga = Data.PotonganHarga ? Data.PotonganHarga : 0
+        const Diskon = Data.Diskon ? Data.Diskon : undefined
+        const PotonganHarga = Data.PotonganHarga ? Data.PotonganHarga : undefined
         const TotalPembayaran = Data.TotalPembayaran ? Data.TotalPembayaran : 0
         const Ket = Data.Ket ? Data.Ket : null
 
@@ -58,7 +58,7 @@ exports.Add_Transaksi_Belanja = async (Data, UserId) => {
         const newTransaksi = new Transaksi({
             // _id: Id,
             NamaKasir: NamaKasir,
-            TanggalTransaksi: TanggalTransaksi - 1 > 0 ? TanggalTransaksi : null,
+            TanggalTransaksi: TanggalTransaksi - 1 > 0 ? TanggalTransaksi : undefined,
             Tipe: Tipe,
             DetailTransaksi: DetailTransaksi,
             Diskon: Diskon,
@@ -83,11 +83,11 @@ exports.Add_Transaksi_Transaksi = async (Data, UserId) => {
     try {
         // const Id = Data.Id ? Data.Id : null
         const NamaKasir = Data.NamaKasir ? Data.NamaKasir : null
-        const TanggalTransaksi = Data.TanggalTransaksi ? new Date(Data.TanggalTransaksi) : null
+        const TanggalTransaksi = Data.TanggalTransaksi ? new Date(Data.TanggalTransaksi) : undefined
         const Tipe = Data.Tipe ? Data.Tipe : null
         const DetailTransaksi = Data.DetailTransaksi ? Data.DetailTransaksi : []
-        const Diskon = Data.Diskon ? Data.Diskon : 0
-        const PotonganHarga = Data.PotonganHarga ? Data.PotonganHarga : 0
+        const Diskon = Data.Diskon ? Data.Diskon : undefined
+        const PotonganHarga = Data.PotonganHarga ? Data.PotonganHarga : undefined
         const TotalPembayaran = Data.TotalPembayaran ? Data.TotalPembayaran : 0
         const Ket = Data.Ket ? Data.Ket : null
 
@@ -110,7 +110,7 @@ exports.Add_Transaksi_Transaksi = async (Data, UserId) => {
         const newTransaksi = new Transaksi({
             // _id: Id,
             NamaKasir: NamaKasir,
-            TanggalTransaksi: TanggalTransaksi - 1 > 0 ? TanggalTransaksi : null,
+            TanggalTransaksi: TanggalTransaksi - 1 > 0 ? TanggalTransaksi : undefined,
             Tipe: Tipe,
             DetailTransaksi: DetailTransaksi,
             Diskon: Diskon,

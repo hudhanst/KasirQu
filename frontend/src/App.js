@@ -19,7 +19,11 @@ class App extends React.Component {
     isSideNavOpen: true,
   }
   componentDidMount() {
-    this.props.Load_User()
+    const auth = this.props.auth
+    // console.log('Log: App -> componentDidMount -> auth', auth)
+    if (auth.token || auth.isAuth) {
+      this.props.Load_User()
+    }
     window.addEventListener("resize", this.CheckWindowWidth.bind(this))
     this.CheckWindowWidth()
   }
@@ -48,31 +52,31 @@ class App extends React.Component {
           {
             (this.props.auth.token && this.props.auth.isAuth) ?
               // <Fragment>
-                <Navbar isDarkMode={isDarkMode} />
+              <Navbar isDarkMode={isDarkMode} />
               // </Fragment>
               : null
           }
 
           {/* <Fragment> */}
-            <Messages />
+          <Messages />
           {/* </Fragment> */}
 
           {/* <Fragment> */}
-            <Container
-              style=
-              {
-                (this.props.auth.token && this.props.auth.isAuth) ? (
-                  (this.state.isSideNavOpen) ?
-                    MUI_st__Container_SideNav :
-                    MUI_st__Container_FlatNav
-                ) : null
-                // ) : { border: '1px solid red' }
-              }>
+          <Container
+            style=
+            {
+              (this.props.auth.token && this.props.auth.isAuth) ? (
+                (this.state.isSideNavOpen) ?
+                  MUI_st__Container_SideNav :
+                  MUI_st__Container_FlatNav
+              ) : null
+              // ) : { border: '1px solid red' }
+            }>
 
-              <Router>
-                <BaseRouter />
-              </Router>
-            </Container>
+            <Router>
+              <BaseRouter />
+            </Router>
+          </Container>
           {/* </Fragment> */}
         </ThemeProvider>
       </Fragment >

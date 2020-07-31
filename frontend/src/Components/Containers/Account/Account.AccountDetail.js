@@ -63,6 +63,7 @@ class AccountDetail extends React.Component {
                                 <div className='switch'>
                                     <input type="checkbox" disabled name='isSuperUser' checked={AccountDetail.isSuperUser ? AccountDetail.isSuperUser : false} /><span></span><br />
                                 </div><br />
+                                {/* <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='tanggal pembuatan akun' name='RegisterDate' value={AccountDetail.RegisterDate ? new Date(AccountDetail.RegisterDate).toLocaleString('id-ID', { hour12: false }) : ''} /> */}
                                 <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='tanggal pembuatan akun' name='RegisterDate' value={AccountDetail.RegisterDate ? new Date(AccountDetail.RegisterDate).toLocaleString() : ''} />
                                 <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Terakhir kali login' name='LastActive' value={AccountDetail.LastActive ? new Date(AccountDetail.LastActive).toLocaleString() : ''} />
                             </Fragment>

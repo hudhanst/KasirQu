@@ -21,26 +21,6 @@ exports.Report_Get_BarangList = async (TransaksiListQuery, TransaksiListSelect) 
             const ListBarang = await Get_Barang_List(null, 'Barcode Jenis HargaModal')
             ListTransaksi.forEach(listtransaksi => {
 
-                // ////// create ReportData
-
-                // // const ID = listtransaksi._id
-                // const ListTransaksiDiskon = listtransaksi.Diskon ? listtransaksi.Diskon : 0
-                // const ListTransaksiPotonganHarga = listtransaksi.PotonganHarga ? listtransaksi.PotonganHarga : 0
-                // const ListTransaksiTotalPembayaran = listtransaksi.TotalPembayaran ? listtransaksi.TotalPembayaran : 0
-                // if (ReportData.length > 0) {
-                //     const ReportDataIndex = 0
-                //     ReportData[ReportDataIndex].TotalDiskon = ReportData[ReportDataIndex].TotalDiskon + ListTransaksiDiskon
-                //     ReportData[ReportDataIndex].TotalPotonganHarga = ReportData[ReportDataIndex].TotalPotonganHarga + ListTransaksiPotonganHarga
-                //     ReportData[ReportDataIndex].TotalTotalPembayaran = ReportData[ReportDataIndex].TotalTotalPembayaran + ListTransaksiTotalPembayaran
-                // } else {
-                //     const newReportData = {
-                //         TotalDiskon: ListTransaksiDiskon,
-                //         TotalPotonganHarga: ListTransaksiPotonganHarga,
-                //         TotalTotalPembayaran: ListTransaksiTotalPembayaran,
-                //     }
-                //     ReportData.push(newReportData)
-                // }
-
                 ////// create ReportList
                 const ListTransaksiDetailTransaksi = listtransaksi.DetailTransaksi
 
@@ -51,8 +31,8 @@ exports.Report_Get_BarangList = async (TransaksiListQuery, TransaksiListSelect) 
                     const DetailTransaksiHargaTotal = detailtransaksi.HargaTotal ? Number(detailtransaksi.HargaTotal) : 0
 
                     const DetailBarang = ListBarang.find(listbarang => listbarang.Barcode === DetailTransaksiBarcode)
-                    const DetailBarang_JenisBarang = DetailBarang.Jenis ? DetailBarang.Jenis : ''
-                    const DetailBarang_HargaModal = DetailBarang.HargaModal ? DetailBarang.HargaModal : 0
+                    const DetailBarang_JenisBarang = DetailBarang ? (DetailBarang.Jenis ? DetailBarang.Jenis : '') : ''
+                    const DetailBarang_HargaModal = DetailBarang ? (DetailBarang.HargaModal ? DetailBarang.HargaModal : 0) : 0
 
                     if (ReportList.length > 0) {
                         const ReportListIndex = ReportList.findIndex(reportlist => reportlist.Barcode === DetailTransaksiBarcode)
@@ -84,16 +64,10 @@ exports.Report_Get_BarangList = async (TransaksiListQuery, TransaksiListSelect) 
                 })
             })
         }
-        // console.log('Report_Get_BarangList dipanggil')
-        // return res.status(200).json({ ReportList, ReportData, msg: 'Report_Get_BarangList berhasil dijalankan' })
-        // return { ReportList, ReportData }
+        console.log('Report_Get_BarangList dipanggil')
         return ReportList
     } catch (err) {
         console.log(`Erorr saat proses Report_Get_BarangList => ${err.errorDetail ? err.errorDetail : err}`)
-        // return res.status(400).json({
-        //     msg: err.msg ? err.msg : 'ada kesalahan pada proses pemanggilan list Help Report Barang',
-        //     errorDetail: err.errorDetail ? err.errorDetail : err
-        // })
         throw {
             msg: err.msg ? err.msg : 'ada kesalahan pada proses Report_Get_BarangList',
             errorDetail: err.errorDetail ? err.errorDetail : err,

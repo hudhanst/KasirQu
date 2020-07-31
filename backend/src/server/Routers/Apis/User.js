@@ -212,18 +212,18 @@ router.post('/register', upload.single('ProfilePicture'), auth, async (req, res)
                 UserName: UserName.toString().toLocaleLowerCase(),
                 Name: UserName,
                 Password: Password,
-                isKasir: req.body.isKasir ? req.body.isKasir : null,
-                isAdmin: req.body.isAdmin ? req.body.isAdmin : null,
-                isSuperUser: req.body.isSuperUser ? req.body.isSuperUser : null,
+                isKasir: req.body.isKasir ? req.body.isKasir : undefined,
+                isAdmin: req.body.isAdmin ? req.body.isAdmin : undefined,
+                isSuperUser: req.body.isSuperUser ? req.body.isSuperUser : undefined,
                 ProfilePicture: req.file.path
             }) :
             new User({
                 UserName: UserName.toString().toLocaleLowerCase(),
                 Name: UserName,
                 Password: Password,
-                isKasir: req.body.isKasir ? req.body.isKasir : null,
-                isAdmin: req.body.isAdmin ? req.body.isAdmin : null,
-                isSuperUser: req.body.isSuperUser ? req.body.isSuperUser : null,
+                isKasir: req.body.isKasir ? req.body.isKasir : undefined,
+                isAdmin: req.body.isAdmin ? req.body.isAdmin : undefined,
+                isSuperUser: req.body.isSuperUser ? req.body.isSuperUser : undefined,
                 isSuperUser,
             })
 

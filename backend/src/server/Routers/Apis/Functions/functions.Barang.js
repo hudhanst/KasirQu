@@ -16,10 +16,10 @@ exports.Add_Barang = async (Data) => {
         const Barcode = Data.Barcode ? Data.Barcode : null
         const Name = Data.Name ? Data.Name : null
         const Jenis = Data.Jenis ? Data.Jenis : null
-        const Stok = Data.Stok ? Data.Stok : 0
-        const isDecimal = Data.isDecimal ? Data.isDecimal : true
-        const HargaModal = Data.HargaModal ? Data.HargaModal : 0
-        const HargaJual = Data.HargaJual ? Data.HargaJual : 0
+        const Stok = Data.Stok ? Data.Stok : undefined
+        const isDecimal = Data.isDecimal ? Data.isDecimal : undefined
+        const HargaModal = Data.HargaModal ? Data.HargaModal : undefined
+        const HargaJual = Data.HargaJual ? Data.HargaJual : undefined
         const SatuanJual = Data.SatuanJual ? Data.SatuanJual : { NamaSatuan: 'satuan', MinBarang: 1, HargaJual: 0 }
         const Ket = Data.Ket ? Data.Ket : null
         const BarangPic = Data.BarangPic ? Data.BarangPic : null
