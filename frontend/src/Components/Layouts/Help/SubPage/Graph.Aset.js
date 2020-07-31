@@ -12,11 +12,6 @@ const GraphAset = () => {
             <Typography align='center' variant='h3' >Aset</Typography>
             <Searching
                 hidesearch={true}
-                // tablename={'table_report_barang'}
-                // tdnumber={2}
-                // width='xl'
-                // label={'Cari Berdasarkan NamaBarang'}
-
                 advancesearch={true}
                 accordiondetails={<QueryAset />}
             />

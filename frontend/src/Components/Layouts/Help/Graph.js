@@ -4,7 +4,11 @@ import { Paper, Tabs, Tab } from '@material-ui/core'
 
 import BreadCrumbs from '../../Containers/BreadCrumbs'
 import GraphAset from './SubPage/Graph.Aset'
-// import IncomeReportKeuanganBulanan from './SubPage/IncomeReport.KeuanganBulanan'
+import UangMasuk from './SubPage/Graph.UangMasuk'
+import UangKeluar from './SubPage/Graph.UangKeluar'
+import UangLose from './SubPage/Graph.UangLose'
+import IntensitasTransaksi from './SubPage/Graph.IntensitasTransaksi'
+import IntensitasBarangTransaksi from './SubPage/Graph.IntensitasBarangTransaksi'
 
 const Graph = () => {
     const breadcrumbs = [{ name: 'Help', link: 'help' }, { name: 'Laporan Grafik', link: 'help/graph' }]
@@ -15,7 +19,11 @@ const Graph = () => {
 
     const TapData = [
         { taplabel: 'Cek Aset', TapPanel: <GraphAset /> },
-        // { taplabel: 'Penjualan Barang Bulanan', TapPanel: <IncomeReportKeuanganBulanan /> },
+        { taplabel: 'Cek Uang Masuk', TapPanel: <UangMasuk /> },
+        { taplabel: 'Cek Uang Keluar', TapPanel: <UangKeluar /> },
+        { taplabel: 'Cek Uang Lose', TapPanel: <UangLose /> },
+        { taplabel: 'Intensitas Transaksi', TapPanel: <IntensitasTransaksi /> },
+        { taplabel: 'Intensitas Barang Transaksi', TapPanel: <IntensitasBarangTransaksi /> },
     ]
 
     return (
@@ -37,7 +45,11 @@ const Graph = () => {
                 </Tabs>
             </Paper>
             {value === 0 ? TapData[value].TapPanel : null}
-            {/* {value === 1 ? TapData[value].TapPanel : null} */}
+            {value === 1 ? TapData[value].TapPanel : null}
+            {value === 2 ? TapData[value].TapPanel : null}
+            {value === 3 ? TapData[value].TapPanel : null}
+            {value === 4 ? TapData[value].TapPanel : null}
+            {value === 5 ? TapData[value].TapPanel : null}
         </Fragment >
     )
 }

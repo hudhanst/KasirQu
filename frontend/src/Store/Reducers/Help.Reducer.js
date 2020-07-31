@@ -4,14 +4,23 @@ import {
     HELP_LOADED,
     ////// HELP-REPORT
     LIST_INCOMEREPORT_BARANG,
-    LIST_QUERY_INCOMEREPORT_BARANG,
     LIST_INCOMEREPORT_KEUANGAN,
+    LIST_OUTCOMEREPORT_BARANG,
+    LIST_OUTCOMEREPORT_MODAL,
     ////// END-HELP-REPORT
     ////// HELP-GRAPH
     LIST_GRAPH_ASET,
     LIST_QUERY_GRAPH_ASET,
-    LIST_OUTCOMEREPORT_BARANG,
-    LIST_OUTCOMEREPORT_MODAL,
+    LIST_GRAPH_UANGMASUK,
+    LIST_QUERY_GRAPH_UANGMASUK,
+    LIST_GRAPH_UANGKELUAR,
+    LIST_QUERY_GRAPH_UANGKELUAR,
+    LIST_GRAPH_UANGLOSE,
+    LIST_QUERY_GRAPH_UANGLOSE,
+    LIST_GRAPH_INTENSITASTRANSAKSI,
+    LIST_QUERY_GRAPH_INTENSITASTRANSAKSI,
+    LIST_GRAPH_INTENSITASBARANGTRANSAKSI,
+    LIST_QUERY_GRAPH_INTENSITASBARANGTRANSAKSI,
     ////// END-HELP-GRAPH
     ////// END-HELP
 } from '../Actions/Type.Actions'
@@ -27,6 +36,11 @@ const initialState = {
     ////// END-HELP-REPORT
     ////// HELP-GRAPH
     GraphAsetList: [],
+    GraphUangMasukList: [],
+    GraphUangKeluarList: [],
+    GraphUangLoseList: [],
+    GraphIntensitasTransaksiList: [],
+    GraphIntensitasBarangTransaksiList: [],
     ////// END-HELP-GRAPH
     ////// END-HELP
 }
@@ -46,7 +60,6 @@ export default function (state = initialState, action) {
             }
         ////// HELP-REPORT
         case LIST_INCOMEREPORT_BARANG:
-        case LIST_QUERY_INCOMEREPORT_BARANG:
             return {
                 ...state,
                 IncomeReportBarangList: action.payload,
@@ -73,6 +86,36 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 GraphAsetList: action.payload,
+            }
+        case LIST_GRAPH_UANGMASUK:
+        case LIST_QUERY_GRAPH_UANGMASUK:
+            return {
+                ...state,
+                GraphUangMasukList: action.payload,
+            }
+        case LIST_GRAPH_UANGKELUAR:
+        case LIST_QUERY_GRAPH_UANGKELUAR:
+            return {
+                ...state,
+                GraphUangKeluarList: action.payload,
+            }
+        case LIST_GRAPH_UANGLOSE:
+        case LIST_QUERY_GRAPH_UANGLOSE:
+            return {
+                ...state,
+                GraphUangLoseList: action.payload,
+            }
+        case LIST_GRAPH_INTENSITASTRANSAKSI:
+        case LIST_QUERY_GRAPH_INTENSITASTRANSAKSI:
+            return {
+                ...state,
+                GraphIntensitasTransaksiList: action.payload,
+            }
+        case LIST_GRAPH_INTENSITASBARANGTRANSAKSI:
+        case LIST_QUERY_GRAPH_INTENSITASBARANGTRANSAKSI:
+            return {
+                ...state,
+                GraphIntensitasBarangTransaksiList: action.payload,
             }
         ////// END-HELP-GRAPH
         ////// END-HELP

@@ -53,6 +53,14 @@ class AsetGraph extends React.Component {
                 {
                     (data && data.length > 0) ? (
                         <Fragment>
+                            <Charting
+                                canvasstyle={{ ...MUI_HorizontalMargin, ...MUI_VerticalMargin, width: '800px', height: '300px', padding: '10px' }}
+                                type='pie'
+                                labels={graphlabels}
+                                datasetslabel='Grafik Jumlah Keuntungan perHari'
+                                datasetsdata={graphdatasetsdata}
+                            />
+
                             <Table id='table_graph_aset'>
                                 <TableHead>
                                     <TableRow>
@@ -104,14 +112,6 @@ class AsetGraph extends React.Component {
                                     </TableRow>
                                 </TableHead>
                             </Table>
-
-                            <Charting
-                                canvasstyle={{ ...MUI_HorizontalMargin, ...MUI_VerticalMargin, width: '800px', height: '300px', padding: '10px' }}
-                                type='pie'
-                                labels={graphlabels}
-                                datasetslabel='Grafik Jumlah Keuntungan perHari'
-                                datasetsdata={graphdatasetsdata}
-                            />
                         </Fragment>
                     ) : <DataTidakDitemukan />
                 }
