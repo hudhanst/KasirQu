@@ -141,7 +141,7 @@ class IntensitasBarangTransaksiGraph extends React.Component {
                                 data={GraphData(data)}
                             />
 
-                            <Table id='table_graph_intensibarangtastransaksi'>
+                            <Table stickyHeader id='table_graph_intensibarangtastransaksi'>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT('table_graph_intensibarangtastransaksi', 0)}>No</TableCell>
@@ -157,7 +157,7 @@ class IntensitasBarangTransaksiGraph extends React.Component {
                                             <TableCell align="right">
                                                 {item.IntensitasBarangTransaksi.length > 0 ? (
                                                     <Fragment>
-                                                        <Table id={`table_graph_barangtransaksiharian_${index}`}>
+                                                        <Table stickyHeader id={`table_graph_barangtransaksiharian_${index}`}>
                                                             <TableHead>
                                                                 <TableRow>
                                                                     <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(`table_graph_barangtransaksiharian_${index}`, 0)}>No</TableCell>

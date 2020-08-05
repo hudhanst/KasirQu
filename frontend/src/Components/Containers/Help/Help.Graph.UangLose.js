@@ -62,7 +62,7 @@ class UangLoseGraph extends React.Component {
                                 datasetsdata={graphdatasetsdata}
                             />
 
-                            <Table id='table_graph_uanglose'>
+                            <Table stickyHeader id='table_graph_uanglose'>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>

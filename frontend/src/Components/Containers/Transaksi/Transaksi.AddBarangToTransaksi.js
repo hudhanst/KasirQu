@@ -12,7 +12,6 @@ import { Autocomplete } from '@material-ui/lab'
 
 class AddBarangToTransaksi extends React.Component {
     state = {
-        Data_Barang: this.props.Data_Barang,
         NamaBarang: null,
         Barcode: '',
     }
@@ -29,7 +28,8 @@ class AddBarangToTransaksi extends React.Component {
     }
     onSubmit = e => {
         e.preventDefault()
-        const { Data_Barang, NamaBarang, Barcode, } = this.state
+        const { NamaBarang, Barcode, } = this.state
+        const Data_Barang = this.props.Data_Barang
         const minimumstok = 10
         // const minimumharga = 100
         // console.log('NamaBarang', NamaBarang)
@@ -73,21 +73,6 @@ class AddBarangToTransaksi extends React.Component {
             } else {
                 this.props.Create_Info_Messages(null, 'barcode yang anda masukkan tidak sesuai')
             }
-            // Data_Barang.forEach((item, index) => {
-            //     if (NamaBarang === item.Barcode) {
-            //         const BarcodeItem = item
-            //         if (item.Stok <= minimumstok) {
-            //             this.props.Create_Warning_Messages(null, `stok barang kurang dari ${minimumstok} akan gagal jika jumlah transaksi lebih banyak dari stok`)
-            //         }
-            //         this.props.Add_Barang_To_Transaksi(BarcodeItem)
-            //         this.setState({
-            //             NamaBarang: null,
-            //             Barcode: '',
-            //         })
-            //     } else if ((index === (Data_Barang.length - 1)) && (Barcode !== Data_Barang[index])) {
-            //         this.props.Create_Info_Messages(null, 'barcode yang anda masukkan tidak sesuai')
-            //     }
-            // })
         }
     }
     render() {

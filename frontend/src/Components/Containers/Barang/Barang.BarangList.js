@@ -72,7 +72,7 @@ class BarangList extends React.Component {
         return (
             <Fragment>
                 {data ?
-                    <Table id='tabel_barang'>
+                    <Table stickyHeader id='tabel_barang'>
                         <TableHead>
                             <TableRow>
                                 <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>

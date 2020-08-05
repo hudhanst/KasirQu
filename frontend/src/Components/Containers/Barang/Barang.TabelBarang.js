@@ -38,7 +38,7 @@ class TabelBarang extends React.Component {
     return (
       <Fragment>
         {data ?
-          (<Table aria-label="customized table" id='tabel_data_barang'>
+          (<Table stickyHeader aria-label="customized table" id='tabel_data_barang'>
             <TableHead style={st_tablehead}>
               <TableRow>
                 <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>

@@ -50,7 +50,7 @@ class ModalBulanan extends React.Component {
                 {
                     (data && data.length > 0) ? (
                         <Fragment>
-                            <Table id='table_outcomereport_modalbulanan'>
+                            <Table stickyHeader id='table_outcomereport_modalbulanan'>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>

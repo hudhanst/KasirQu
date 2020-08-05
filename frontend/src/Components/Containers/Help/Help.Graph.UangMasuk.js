@@ -62,7 +62,7 @@ class UangMasukGraph extends React.Component {
                                 datasetsdata={graphdatasetsdata}
                             />
 
-                            <Table id='table_graph_uangmasuk'>
+                            <Table stickyHeader id='table_graph_uangmasuk'>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>

@@ -12,7 +12,6 @@ import { Autocomplete } from '@material-ui/lab'
 
 class AddBarangToBelanja extends React.Component {
     state = {
-        Data_Barang: this.props.Data_Barang,
         NamaBarang: null,
         Barcode: '',
     }
@@ -28,8 +27,8 @@ class AddBarangToBelanja extends React.Component {
     }
     onSubmit = e => {
         e.preventDefault()
-        const { Data_Barang, NamaBarang, Barcode, } = this.state
-        const { Belanja } = this.props
+        const { NamaBarang, Barcode, } = this.state
+        const { Data_Barang, Belanja } = this.props
         // console.log('NamaBarang', NamaBarang)
         // console.log('Barcode', Barcode)
         if (NamaBarang !== null) {
@@ -77,19 +76,6 @@ class AddBarangToBelanja extends React.Component {
             } else {
                 this.props.Create_Info_Messages(null, 'barcode yang anda masukkan tidak sesuai')
             }
-            // Data_Barang.forEach((item, index) => {
-            //     if (Barcode === item.Barcode) {
-            //         const BarcodeItem = item
-            //         this.props.Add_Barang_To_Belanja(BarcodeItem)
-            //         this.setState({
-            //             NamaBarang: null,
-            //             Barcode: '',
-            //         })
-            //     } else if ((index === (Data_Barang.length - 1)) && (Barcode !== Data_Barang[index])) {
-            //         // console.log('warning')
-            //         this.props.Create_Info_Messages(null, 'barcode yang anda masukkan tidak sesuai')
-            //     }
-            // })
         }
     }
     render() {

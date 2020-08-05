@@ -61,7 +61,7 @@ class KatagoriBarangList extends React.Component {
         return (
             <Fragment>
                 {data ?
-                    <Table id='tabel_jenisbarang'>
+                    <Table stickyHeader id='tabel_jenisbarang'>
                         <TableHead>
                             <TableRow>
                                 <TableCell style={{ width: '5%' }} align='center' onClick={() => this.ButtonShortINT(0)}>No</TableCell>

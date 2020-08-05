@@ -71,20 +71,20 @@ const BaseRouter = () => {
             <PrivateRoute exact path="/" component={Home} />
 
             <PrivateRoute exact path="/transaksi" component={Transaksi} />
-            <PrivateRoute exact path="/transaksi/importexport" component={TransaksiImportExport} />
-            <PrivateRoute exact path="/transaksi/belanja" component={Belanja} />
-            <PrivateRoute exact path="/transaksi/transaksilist" component={TransaksiList} />
+            <PrivateRoute exact path="/transaksi/belanja" component={Belanja} SecurityType={'Privacry'} />
+            <PrivateRoute exact path="/transaksi/transaksilist" component={TransaksiList} SecurityType={'Privacry'} />
+            <PrivateRoute exact path="/transaksi/importexport" component={TransaksiImportExport} SecurityType={'SuperPrivacry'} />
 
             <PrivateRoute exact path="/barang" component={Barang} />
-            <PrivateRoute exact path="/barang/katagoribarang" component={KatagoriBarang} />
-            <PrivateRoute exact path="/barang/katagoribarang/importexport" component={KatagoriBarangImportExport} />
-            <PrivateRoute exact path="/barang/konfigurasibarang" component={KonfigurasiBarang} />
-            <PrivateRoute exact path="/barang/konfigurasibarang/importexport" component={BarangImportExport} />
+            <PrivateRoute exact path="/barang/katagoribarang" component={KatagoriBarang} SecurityType={'Privacry'} />
+            <PrivateRoute exact path="/barang/konfigurasibarang" component={KonfigurasiBarang} SecurityType={'Privacry'} />
+            <PrivateRoute exact path="/barang/katagoribarang/importexport" component={KatagoriBarangImportExport} SecurityType={'SuperPrivacry'} />
+            <PrivateRoute exact path="/barang/konfigurasibarang/importexport" component={BarangImportExport} SecurityType={'SuperPrivacry'} />
 
             <PrivateRoute exact path="/help" component={Help} />
-            <PrivateRoute exact path="/help/incomereport" component={IncomeReport} />
-            <PrivateRoute exact path="/help/outcomereport" component={OutcomeReport} />
-            <PrivateRoute exact path="/help/graph" component={Graph} />
+            <PrivateRoute exact path="/help/incomereport" component={IncomeReport} SecurityType={'Privacry'} />
+            <PrivateRoute exact path="/help/outcomereport" component={OutcomeReport} SecurityType={'Privacry'} />
+            <PrivateRoute exact path="/help/graph" component={Graph} SecurityType={'Privacry'} />
 
 
             <PrivateRoute exact path="/help/tingkatan_akun" component={Help_TingkatanAkun} />
@@ -119,9 +119,9 @@ const BaseRouter = () => {
 
 
             <PrivateRoute exact path="/account" component={Account} />
-            <PrivateRoute exact path="/account/userlist" component={UserList} />
-            <PrivateRoute exact path="/account/tokodetail" component={TokoDetail} />
-            <PrivateRoute exact path="/account/tokodetail/history" component={History} />
+            <PrivateRoute exact path="/account/userlist" component={UserList} SecurityType={'Privacry'} />
+            <PrivateRoute exact path="/account/tokodetail" component={TokoDetail} SecurityType={'Privacry'} />
+            <PrivateRoute exact path="/account/tokodetail/history" component={History} SecurityType={'SuperPrivacry'} />
 
             <Route exact path="/firsttimeuse" component={FirsTimeUse} />
             <Route exact path="/login" component={Login} />

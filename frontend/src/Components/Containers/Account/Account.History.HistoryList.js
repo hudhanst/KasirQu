@@ -65,7 +65,7 @@ class HistoryList extends React.Component {
             <Fragment>
                 {(data && data.length > 0) ?
                     <Fragment>
-                        <Table id='tabel_export_history'>
+                        <Table stickyHeader id='tabel_export_history'>
                             <TableHead>
                                 <TableRow>
                                     <TableCell style={{ width: '5%' }} align='center' onClick={() => this.ButtonShortINT(0)}>No</TableCell>

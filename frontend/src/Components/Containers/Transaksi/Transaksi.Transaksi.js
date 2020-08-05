@@ -130,7 +130,7 @@ class TransaksiTransaksi extends React.Component {
         const TransaksiData = this.state.Transaksi
         return (
             <Fragment>
-                <Table id='tabel_transaksi'>
+                <Table stickyHeader id='tabel_transaksi'>
                     <TableHead style={st_tablehead}>
                         <TableRow>
                             <TableCell style={{ width: '10%' }} align="center"  >Edit</TableCell>

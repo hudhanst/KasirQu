@@ -58,7 +58,7 @@ class KeuanganBulanan extends React.Component {
                 {
                     (data && data.length > 0) ? (
                         <Fragment>
-                            <Table id='table_incomereport_keuangan'>
+                            <Table stickyHeader id='table_incomereport_keuangan'>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>

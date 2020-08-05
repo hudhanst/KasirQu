@@ -45,7 +45,7 @@ class ListTransaksi extends React.Component {
             <Fragment>
                 {data && data.length > 0 ?
                     // {data ?
-                    <Table id='tabel_list_transaksi'>
+                    <Table stickyHeader id='tabel_list_transaksi'>
                         <TableHead>
                             <TableRow>
                                 <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>

@@ -3,6 +3,7 @@ import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 
 import { Load_Export_Query_History } from '../../../Store/Actions/Account.Actions'
+import { Create_Info_Messages, Create_Warning_Messages } from '../../../Store/Actions/Messages.Actions'
 
 import { TextField, FormControl, InputLabel, Select, Button, Chip } from '@material-ui/core'
 
@@ -42,7 +43,13 @@ class QueryHistoryList extends React.Component {
             Action: this.state.isAllData ? null : this.state.Action,
             Status: this.state.isAllData ? null : this.state.Status,
         }
-
+        if ((!data.DateMin && !data.DateMax) || (this.state.isAllData) || (this.state.isAllDate)) {
+            this.props.Create_Info_Messages(null, 'anda mencoba memfilter semua data, mungkin akan memakan waktu proses cukup lama')
+        }
+        if (
+            ((data.DateMax < data.DateMin) && (data.DateMax && data.DateMin))) {
+            this.props.Create_Warning_Messages(null, 'Nilai Minimum Lebih Besar Dari Nilai Maksimum, Data mungkin tidak terpanggil')
+        }
         this.props.Load_Export_Query_History(data)
     }
     render() {
@@ -177,4 +184,4 @@ class QueryHistoryList extends React.Component {
     }
 }
 
-export default connect(null, { Load_Export_Query_History })(QueryHistoryList)
+export default connect(null, { Load_Export_Query_History, Create_Info_Messages, Create_Warning_Messages })(QueryHistoryList)

@@ -65,7 +65,7 @@ class ReviewBelanja extends React.Component {
             <Fragment>
                 {Data ? (
                     <Fragment>
-                        <Table id='tabel_review_belanja'>
+                        <Table stickyHeader id='tabel_review_belanja'>
                             <TableHead style={st_tablehead}>
                                 <TableRow>
                                     <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>

@@ -64,7 +64,7 @@ class AsetGraph extends React.Component {
                                 datasetsdata={graphdatasetsdata}
                             />
 
-                            <Table id='table_graph_aset'>
+                            <Table stickyHeader id='table_graph_aset'>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>

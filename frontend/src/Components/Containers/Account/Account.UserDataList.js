@@ -60,7 +60,7 @@ class UserDataList extends React.Component {
         return (
             <Fragment>
                 {data ?
-                    <Table id='tabel_user'>
+                    <Table stickyHeader id='tabel_user'>
                         <TableHead>
                             <TableRow>
                                 <TableCell style={{ width: '5%' }} align='center' onClick={() => this.ButtonShortINT(0)}>No</TableCell>

@@ -118,7 +118,7 @@ class TransaksiBelanja extends React.Component {
         const Data = this.state.Belanja
         return (
             <Fragment>
-                <Table id='tabel_belanja'>
+                <Table stickyHeader id='tabel_belanja'>
                     <TableHead style={st_tablehead}>
                         <TableRow>
                             <TableCell style={{ width: '10%' }} align="center"  >Edit</TableCell>
