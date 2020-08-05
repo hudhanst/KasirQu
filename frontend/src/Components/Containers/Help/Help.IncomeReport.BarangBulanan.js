@@ -4,14 +4,14 @@ import { connect } from 'react-redux'
 
 import { Load_IncomeReport_Barang_List } from '../../../Store/Actions/Help.Actions'
 
-import { Short_Column_INT, Short_Column_STR } from '../Shorting'
+import { Short_Column_INT, Short_Column_STR, Short_Column_Money } from '../Shorting'
 
 import { Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core'
 
 import { MUI_HorizontalMargin, MUI_VerticalMargin } from '../../../MUI_theme'
 
 import { DataTidakDitemukan } from '../Page404'
-import MoneyFormater from '../MoneyFormater'
+import { ConvertInttoMoney } from '../Formater'
 import Charting from '../Charting'
 
 class BulananBarangReport extends React.Component {
@@ -24,8 +24,11 @@ class BulananBarangReport extends React.Component {
     ButtonShortINT(ColumnNumb) {
         Short_Column_INT('table_report_barang', ColumnNumb)
     }
+    ButtonShortMoney(ColumnNumb) {
+        Short_Column_Money('table_report_barang', ColumnNumb)
+    }
     ConverNumberToMoneyFormat(OriginValue) {
-        const MoneyFormate = MoneyFormater(OriginValue ? OriginValue : 0)
+        const MoneyFormate = ConvertInttoMoney(OriginValue ? OriginValue : 0)
         return MoneyFormate
     }
     render() {
@@ -58,8 +61,8 @@ class BulananBarangReport extends React.Component {
                                     <TableCell style={{ width: '55%' }} align="center" onClick={() => this.ButtonShortSTR(2)}>Nama Barang</TableCell>
                                     <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(3)}>Jenis Barang</TableCell>
                                     <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(4)}>Total Barang Terjual&nbsp;(satuan)</TableCell>
-                                    <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(5)}>Total Estimasi Modal Dikeluarkan&nbsp;(Rp)</TableCell>
-                                    <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(6)}>Total Estimasi Pendapatan Diperoleh&nbsp;(Rp)</TableCell>
+                                    <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortMoney(5)}>Total Estimasi Modal Dikeluarkan&nbsp;(Rp)</TableCell>
+                                    <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortMoney(6)}>Total Estimasi Pendapatan Diperoleh&nbsp;(Rp)</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>

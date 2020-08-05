@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { Load_Graph_IntensitasTransaksi_List } from '../../../Store/Actions/Help.Actions'
 import { get_BarangId_Detail } from '../../../Store/Actions/Barang.Actions'
 
-import { Short_Column_INT, Short_Column_STR } from '../Shorting'
+import { Short_Column_INT, Short_Column_STR, Short_Column_Date } from '../Shorting'
 
 import { Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core'
 
@@ -23,6 +23,9 @@ class IntensitasTransaksiGraph extends React.Component {
     }
     ButtonShortINT(ColumnNumb) {
         Short_Column_INT('table_graph_intensitastransaksi', ColumnNumb)
+    }
+    ButtonShortDate(ColumnNumb) {
+        Short_Column_Date('table_graph_intensitastransaksi', ColumnNumb)
     }
     onClick_get_BarangId_Detail(BarangID) {
         this.props.get_BarangId_Detail(BarangID)
@@ -55,7 +58,7 @@ class IntensitasTransaksiGraph extends React.Component {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>
-                                        <TableCell style={{ width: '25%' }} align="center" onClick={() => this.ButtonShortSTR(1)}>Tanggal</TableCell>
+                                        <TableCell style={{ width: '25%' }} align="center" onClick={() => this.ButtonShortDate(1)}>Tanggal</TableCell>
                                         <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortINT(2)}>Intensitas Transaksi</TableCell>
                                     </TableRow>
                                 </TableHead>

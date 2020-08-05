@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 
 import BreadCrumbs from '../../Containers/BreadCrumbs'
-import Searching from '../../Containers/Searching'
+import { TableSearching } from '../../Containers/Searching'
 import ListTransaksi from '../../Containers/Transaksi/Transaksi.ListTransaksi'
 import ListTransaksiQuery from '../../Containers/Transaksi/Transaksi.Query.ListTransaksi'
 
@@ -11,7 +11,7 @@ const TransaksiList = () => {
         <Fragment>
             <BreadCrumbs breadcrumbs={breadcrumbs} />
             <hr />
-            <Searching
+            <TableSearching
                 tablename={'tabel_list_transaksi'}
                 tdnumber={2}
                 width='xl'

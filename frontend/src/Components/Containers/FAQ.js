@@ -8,22 +8,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 const FAQ = (props) => {
     const data = props.faqlist ? props.faqlist : []
-    // const brText = (ogText) => {
-    //     try {
-    //         if (ogText) {
-    //             console.log(ogText)
-    //             // const newText = ogText.map(i => i.replace(/\n/g, '<br />'))
-    //             const newText = ogText.replace(/\n/g, '<br />')
-    //             return newText
-    //         } else {
-    //             return ogText
-    //         }
-    //     } catch (err) {
-    //         console.log(err)
-    //         return ogText
-    //     }
-    // }
-    // console.log(data)
     return (
         <Fragment>
             <Paper style={{
@@ -60,7 +44,6 @@ const FAQ = (props) => {
                                 {item.AccordionDetails ? item.AccordionDetails : (
                                     <Typography>
                                         {item.AccordionDetailsTypography ? item.AccordionDetailsTypography : ''}
-                                        {/* {item.AccordionDetailsTypography ? brText(item.AccordionDetailsTypography) : ''} */}
                                     </Typography >
                                 )}
                             </AccordionDetails>

@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 
 import { Transaksi_Transaksi } from '../../../Store/Actions/Transaksi.Actions'
 
-import { Short_Column_INT, Short_Column_STR } from '../Shorting'
-import MoneyFormater from '../MoneyFormater'
+import { Short_Column_INT, Short_Column_STR, Short_Column_Money } from '../Shorting'
+import { ConvertInttoMoney } from '../Formater'
 
 import { Table, TableHead, TableRow, TableCell, TableBody, TextField, Button, Typography, FormHelperText } from '@material-ui/core'
 
@@ -49,8 +49,11 @@ class ReviewPembayaran extends React.Component {
     ButtonShortINT(ColumnNumb) {
         Short_Column_INT('tabel_review_pembayaran', ColumnNumb)
     }
+    ButtonShortMoney(ColumnNumb) {
+        Short_Column_Money('tabel_review_pembayaran', ColumnNumb)
+    }
     ConverNumberToMoneyFormat(OriginValue) {
-        const MoneyFormate = MoneyFormater(OriginValue ? OriginValue : 0)
+        const MoneyFormate = ConvertInttoMoney(OriginValue ? OriginValue : 0)
         return MoneyFormate
     }
     render() {
@@ -86,13 +89,13 @@ class ReviewPembayaran extends React.Component {
                             <TableHead style={st_tablehead}>
                                 <TableRow>
                                     <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>
-                                    <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortINT(1)}>Barcode</TableCell>
+                                    <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(1)}>Barcode</TableCell>
                                     <TableCell style={{ width: '45%' }} align="center" onClick={() => this.ButtonShortSTR(2)}>Nama Barang</TableCell>
                                     <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(3)}>Satuan</TableCell>
                                     <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(4)}>Jumlah</TableCell>
-                                    <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(5)}>Harga Satuan&nbsp;(Rp)</TableCell>
+                                    <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortMoney(5)}>Harga Satuan&nbsp;(Rp)</TableCell>
                                     <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(6)}>Total Barang</TableCell>
-                                    <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(7)}>Harga Total&nbsp;(Rp)</TableCell>
+                                    <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortMoney(7)}>Harga Total&nbsp;(Rp)</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>

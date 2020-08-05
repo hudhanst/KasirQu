@@ -8,8 +8,8 @@ import { Table, TableHead, TableRow, TableCell, TableBody, } from '@material-ui/
 
 import { withTheme } from '@material-ui/core/styles'
 
-import { Short_Column_INT, Short_Column_STR } from '../Shorting'
-import MoneyFormater from '../MoneyFormater'
+import { Short_Column_INT, Short_Column_STR, Short_Column_Money } from '../Shorting'
+import { ConvertInttoMoney } from '../Formater'
 import { DataTidakDitemukan } from '../Page404'
 
 class TabelBarang extends React.Component {
@@ -22,8 +22,11 @@ class TabelBarang extends React.Component {
   ButtonShortINT(ColumnNumb) {
     Short_Column_INT('tabel_data_barang', ColumnNumb)
   }
+  ButtonShortMoney(ColumnNumb) {
+    Short_Column_Money('tabel_data_barang', ColumnNumb)
+  }
   ConverNumberToMoneyFormat(OriginValue) {
-    const MoneyFormate = MoneyFormater(OriginValue ? OriginValue : 0)
+    const MoneyFormate = ConvertInttoMoney(OriginValue ? OriginValue : 0)
     return MoneyFormate
   }
   render() {
@@ -39,11 +42,11 @@ class TabelBarang extends React.Component {
             <TableHead style={st_tablehead}>
               <TableRow>
                 <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>
-                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortINT(1)}>Barcode</TableCell>
+                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(1)}>Barcode</TableCell>
                 <TableCell style={{ width: '40%' }} align="center" onClick={() => this.ButtonShortSTR(2)}>Nama Barang</TableCell>
                 <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(3)}>Jenis Barang</TableCell>
                 <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(4)}>Stok Barang</TableCell>
-                <TableCell style={{ width: '15%' }} align="center" onClick={() => this.ButtonShortSTR(5)}>Harga Jual&nbsp;(Rp)</TableCell>
+                <TableCell style={{ width: '15%' }} align="center" onClick={() => this.ButtonShortMoney(5)}>Harga Jual&nbsp;(Rp)</TableCell>
                 {/* <TableCell style={{ width: '15%' }} align="right" onClick={() => this.ButtonShortSTR(6)}>Modal&nbsp;(Rp)</TableCell> */}
               </TableRow>
             </TableHead>

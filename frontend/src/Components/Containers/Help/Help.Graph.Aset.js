@@ -5,14 +5,14 @@ import { connect } from 'react-redux'
 import { Load_Graph_Aset_List } from '../../../Store/Actions/Help.Actions'
 import { get_BarangId_Detail } from '../../../Store/Actions/Barang.Actions'
 
-import { Short_Column_INT, Short_Column_STR } from '../Shorting'
+import { Short_Column_INT, Short_Column_STR, Short_Column_Money } from '../Shorting'
 
 import { Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core'
 
 import { MUI_HorizontalMargin, MUI_VerticalMargin } from '../../../MUI_theme'
 
 import { DataTidakDitemukan } from '../Page404'
-import MoneyFormater from '../MoneyFormater'
+import { ConvertInttoMoney } from '../Formater'
 import GenericModals from '../GenericModals'
 import BarangDetail from '../Barang/Barang.BarangDetail'
 import Charting from '../Charting'
@@ -27,8 +27,11 @@ class AsetGraph extends React.Component {
     ButtonShortINT(ColumnNumb) {
         Short_Column_INT('table_graph_aset', ColumnNumb)
     }
+    ButtonShortMoney(ColumnNumb) {
+        Short_Column_Money('table_graph_aset', ColumnNumb)
+    }
     ConverNumberToMoneyFormat(OriginValue) {
-        const MoneyFormate = MoneyFormater(OriginValue ? OriginValue : 0)
+        const MoneyFormate = ConvertInttoMoney(OriginValue ? OriginValue : 0)
         return MoneyFormate
     }
     onClick_get_BarangId_Detail(BarangID) {
@@ -69,8 +72,8 @@ class AsetGraph extends React.Component {
                                         <TableCell style={{ width: '50%' }} align="center" onClick={() => this.ButtonShortSTR(2)}>Name</TableCell>
                                         <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortSTR(3)}>Jenis</TableCell>
                                         <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(4)}>Stok</TableCell>
-                                        <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(5)}>Modal&nbsp;(Rp)</TableCell>
-                                        <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(6)}>Total Modal&nbsp;(Rp)</TableCell>
+                                        <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortMoney(5)}>Modal&nbsp;(Rp)</TableCell>
+                                        <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortMoney(6)}>Total Modal&nbsp;(Rp)</TableCell>
                                         <TableCell style={{ width: '10%' }} align="center" >Detail</TableCell>
                                     </TableRow>
                                 </TableHead>

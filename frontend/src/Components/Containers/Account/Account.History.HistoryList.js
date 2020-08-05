@@ -7,7 +7,7 @@ import { Load_History_List, get_HistoryId_Detail, Export_History } from '../../.
 import { Table, TableHead, TableBody, TableRow, TableCell, Button } from '@material-ui/core'
 import { MUI_VerticalMargin, MUI_FullWidth } from '../../../MUI_theme'
 
-import { Short_Column_INT, Short_Column_STR } from '../Shorting'
+import { Short_Column_INT, Short_Column_STR, Short_Column_Date } from '../Shorting'
 
 import { DataTidakDitemukan } from '../Page404'
 import GenericModals from '../GenericModals'
@@ -39,6 +39,9 @@ class HistoryList extends React.Component {
     ButtonShortINT(ColumnNumb) {
         Short_Column_INT('tabel_export_history', ColumnNumb)
     }
+    ButtonShortDate(ColumnNumb) {
+        Short_Column_Date('tabel_export_history', ColumnNumb)
+    }
     Form_OnSubmit = E => {
         E.preventDefault()
         const ExportHistoryList = this.state.ExportHistoryList
@@ -67,7 +70,7 @@ class HistoryList extends React.Component {
                                 <TableRow>
                                     <TableCell style={{ width: '5%' }} align='center' onClick={() => this.ButtonShortINT(0)}>No</TableCell>
                                     <TableCell style={{ width: '45%' }} align='center' onClick={() => this.ButtonShortSTR(1)}>UserName</TableCell>
-                                    <TableCell style={{ width: '10%' }} align='center' onClick={() => this.ButtonShortSTR(2)}>Tanggal</TableCell>
+                                    <TableCell style={{ width: '10%' }} align='center' onClick={() => this.ButtonShortDate(2)}>Tanggal</TableCell>
                                     <TableCell style={{ width: '10%' }} align='center' onClick={() => this.ButtonShortSTR(3)}>Location</TableCell>
                                     <TableCell style={{ width: '10%' }} align='center' onClick={() => this.ButtonShortSTR(4)}>Action</TableCell>
                                     <TableCell style={{ width: '30%' }} align='center' onClick={() => this.ButtonShortSTR(5)}>Status</TableCell>

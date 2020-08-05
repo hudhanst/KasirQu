@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 import { Change_Belanja_Detail, Clear_A_Barang_From_Belanja, Clear_Barang_In_Belanja } from '../../../Store/Actions/Transaksi.Actions'
 import { Create_Warning_Messages } from '../../../Store/Actions/Messages.Actions'
 
-import { Short_Column_INT, Short_Column_STR } from '../Shorting'
-import MoneyFormater from '../MoneyFormater'
+import { Short_Column_INT, Short_Column_STR, Short_Column_Money } from '../Shorting'
+import { ConvertInttoMoney } from '../Formater'
 
 import { Table, TableHead, TableRow, TableCell, TableBody, IconButton, TextField, Typography } from '@material-ui/core'
 
@@ -100,8 +100,12 @@ class TransaksiBelanja extends React.Component {
     ButtonShortINT(ColumnNumb) {
         Short_Column_INT('tabel_belanja', ColumnNumb)
     }
+    ButtonShortMoney(ColumnNumb) {
+        ////// FIXME didnt work on 6 & 7
+        Short_Column_Money('tabel_belanja', ColumnNumb)
+    }
     ConverNumberToMoneyFormat(OriginValue) {
-        const MoneyFormate = MoneyFormater(OriginValue ? OriginValue : 0)
+        const MoneyFormate = ConvertInttoMoney(OriginValue ? OriginValue : 0)
         return MoneyFormate
     }
     SUMHargaTotal(TotalModal) {
@@ -120,12 +124,12 @@ class TransaksiBelanja extends React.Component {
                             <TableCell style={{ width: '10%' }} align="center"  >Edit</TableCell>
                             <TableCell style={{ width: '5%' }} align="center" onClick={() => this.CancelAllBarang()} >Cancel</TableCell>
                             <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(2)}>No</TableCell>
-                            <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortINT(3)}>Barcode</TableCell>
+                            <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(3)}>Barcode</TableCell>
                             <TableCell style={{ width: '35%' }} align="center" onClick={() => this.ButtonShortSTR(4)}>Nama Barang</TableCell>
                             <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(5)}>Jumlah</TableCell>
-                            <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(6)}>Harga Modal&nbsp;(Rp)</TableCell>
-                            <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(7)}>Harga Jual&nbsp;(Rp)</TableCell>
-                            <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(8)}>Total Modal&nbsp;(Rp)</TableCell>
+                            <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortMoney(6)}>Harga Modal&nbsp;(Rp)</TableCell>
+                            <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortMoney(7)}>Harga Jual&nbsp;(Rp)</TableCell>
+                            <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortMoney(8)}>Total Modal&nbsp;(Rp)</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

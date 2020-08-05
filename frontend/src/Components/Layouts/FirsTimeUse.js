@@ -6,7 +6,7 @@ import { First_Time_Use } from '../../Store/Actions/Auth.Actions'
 
 import { Redirect } from 'react-router-dom'
 
-import { Container, TextField } from '@material-ui/core'
+import { Container, TextField, Link } from '@material-ui/core'
 
 import { withTheme } from '@material-ui/core/styles'
 import { MUI_st_Login_Container, MUI_FullWidth, MUI_VerticalMargin, MUI_HorizontalsmButtonMargin } from '../../MUI_theme'
@@ -110,6 +110,7 @@ class FirsTimeUse extends React.Component {
                             <Typography variant="subtitle1" align='center' gutterBottom>
                                 Hanya bisa digunakan pertama kali
                             </Typography>
+                            <Typography align='right' style={{ padding: '10px', margin: '10px' }} ><Link href='/help/first_time_use' color='textPrimary' >Help</Link></Typography>
                             <TextField style={st_textfield} variant='outlined' type='text' onChange={this.onChange} label='User Name' name='UserName' value={UserName} required />
                             <TextField style={st_textfield} variant='outlined' type='text' onChange={this.onChange} label='Name' name='Name' value={Name} required />
                             <TextField style={st_textfield} variant='outlined' type='password' onChange={this.onChange} label='Password' name='Password' value={Password} required />
@@ -160,7 +161,7 @@ class FirsTimeUse extends React.Component {
                                     <Typography align='center' >
                                         <Button variant='outlined' color="secondary" style={MUI_HorizontalsmButtonMargin} onClick={this.handleReset}>Reset</Button>
                                         <Button variant="outlined" color='secondary' style={MUI_HorizontalsmButtonMargin} onClick={this.handleBack}>
-                                                Back
+                                            Back
                                             </Button>
                                         <Button type='submit' variant="contained" color="primary" style={MUI_HorizontalsmButtonMargin}>
                                             Registrasi

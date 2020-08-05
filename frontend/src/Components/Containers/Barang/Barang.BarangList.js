@@ -4,14 +4,14 @@ import { connect } from 'react-redux'
 
 import { Load_Barang_List, Load_Barang_List_Base_On_Jenis, get_BarangId_Detail, get_BarangId_Update, Delete_a_Barang } from '../../../Store/Actions/Barang.Actions'
 
-import { Short_Column_INT, Short_Column_STR } from '../Shorting'
+import { Short_Column_INT, Short_Column_STR, Short_Column_Money } from '../Shorting'
 
 import { Table, TableHead, TableBody, TableRow, TableCell, Button } from '@material-ui/core'
 
 import { MUI_FullWidth, MUI_VerticalMargin } from '../../../MUI_theme'
 
 import { DataTidakDitemukan } from '../Page404'
-import MoneyFormater from '../MoneyFormater'
+import { ConvertInttoMoney } from '../Formater'
 import GenericModals from '../GenericModals'
 import BarangDetail from './Barang.BarangDetail'
 import BarangUpdate from './Barang.BarangUpdate'
@@ -30,8 +30,11 @@ class BarangList extends React.Component {
     ButtonShortINT(ColumnNumb) {
         Short_Column_INT('tabel_barang', ColumnNumb)
     }
+    ButtonShortMoney(ColumnNumb) {
+        Short_Column_Money('tabel_barang', ColumnNumb)
+    }
     ConverNumberToMoneyFormat(OriginValue) {
-        const MoneyFormate = MoneyFormater(OriginValue ? OriginValue : 0)
+        const MoneyFormate = ConvertInttoMoney(OriginValue ? OriginValue : 0)
         return MoneyFormate
     }
     onClick_get_BarangId_Detail(BarangID) {
@@ -73,12 +76,12 @@ class BarangList extends React.Component {
                         <TableHead>
                             <TableRow>
                                 <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>
-                                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortINT(1)}>Barcode</TableCell>
+                                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(1)}>Barcode</TableCell>
                                 <TableCell style={{ width: '35%' }} align="center" onClick={() => this.ButtonShortSTR(2)}>Nama Barang</TableCell>
                                 <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(3)}>Jenis Barang</TableCell>
                                 <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(4)}>Stok Barang</TableCell>
-                                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(5)}>Harga Jual&nbsp;(Rp)</TableCell>
-                                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(6)}>Modal&nbsp;(Rp)</TableCell>
+                                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortMoney(5)}>Harga Jual&nbsp;(Rp)</TableCell>
+                                <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortMoney(6)}>Modal&nbsp;(Rp)</TableCell>
                                 <TableCell style={{ width: '5%' }} align='center'>Detail</TableCell>
                                 {User ? ((User.isSuperUser || User.isAdmin) ?
                                     <Fragment>

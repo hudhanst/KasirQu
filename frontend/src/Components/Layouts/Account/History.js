@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 
 import { Typography } from '@material-ui/core'
 
-import Searching from '../../Containers/Searching'
+import { TableSearching } from '../../Containers/Searching'
 import BreadCrumbs from '../../Containers/BreadCrumbs'
 import HistoryList from '../../Containers/Account/Account.History.HistoryList'
 import QueryHistoryList from '../../Containers/Account/Account.History.QueryHistoryList'
@@ -15,7 +15,7 @@ const History = () => {
             <Typography variant='h4' align='center'>
                 History
             </Typography>
-            <Searching
+            <TableSearching
                 hidesearch={true}
                 advancesearch={true}
                 accordiondetails={<QueryHistoryList />}

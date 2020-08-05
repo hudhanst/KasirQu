@@ -4,14 +4,14 @@ import { connect } from 'react-redux'
 
 import { Load_OutcomeReport_Modal_List } from '../../../Store/Actions/Help.Actions'
 
-import { Short_Column_INT, Short_Column_STR } from '../Shorting'
+import { Short_Column_INT, Short_Column_STR, Short_Column_Money, Short_Column_Date } from '../Shorting'
 
 import { Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core'
 
 import { MUI_HorizontalMargin, MUI_VerticalMargin } from '../../../MUI_theme'
 
 import { DataTidakDitemukan } from '../Page404'
-import MoneyFormater from '../MoneyFormater'
+import { ConvertInttoMoney } from '../Formater'
 import Charting from '../Charting'
 
 class ModalBulanan extends React.Component {
@@ -24,8 +24,14 @@ class ModalBulanan extends React.Component {
     ButtonShortINT(ColumnNumb) {
         Short_Column_INT('table_outcomereport_modalbulanan', ColumnNumb)
     }
+    ButtonShortMoney(ColumnNumb) {
+        Short_Column_Money('table_outcomereport_modalbulanan', ColumnNumb)
+    }
+    ButtonShortDate(ColumnNumb) {
+        Short_Column_Date('table_outcomereport_modalbulanan', ColumnNumb)
+    }
     ConverNumberToMoneyFormat(OriginValue) {
-        const MoneyFormate = MoneyFormater(OriginValue ? OriginValue : 0)
+        const MoneyFormate = ConvertInttoMoney(OriginValue ? OriginValue : 0)
         return MoneyFormate
     }
     render() {
@@ -48,8 +54,8 @@ class ModalBulanan extends React.Component {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>
-                                        <TableCell style={{ width: '70%' }} align="center" onClick={() => this.ButtonShortSTR(1)}>Tanggal</TableCell>
-                                        <TableCell style={{ width: '25%' }} align="center" onClick={() => this.ButtonShortSTR(2)}>Total Belanja Modal&nbsp;(Rp)</TableCell>
+                                        <TableCell style={{ width: '70%' }} align="center" onClick={() => this.ButtonShortDate(1)}>Tanggal</TableCell>
+                                        <TableCell style={{ width: '25%' }} align="center" onClick={() => this.ButtonShortMoney(2)}>Total Belanja Modal&nbsp;(Rp)</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>

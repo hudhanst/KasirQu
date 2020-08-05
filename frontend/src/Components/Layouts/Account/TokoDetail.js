@@ -13,26 +13,26 @@ import TokoUpdate from '../../Containers/Account/Account.TokoUpdate'
 
 class Toko extends React.Component {
     render() {
-        // console.log(this.props)
-        const breadcrumbs = [{ name: 'Account', link: 'account' },{ name: 'Toko Detail', link: 'account/tokodetail' }]
+        const breadcrumbs = [{ name: 'Account', link: 'account' }, { name: 'Toko Detail', link: 'account/tokodetail' }]
         const st_button = { ...MUI_FullWidth, ...MUI_VerticalMargin }
-        // const AccountId = this.props.user._id
+        const User = this.props.User
         return (
             <Fragment>
                 <Container style={MUI_st_Account_Container} maxWidth="md">
                     <BreadCrumbs breadcrumbs={breadcrumbs} />
                     <TokoDetail />
                     <hr />
-                    <GenericModals
-                        size='m'
-                        header='Update Toko'
-                        body={<TokoUpdate />}
-                        Buttonstyle={st_button}
-                        Buttoncolor='primary'
-                        Buttonsize='large'
-                        ButtononClickeven={() => null}
-                        Buttonlabel={'Update'}
-                    />
+                    {User?.isSuperUser ? (
+                        <GenericModals
+                            size='m'
+                            header='Update Toko'
+                            body={<TokoUpdate />}
+                            Buttonstyle={st_button}
+                            Buttoncolor='primary'
+                            Buttonsize='large'
+                            ButtononClickeven={() => null}
+                            Buttonlabel={'Update'}
+                        />) : null}
                 </Container>
             </Fragment>
         )
@@ -40,7 +40,7 @@ class Toko extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    user: state.Auth.User
+    User: state.Auth.User
 })
 
-export default connect(mapStateToProps, { })(Toko)
+export default connect(mapStateToProps, {})(Toko)

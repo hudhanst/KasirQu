@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 
 import { Typography } from '@material-ui/core'
 
-import Searching from '../../../Containers/Searching'
+import { TableSearching } from '../../../Containers/Searching'
 import BarangExport from '../../../Containers/Barang/Barang.BarangExport'
 import QueryBarang from '../../../Containers/Barang/Barang.Barang.Query'
 
@@ -12,7 +12,7 @@ const ExportBarang = () => {
             <Typography variant='h4' align='center'>
                 Export Barang
             </Typography>
-            <Searching
+            <TableSearching
                 hidesearch={true}
 
                 advancesearch={true}

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 
 import BreadCrumbs from '../../Containers/BreadCrumbs'
-import Searching from '../../Containers/Searching'
+import { TableSearching } from '../../Containers/Searching'
 import TabelBarang from '../../Containers/Barang/Barang.TabelBarang'
 
 const Barang = () => {
@@ -9,7 +9,7 @@ const Barang = () => {
     return (
         <Fragment>
             <BreadCrumbs breadcrumbs={breadcrumbs} />
-            <Searching tablename={'tabel_data_barang'} tdnumber={2} width='xl' label={null} />
+            <TableSearching tablename={'tabel_data_barang'} tdnumber={2} width='xl' label={null} />
             <TabelBarang />
         </Fragment>
     )

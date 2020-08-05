@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { Load_Graph_IntensitasBarangTransaksi_List } from '../../../Store/Actions/Help.Actions'
 import { get_BarangId_Detail } from '../../../Store/Actions/Barang.Actions'
 
-import { Short_Column_INT, Short_Column_STR } from '../Shorting'
+import { Short_Column_INT, Short_Column_STR, Short_Column_Date } from '../Shorting'
 
 import { Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core'
 
@@ -23,6 +23,9 @@ class IntensitasBarangTransaksiGraph extends React.Component {
     }
     ButtonShortINT(TableName, ColumnNumb) {
         Short_Column_INT(TableName, ColumnNumb)
+    }
+    ButtonShortDate(TableName, ColumnNumb) {
+        Short_Column_Date(TableName, ColumnNumb)
     }
     onClick_get_BarangId_Detail(BarangID) {
         this.props.get_BarangId_Detail(BarangID)
@@ -80,7 +83,7 @@ class IntensitasBarangTransaksiGraph extends React.Component {
                                 GraphData[InedexBarang].data.push(IntensitasBarangTransaksi_IntensitasBarangTransaksi)
                             } else {
                                 const newGraphData_data = []
-                                const InedexBarang = GraphData.length 
+                                const InedexBarang = GraphData.length
                                 ExistBarangList.push(InedexBarang)
                                 let k = 0
                                 while (k < i) {
@@ -142,7 +145,7 @@ class IntensitasBarangTransaksiGraph extends React.Component {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT('table_graph_intensibarangtastransaksi', 0)}>No</TableCell>
-                                        <TableCell style={{ width: '15%' }} align="center" onClick={() => this.ButtonShortSTR('table_graph_intensibarangtastransaksi', 1)}>Tanggal</TableCell>
+                                        <TableCell style={{ width: '15%' }} align="center" onClick={() => this.ButtonShortDate('table_graph_intensibarangtastransaksi', 1)}>Tanggal</TableCell>
                                         <TableCell style={{ width: '70%' }} align="center" >Intensitas Barang Transaksi</TableCell>
                                     </TableRow>
                                 </TableHead>

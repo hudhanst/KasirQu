@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 
-import { Typography } from '@material-ui/core'
+import { Typography, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core'
 
 import KatagoriBarangImport from '../../../Containers/Barang/Barang.KatagoriBarangImport'
 import FAQ from '../../../Containers/FAQ'
@@ -13,19 +13,75 @@ const ImportKatagoriBarang = () => {
         },
         {
             AccordionSummaryTypography: 'Mengapa "Data Tidak Ditemukan" pada Review?',
-            AccordionDetailsTypography: 'Karna data yang anda masukkan tidak memiliki header dengan ketentuan yang benar minimal header berisi: \n - NamaJenisBarang \n - Kepemilikan',
+            AccordionDetailsTypography: (
+                <Fragment>
+                    Karna data yang anda masukkan tidak memiliki header dengan ketentuan yang benar minimal header berisi: <br />
+                     - NamaJenisBarang (Penulisan Harus Sama) <br />
+                      - Kepemilikan (Penulisan Harus Sama)
+                </Fragment>)
         },
         {
             AccordionSummaryTypography: 'Bagai Mana Cara Membuat Excel yang Benar Untuk Import Data?',
-            AccordionDetailsTypography: '',
+            AccordionDetails: (
+                <Fragment>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>
+                                    NamaJenisBarang
+                                </TableCell>
+                                <TableCell>
+                                    Kepemilikan
+                                </TableCell>
+                                <TableCell>
+                                    Ket
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell>
+                                    Jenis Barang 1
+                                </TableCell>
+                                <TableCell>
+                                    pribadi
+                                </TableCell>
+                                <TableCell>
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>
+                                    Jenis Barang 2
+                                </TableCell>
+                                <TableCell>
+                                    nonpribadi
+                                </TableCell>
+                                <TableCell>
+                                    Keternagan Jika ada
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </Fragment>
+            )
         },
         {
             AccordionSummaryTypography: 'Mengapa Ada Warna Merah Di Tabel Review?',
-            AccordionDetailsTypography: 'Karna ada kesalahan pada data excel yang dimasukkan.\n - NamaJenisBarang : tidak boleh sama dengan yang sudah ada \n - Kepemilikan : hanya bisa diisi dengan "pribadi" atau "nonpribadi"',
+            AccordionDetailsTypography: (
+                <Fragment>
+                    Karna ada kesalahan pada data excel yang dimasukkan.<br />
+                     - NamaJenisBarang : tidak boleh sama dengan yang sudah ada <br />
+                      - Kepemilikan : hanya bisa diisi dengan "pribadi" atau "nonpribadi"
+                </Fragment>)
         },
         {
             AccordionSummaryTypography: 'Mengapa Saya Mendapat Peringatan Ada kesalahan pada Data?',
-            AccordionDetailsTypography: 'Karna ada kesalahan pada data excel yang dimasukkan.\n - NamaJenisBarang : tidak boleh sama dengan yang sudah ada \n - Kepemilikan : hanya bisa diisi dengan "pribadi" atau "nonpribadi"',
+            AccordionDetailsTypography: (
+                <Fragment>
+                    Karna ada kesalahan pada data excel yang dimasukkan.<br />
+                     - NamaJenisBarang : tidak boleh sama dengan yang sudah ada <br />
+                      - Kepemilikan : hanya bisa diisi dengan "pribadi" atau "nonpribadi"
+                </Fragment>)
         },
         {
             AccordionSummaryTypography: 'Bagaimana Jika Saya Ingin Mengupdate JenisBarang Melalui Menu ini Bukan Menambah?',

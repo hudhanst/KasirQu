@@ -5,7 +5,7 @@ import { MUI_FullWidth, MUI_VerticalMargin } from '../../../MUI_theme'
 import BreadCrumbs from '../../Containers/BreadCrumbs'
 import GenericModals from '../../Containers/GenericModals'
 import AddBarang from '../../Containers/Barang/Barang.AddBarang'
-import Searching from '../../Containers/Searching'
+import { TableSearching } from '../../Containers/Searching'
 import BarangList from '../../Containers/Barang/Barang.BarangList'
 
 const KonfigurasiBarang = () => {
@@ -25,7 +25,7 @@ const KonfigurasiBarang = () => {
                 Buttonlabel={'Tambah Barang'}
             />
             <hr />
-            <Searching tablename={'tabel_barang'} tdnumber={2} width='xl' label={null} />
+            <TableSearching tablename={'tabel_barang'} tdnumber={2} width='xl' label={null} />
             <hr />
             <BarangList />
         </Fragment>

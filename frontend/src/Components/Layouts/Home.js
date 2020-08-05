@@ -80,16 +80,16 @@ class Home extends React.Component {
                         type: 'Privacry',
                     },
                     {
-                        name: 'Import/Export Kategori Barang',
-                        link: 'barang/katagoribarang/importexport',
-                        icon: <SettingsApplicationsTwoToneIcon />,
-                        type: 'SuperPrivacry',
-                    },
-                    {
                         name: 'Konfigurasi Barang',
                         link: 'barang/konfigurasibarang',
                         icon: <PlaylistAddTwoToneIcon />,
                         type: 'Privacry',
+                    },
+                    {
+                        name: 'Import/Export Kategori Barang',
+                        link: 'barang/katagoribarang/importexport',
+                        icon: <SettingsApplicationsTwoToneIcon />,
+                        type: 'SuperPrivacry',
                     },
                     {
                         name: 'Import/Export Barang',
@@ -153,7 +153,7 @@ class Home extends React.Component {
                         name: 'Detail Toko',
                         link: 'account/tokodetail',
                         icon: <StoreTwoToneIcon />,
-                        type: 'SuperPrivacry',
+                        type: 'Privacry',
                     },
                     {
                         name: 'History',

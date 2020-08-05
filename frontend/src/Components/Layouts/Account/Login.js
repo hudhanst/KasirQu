@@ -6,7 +6,7 @@ import { LogIn } from '../../../Store/Actions/Auth.Actions'
 
 import { Redirect } from 'react-router-dom'
 
-import { Container, Typography, TextField, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, FormHelperText, Button } from '@material-ui/core'
+import { Container, Typography, TextField, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, FormHelperText, Button, Link } from '@material-ui/core'
 
 import { withTheme } from '@material-ui/core/styles'
 import { MUI_st_Login_Container, MUI_FullWidth, MUI_VerticalMargin } from '../../../MUI_theme'
@@ -59,6 +59,7 @@ class Login extends React.Component {
                         <img src={logo} alt='logo kasirqu' onClick={this.onClickFirstTimeUse} />
                     </Typography>
                     <form onSubmit={this.onSubmit}>
+                        <Typography align='right' style={{ padding: '10px', margin: '10px' }} ><Link href='/help/login' color='textPrimary' >Help</Link></Typography>
                         <TextField style={st_textfield} variant='outlined' type='text' onChange={this.onChange} label='User Name' name='username' value={username} />
                         <FormControl variant="outlined" style={st_textfield}>
                             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>

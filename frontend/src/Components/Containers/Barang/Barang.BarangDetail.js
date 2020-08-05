@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 
 import { get_BarangDetail } from '../../../Store/Actions/Barang.Actions'
 
-import { Short_Column_INT, Short_Column_STR } from '../Shorting'
-import MoneyFormater from '../MoneyFormater'
+import { Short_Column_INT, Short_Column_STR, Short_Column_Money } from '../Shorting'
+import { ConvertInttoMoney } from '../Formater'
 
 import { TextField, Typography, Table, TableHead, TableBody, TableRow, TableCell, } from '@material-ui/core'
 
@@ -35,8 +35,11 @@ class BarangDetail extends React.Component {
     ButtonShortINT(ColumnNumb) {
         Short_Column_INT('tabel_barang_detail', ColumnNumb)
     }
+    ButtonShortMoney(ColumnNumb) {
+        Short_Column_Money('tabel_barang_detail', ColumnNumb)
+    }
     ConverNumberToMoneyFormat(OriginValue) {
-        const MoneyFormate = MoneyFormater(OriginValue ? OriginValue : 0)
+        const MoneyFormate = ConvertInttoMoney(OriginValue ? OriginValue : 0)
         return MoneyFormate
     }
     render() {
@@ -68,7 +71,7 @@ class BarangDetail extends React.Component {
                                             <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(0)}>No</TableCell>
                                             <TableCell style={{ width: '70%' }} align="center" onClick={() => this.ButtonShortSTR(1)}>Nama Satuan</TableCell>
                                             <TableCell style={{ width: '5%' }} align="center" onClick={() => this.ButtonShortINT(2)}>Jumlah Beli Minimum</TableCell>
-                                            <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortSTR(3)}>Harga Jual Satuan&nbsp;(Rp)</TableCell>
+                                            <TableCell style={{ width: '10%' }} align="center" onClick={() => this.ButtonShortMoney(3)}>Harga Jual Satuan&nbsp;(Rp)</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
