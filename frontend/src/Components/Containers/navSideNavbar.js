@@ -20,31 +20,31 @@ const NavSideNavbar = (props) => {
     return (
         // <nav className='NavSideNavbar'>
         <nav style={st_nav}>
-            <Link href='#/' style={MUI_st_navSideNavbar_Link} underline='none' color='primary'>
+            <Link href='/' style={MUI_st_navSideNavbar_Link} underline='none' color='primary'>
                 <BottomNavigation showLabels style={st_btnnav}>
                     <BottomNavigationAction icon={<img src={logo} alt='logo kasirqu' className='Navbar-Logo' />} style={theme.customTheme.navbartext} >
                     </BottomNavigationAction >
                 </BottomNavigation>
             </Link>
-            <Link href='#/transaksi' style={MUI_st_navSideNavbar_Link} underline='none'>
+            <Link href='/transaksi' style={MUI_st_navSideNavbar_Link} underline='none'>
                 <BottomNavigation showLabels style={st_btnnav}>
                     <BottomNavigationAction label="Transaksi" icon={<ShoppingCartTwoToneIcon style={theme.customTheme.navbar} />} style={theme.customTheme.navbartext} >
                     </BottomNavigationAction >
                 </BottomNavigation>
             </Link>
-            <Link href='#/barang' style={MUI_st_navSideNavbar_Link} underline='none'>
+            <Link href='/barang' style={MUI_st_navSideNavbar_Link} underline='none'>
                 <BottomNavigation showLabels style={st_btnnav}>
                     <BottomNavigationAction label="Barang" icon={<StorageTwoToneIcon style={theme.customTheme.navbar} />} style={theme.customTheme.navbartext} >
                     </BottomNavigationAction >
                 </BottomNavigation>
             </Link>
-            <Link href='#/help' style={MUI_st_navSideNavbar_Link} underline='none'>
+            <Link href='/help' style={MUI_st_navSideNavbar_Link} underline='none'>
                 <BottomNavigation showLabels style={st_btnnav}>
                     <BottomNavigationAction label="Help" icon={<LiveHelpTwoToneIcon style={theme.customTheme.navbar} />} style={theme.customTheme.navbartext} >
                     </BottomNavigationAction >
                 </BottomNavigation>
             </Link>
-            <Link href='#/account' style={MUI_st_navSideNavbar_Link} underline='none'>
+            <Link href='/account' style={MUI_st_navSideNavbar_Link} underline='none'>
                 <BottomNavigation showLabels style={st_btnnav}>
                     <BottomNavigationAction label="Account" icon={<AccountBoxTwoToneIcon style={theme.customTheme.navbar} />} style={theme.customTheme.navbartext} >
                     </BottomNavigationAction >

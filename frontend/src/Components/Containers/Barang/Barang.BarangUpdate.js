@@ -239,7 +239,7 @@ class BarangUpdate extends React.Component {
                             </FormControl>
                             <TextField style={{ ...st_textfield, ...theme.customTheme.readonlytextfield }} onChange={this.Form_OnChange} variant='outlined' disabled={User.isSuperUser ? false : true} type='number' label='Stok' name='Stok' value={Stok} />
                             {User.isSuperUser ?
-                                <FormHelperText style={{ color: 'orange' }}> <WarningRoundedIcon fontSize="small" />Sangat Tidak Disarankan, Silakan Update Melalu Menu <a href='#/transaksi/belanja'>Belanja</a>. karena tidak akan terdata di report bulanan</FormHelperText>
+                                <FormHelperText style={{ color: 'orange' }}> <WarningRoundedIcon fontSize="small" />Sangat Tidak Disarankan, Silakan Update Melalu Menu <a href='/transaksi/belanja'>Belanja</a>. karena tidak akan terdata di report bulanan</FormHelperText>
                                 : null}
                             <label>Apakah Bisa Melakukan Transaksi Satuan Desimal?</label><br />
                             <div className='switch'>
@@ -248,11 +248,11 @@ class BarangUpdate extends React.Component {
                             <FormHelperText >Jika iya maka transaksi bisa dalam bentuk 0.xxx (koma)</FormHelperText>
                             <TextField style={{ ...st_textfield, ...theme.customTheme.readonlytextfield }} onChange={this.Form_OnChange} variant='outlined' disabled={User.isSuperUser ? false : true} type='number' label='HargaModal' name='HargaModal' value={HargaModal} />
                             {User.isSuperUser ?
-                                <FormHelperText style={{ color: 'orange' }}> <WarningRoundedIcon fontSize="small" />Sangat Tidak Disarankan, Silakan Update Melalu Menu <a href='#/transaksi/belanja'>Belanja</a>. karena tidak akan terdata di report bulanan</FormHelperText>
+                                <FormHelperText style={{ color: 'orange' }}> <WarningRoundedIcon fontSize="small" />Sangat Tidak Disarankan, Silakan Update Melalu Menu <a href='/transaksi/belanja'>Belanja</a>. karena tidak akan terdata di report bulanan</FormHelperText>
                                 : null}
                             <TextField style={{ ...st_textfield, ...theme.customTheme.readonlytextfield }} onChange={this.Form_OnChange} variant='outlined' disabled={User.isSuperUser ? false : true} type='number' label='HargaJual' name='HargaJual' value={HargaJual} />
                             {User.isSuperUser ?
-                                <FormHelperText style={{ color: 'orange' }}> <WarningRoundedIcon fontSize="small" />Sangat Tidak Disarankan, Silakan Update Melalu Menu <a href='#/transaksi/belanja'>Belanja</a>. karena tidak akan terdata di report bulanan</FormHelperText>
+                                <FormHelperText style={{ color: 'orange' }}> <WarningRoundedIcon fontSize="small" />Sangat Tidak Disarankan, Silakan Update Melalu Menu <a href='/transaksi/belanja'>Belanja</a>. karena tidak akan terdata di report bulanan</FormHelperText>
                                 : null}
                             <hr />
                             {SatuanJual.length >= 1 ?

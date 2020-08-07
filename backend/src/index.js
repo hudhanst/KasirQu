@@ -1,6 +1,7 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
 const server = require('./server/server')
+const staticserver = require('./frontend/server')
 
 ////// Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { ////// eslint-disable-line global-require
@@ -12,10 +13,14 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 1024,
     height: 768,
+    icon: __dirname + './IMG/icon.png',
+    title: 'KasirQu'
   })
 
   ////// and load the index.html of the app.
-  mainWindow.loadFile(path.join(__dirname, './Frontend/index.html'))
+  // mainWindow.loadFile(path.join(__dirname, './frontend/index.html'))
+
+  mainWindow.loadURL('http://127.0.0.1:4000/')
 
   ////// Open the DevTools.
   // mainWindow.webContents.openDevTools()

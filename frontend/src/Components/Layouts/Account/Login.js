@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { LogIn } from '../../../Store/Actions/Auth.Actions'
 
 import { Redirect } from 'react-router-dom'
+// import { Link as GoTo } from 'react-router-dom'
 
 import { Container, Typography, TextField, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, FormGroup, FormControlLabel, Checkbox, FormHelperText, Button, Link } from '@material-ui/core'
 
@@ -43,12 +44,13 @@ class Login extends React.Component {
         if (this.state.firsttimeuse_clickcounter < 10) {
             this.setState({ firsttimeuse_clickcounter: (this.state.firsttimeuse_clickcounter + 1) })
         } else {
-            window.location.href = '#/firsttimeuse'
+            window.location.href = '/firsttimeuse'
         }
     }
     render() {
         const theme = this.props.theme
         if ((this.props.isAuth && this.props.token)) {
+            // window.location.href = '/'
             return <Redirect to="/" />
         }
         const {
@@ -75,8 +77,10 @@ class Login extends React.Component {
                     </Typography>
                     <form onSubmit={this.onSubmit}>
                         <Typography align='right' style={{ padding: '10px', margin: '10px' }} color='textPrimary' >
-                            <Link href='#/help/login' color="textPrimary"  >Bantuan Login?</Link>
-                            <Link href='#/help/first_time_use' color="textPrimary" style={{ padding: '10px' }} >Penggunaan Pertama?</Link>
+                            <Link href='/help/login' color="textPrimary"  >Bantuan Login?</Link>
+                            {/* <GoTo to='/help/login' style={{ padding: '10px', textDecoration: 'none' }} >Bantuan Login?</GoTo> */}
+                            <Link href='/help/first_time_use' color="textPrimary" style={{ padding: '10px' }} >Penggunaan Pertama?</Link>
+                            {/* <GoTo to='/help/first_time_use' style={{ padding: '10px', textDecoration: 'none' }} >Penggunaan Pertama?</GoTo> */}
                         </Typography>
                         <TextField style={st_textfield} variant='outlined' type='text' onChange={this.onChange} label='User Name' name='username' value={username} required />
                         <FormControl variant="outlined" style={st_textfield} required>

@@ -28,7 +28,7 @@ class Logout extends React.Component {
                         page akan otomatis dialihkan ke halaman login setelah beberapa detik.....
                     </Typography>
 
-                    <Link href='#/login' underline='none'>
+                    <Link href='/login' underline='none'>
                         <Typography align='center'>
                             <img src={logo} alt='logo kasirqu' />
                         </Typography>

@@ -6,7 +6,7 @@ import { MUI_FullWidth, MUI_VerticalMargin } from '../../MUI_theme'
 
 const LogOutButton = () => {
     const onClickLogOut = () => {
-        window.location.href = '#/logout'
+        window.location.href = '/logout'
     }
     const st_button = { ...MUI_FullWidth, ...MUI_VerticalMargin }
     return (

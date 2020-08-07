@@ -29,35 +29,35 @@ const NavFlatNavbar = (props) => {
     const drawerlist = (
         <div>
             <List style={theme.customTheme.navbar}>
-                <Link href='#/' underline='none' style={theme.customTheme.navbar}>
+                <Link href='/' underline='none' style={theme.customTheme.navbar}>
                     <ListItem button >
                         <ListItemIcon style={theme.customTheme.navbar} ><HomeTwoToneIcon /> </ListItemIcon>
                         <ListItemText primary='Home' />
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link href='#/transaksi' underline='none' style={theme.customTheme.navbar}>
+                <Link href='/transaksi' underline='none' style={theme.customTheme.navbar}>
                     <ListItem button >
                         <ListItemIcon style={theme.customTheme.navbar}><ShoppingCartTwoToneIcon /> </ListItemIcon>
                         <ListItemText primary='Transaksi' />
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link href='#/barang' underline='none' style={theme.customTheme.navbar}>
+                <Link href='/barang' underline='none' style={theme.customTheme.navbar}>
                     <ListItem button >
                         <ListItemIcon style={theme.customTheme.navbar}><StorageTwoToneIcon /> </ListItemIcon>
                         <ListItemText primary='Barang' />
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link href='#/help' underline='none' style={theme.customTheme.navbar}>
+                <Link href='/help' underline='none' style={theme.customTheme.navbar}>
                     <ListItem button >
                         <ListItemIcon style={theme.customTheme.navbar}><LiveHelpTwoToneIcon /> </ListItemIcon>
                         <ListItemText primary='Help' />
                     </ListItem>
                 </Link>
                 <Divider />
-                <Link href='#/account' underline='none' style={theme.customTheme.navbar}>
+                <Link href='/account' underline='none' style={theme.customTheme.navbar}>
                     <ListItem button >
                         <ListItemIcon style={theme.customTheme.navbar}><AccountBoxTwoToneIcon /> </ListItemIcon>
                         <ListItemText primary='Account' />
@@ -77,7 +77,7 @@ const NavFlatNavbar = (props) => {
                         <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
                             <MenuIcon />
                         </IconButton>
-                        <Link style={MUI_st_navFlatNavbar_logo} href='#/'>
+                        <Link style={MUI_st_navFlatNavbar_logo} href='/'>
                             <img src={logo} alt='logo kasirqu' style={MUI_st_navFlatNavbar_logo_IMG} />
                         </Link>
                         <ToggleLightNight isDarkMode={props.isDarkMode} />

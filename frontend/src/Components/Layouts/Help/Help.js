@@ -139,7 +139,7 @@ const Help = () => {
                         {ListItems.map((item, index) => (
                             <Fragment key={index}>
                                 <ListItem >
-                                    <Link href={item.ListLink ? `#/${item.ListLink}` : '#/page404'} >
+                                    <Link href={item.ListLink ? `/${item.ListLink}` : '/page404'} >
                                         <Typography style={item.TypographyStyle ? item.TypographyStyle : null} variant={item.TypographyVariant ? item.TypographyVariant : 'h6'} >
                                             {item.TypographyText ? item.TypographyText : ''}
                                         </Typography>

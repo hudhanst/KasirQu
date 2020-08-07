@@ -38,21 +38,21 @@ export const Menu = (props) => {
                                             {props.menu.menuitems.map((menuitem, index) => (
                                                 <Grid key={index} item  >
                                                     {User ? (((menuitem.type === 'SuperPrivacry') && (User.isSuperUser === true)) ? (
-                                                        <Link href={`#/${menuitem.link}`} underline='none' >
+                                                        <Link href={`/${menuitem.link}`} underline='none' >
                                                             <Paper style={st_paper} className='MenuPaperHover' >
                                                                 {menuitem.icon}<br />
                                                                 {menuitem.name}
                                                             </Paper>
                                                         </Link>
                                                     ) : (((menuitem.type === 'Privacry') && ((User.isSuperUser) || (User.isAdmin))) ? (
-                                                        <Link href={`#/${menuitem.link}`} underline='none' >
+                                                        <Link href={`/${menuitem.link}`} underline='none' >
                                                             <Paper style={st_paper} className='MenuPaperHover' >
                                                                 {menuitem.icon}<br />
                                                                 {menuitem.name}
                                                             </Paper>
                                                         </Link>
                                                     ) : ((menuitem.type === 'nonPrivacry') ? (
-                                                        <Link href={`#/${menuitem.link}`} underline='none' >
+                                                        <Link href={`/${menuitem.link}`} underline='none' >
                                                             <Paper style={st_paper} className='MenuPaperHover' >
                                                                 {menuitem.icon}<br />
                                                                 {menuitem.name}
