@@ -58,7 +58,7 @@ class FirsTimeUse extends React.Component {
         this.setState({ [E.target.name]: E.target.files[0] })
     }
     onClickCancel = () => {
-        window.location.href = '/login'
+        window.location.href = '#/login'
     }
     handleNext = () => {
         this.setState({ activeStep: this.state.activeStep + 1 })
@@ -110,7 +110,7 @@ class FirsTimeUse extends React.Component {
                             <Typography variant="subtitle1" align='center' gutterBottom>
                                 Hanya bisa digunakan pertama kali
                             </Typography>
-                            <Typography align='right' style={{ padding: '10px', margin: '10px' }} ><Link href='/help/first_time_use' color='textPrimary' >Help</Link></Typography>
+                            <Typography align='right' style={{ padding: '10px', margin: '10px' }} ><Link href='#/help/first_time_use' color='textPrimary' >Help</Link></Typography>
                             <TextField style={st_textfield} variant='outlined' type='text' onChange={this.onChange} label='User Name' name='UserName' value={UserName} required />
                             <TextField style={st_textfield} variant='outlined' type='text' onChange={this.onChange} label='Name' name='Name' value={Name} required />
                             <TextField style={st_textfield} variant='outlined' type='password' onChange={this.onChange} label='Password' name='Password' value={Password} required />

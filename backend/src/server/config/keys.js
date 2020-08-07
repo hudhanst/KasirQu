@@ -5,4 +5,5 @@ module.exports = {
     // tokenexpiresIn: 3600,
     tokenexpiresIn: 3600 * 16,
     tokoIdentitas: 'Toko_KasirQu',
+    StaticFolderPath: 'src/server/uploads',
 }

@@ -45,6 +45,7 @@ class BarangDetail extends React.Component {
     render() {
         const theme = this.props.theme
         const BarangDetail = this.props.BarangDetail
+        const DefaultUrl = this.props.WebSite ? `http://${this.props.WebSite}` : `http://${this.props.IpAddres ? this.props.IpAddres : '127.0.0.1'}:${this.props.Port ? this.props.Port : '5000'}`
 
         const st_textfield = { ...MUI_VerticalMargin, ...MUI_FullWidth, ...theme.customTheme.readonlytextfield }
         return (
@@ -91,7 +92,7 @@ class BarangDetail extends React.Component {
                         <TextField style={st_textfield} variant='outlined' InputProps={{ readOnly: true, }} type='text' label='Keterangan' name='Ket' value={BarangDetail.Ket ? BarangDetail.Ket : ''} />
                         <label>Foto Barang:</label>
                         <Typography align={"center"}>
-                            <img src={BarangDetail.BarangPic ? `http://127.0.0.1:5000/${BarangDetail.BarangPic}` : null} style={{ ...MUI_st_AccountDetail_Avatar, border: '2px solid black' }} alt={`logo barang ${BarangDetail.Name}`} />
+                            <img src={BarangDetail.BarangPic ? `${DefaultUrl}/${BarangDetail.BarangPic}` : null} style={{ ...MUI_st_AccountDetail_Avatar, border: '2px solid black' }} alt={`logo barang ${BarangDetail.Name}`} />
                         </Typography>
                     </Fragment>
                     : <DataTidakDitemukan />
@@ -105,6 +106,9 @@ const mapStateToProps = state => ({
     User: state.Auth.User,
     idDetailBarang: state.Barang.idDetailBarang,
     BarangDetail: state.Barang.BarangDetail,
+    IpAddres: state.Auth.IpAddres,
+    Port: state.Auth.Port,
+    WebSite: state.Auth.WebSite,
 })
 
 export default connect(mapStateToProps, { get_BarangDetail })(withTheme(BarangDetail))

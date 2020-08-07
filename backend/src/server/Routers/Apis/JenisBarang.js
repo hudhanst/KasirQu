@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 // const fileSystem = require('fs')
-const path = require('path')
+// const path = require('path')
 
 const auth = require('../Middleware/auth')
 
@@ -334,17 +334,11 @@ router.post('/export', auth, async (req, res) => {
         const UserDetail = await Get_UserbyID(UserId)
         const Location = 'JenisBarang'
         const ExcelFile = await Create_Excel_File(UserDetail.UserName, Location, ExportData)
-        // console.log('ExcelFile',ExcelFile)
-        const filePath = path.join(__dirname, `../../../../downloads/${Location}/${ExcelFile}`)
+        // const filePath = path.join(__dirname, `../../../../downloads/${Location}/${ExcelFile}`)
 
-        // res.sendFile(filePath)
-        return res.download(filePath)
-        // return res.status(200)
-        //     .download(filePath)
-        //     .json({
-        //         FileName: ExcelFile ? ExcelFile : '',
-        //         msg: 'Proses Export JenisBarang Berhasil'
-        //     })
+        ////// res.sendFile(filePath)
+        // return res.download(filePath)
+        return res.download(ExcelFile)
     } catch (err) {
         console.log(`Erorr saat pemanggilan JenisBarang Export => ${err.errorDetail ? err.errorDetail : typeof err === 'object' ? JSON.stringify(err) : err}`)
         return res.status(400).json({

@@ -77,7 +77,7 @@ export const Help_TingkatanAkun = () => {
             PrimaryText: 'Apa perbedaan Tingkatan Akun yang satu dengan yang lain?',
             SecondaryText: (
                 <Fragment>
-                    Untuk melihat detail perbedaan Tingkatan Akun dapat dilihat di <b><Link href='/help/perbedaan_tingkatan_akun'>tautan ini</Link></b>
+                    Untuk melihat detail perbedaan Tingkatan Akun dapat dilihat di <b><Link href='#/help/perbedaan_tingkatan_akun'>tautan ini</Link></b>
                 </Fragment>
             ),
         },
@@ -280,7 +280,7 @@ export const Help_PerbedaanTingkatanAkun = () => {
             PrimaryText: 'Apa itu tinggkatan akun?',
             SecondaryText: (
                 <Fragment>
-                    Untuk mempelajari Mengenai Tngkatan akun dapat dilihat di <b><Link href='/help/tingkatan_akun'>tautan ini</Link></b>
+                    Untuk mempelajari Mengenai Tngkatan akun dapat dilihat di <b><Link href='#/help/tingkatan_akun'>tautan ini</Link></b>
                 </Fragment>
             ),
         },
@@ -397,7 +397,7 @@ export const Help_TambahUser = () => {
                     </p>
                     <br />
                     <label><b>Tingkatan Akun:</b></label><br />
-                    Untuk memahami apa itu Tingkatan Akun anda bisa mencari bantuan di menu "Help" atau mengunjungi tautan <Link href='/help/tingkatan_akun'><b>berikut</b></Link>
+                    Untuk memahami apa itu Tingkatan Akun anda bisa mencari bantuan di menu "Help" atau mengunjungi tautan <Link href='#/help/tingkatan_akun'><b>berikut</b></Link>
                     <p>
                         <label>
                             <b>
@@ -1078,9 +1078,9 @@ export const Help_ImportExport = () => {
             SecondaryText: (
                 <Fragment>
                     Untuk Lebih detial bisa ke halaman terkait, lebih lengkap. di tautan berikut ini
-                    <Link href='/barang/konfigurasibarang/importexport' ><b> Barang </b></Link>,
-                    <Link href='/barang/katagoribarang/importexport' ><b> Jenis Barang </b></Link>,
-                    <Link href='/transaksi/importexport' ><b> Transaksi </b></Link>.
+                    <Link href='#/barang/konfigurasibarang/importexport' ><b> Barang </b></Link>,
+                    <Link href='#/barang/katagoribarang/importexport' ><b> Jenis Barang </b></Link>,
+                    <Link href='#/transaksi/importexport' ><b> Transaksi </b></Link>.
                 </Fragment>)
         },
     ]
@@ -1195,7 +1195,7 @@ export const Help_PanduanMenu = () => {
             PrimaryText: 'Mengapa ada Beberapa Menu yang Tidak Tampak Disaya?',
             SecondaryText: (
                 <Fragment>
-                    Menu Diatur Berdasarkan Tingkatan Akun, jadi jika ada beberapa menu yang tidak tampil mungkin anda menggunakan Tingkatan Akun anda menseting seperti itu, untuk melihat lebih jauh anda bisa membaca di tautan <Link href='/help/tingkatan_akun' ><b>ini</b></Link>
+                    Menu Diatur Berdasarkan Tingkatan Akun, jadi jika ada beberapa menu yang tidak tampil mungkin anda menggunakan Tingkatan Akun anda menseting seperti itu, untuk melihat lebih jauh anda bisa membaca di tautan <Link href='#/help/tingkatan_akun' ><b>ini</b></Link>
                 </Fragment>),
         },
     ]
@@ -1348,7 +1348,7 @@ export const Help_Login = () => {
         },
         {
             PrimaryText: 'Bagaimana Jika Saya Login Dikomputer Bukan Server?',
-            SecondaryText: 'Jika demikian maka anda harus mengisi field tambahan berupa IP Address dari server di field dibawah Password, Jika anda diserver maka tidak dibutuhkan',
+            SecondaryText: 'Jika demikian maka selain Username dan Password anda harus mengisi field tambahan berupa Alamat Web atau IP Address dengan portnya (jikadibutuhkan, biasanya tidak). Silakan pilih menggunakan alamat web atau ip bergantung server tujuan. Kolom tambahan dapat diakses dengan mencklis "Saya Mengakses dari Client"',
         },
         {
             PrimaryText: 'Bagaimana Jika Saya Lupa Username atau Password saya?',

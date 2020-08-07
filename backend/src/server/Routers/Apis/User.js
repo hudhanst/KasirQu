@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
+const config_StaticFolderPath = require('../../config/keys').StaticFolderPath
+
 const bcrypt = require('bcryptjs')
 
 const jwt = require('jsonwebtoken')
@@ -8,7 +10,8 @@ const jwt = require('jsonwebtoken')
 const multer = require('multer')
 const storage = multer.diskStorage({
     destination: (req, file, cd) => {
-        cd(null, './uploads/users/')
+        cd(null, `./${config_StaticFolderPath}/users/`)
+
     },
     filename: (req, file, cd) => {
         cd(null, new Date().toISOString().replace(/:/g, '-') + file.originalname)

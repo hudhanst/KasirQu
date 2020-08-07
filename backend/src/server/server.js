@@ -10,7 +10,10 @@ app.use(express.json({limit: '50mb'}))
 // app.use(express.urlencoded({limit: '50mb'}))
 
 // static file config
-app.use('/uploads', express.static('uploads'))
+const config_StaticFolderPath = require('./config/keys').StaticFolderPath
+// app.use('/uploads', express.static('uploads'))
+// app.use('/src/server/uploads', express.static('src/server/uploads'))
+app.use(`/${config_StaticFolderPath}`, express.static(`${config_StaticFolderPath}`))
 
 // Add headers
 app.use((req, res, next) => {

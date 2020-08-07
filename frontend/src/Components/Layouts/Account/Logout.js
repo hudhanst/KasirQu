@@ -6,6 +6,7 @@ import { LogOut } from '../../../Store/Actions/Auth.Actions'
 import { Redirect } from 'react-router-dom'
 
 import { Container, Typography, Link } from '@material-ui/core'
+import logo from '../../../IMG/logo.png'
 
 class Logout extends React.Component {
     state = {
@@ -16,7 +17,7 @@ class Logout extends React.Component {
         setTimeout(() => this.setState({ redirectstatus: true }), 3000)
     }
     render() {
-        const logo = process.env.PUBLIC_URL + '/IMG/logo.png'
+        // const logo = process.env.PUBLIC_URL + '/IMG/logo.png'
         return (
             <Fragment >
                 <Container maxWidth='sm'>
@@ -27,7 +28,7 @@ class Logout extends React.Component {
                         page akan otomatis dialihkan ke halaman login setelah beberapa detik.....
                     </Typography>
 
-                    <Link href='/login' underline='none'>
+                    <Link href='#/login' underline='none'>
                         <Typography align='center'>
                             <img src={logo} alt='logo kasirqu' />
                         </Typography>

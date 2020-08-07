@@ -19,12 +19,16 @@ import {
 export const Get_IpAddres = () => {
     try {
         const IpAddres = localStorage.getItem('KasirQU_Server_IpAddres')
-        const ServerPort = '5000'
-        if (IpAddres) {
-            return `http://${IpAddres}:${ServerPort}`
+        const Port = localStorage.getItem('KasirQU_Server_Port')
+        const WebSite = localStorage.getItem('KasirQU_Server_WebSite')
+        const Default_IpAddress = '127.0.0.1'
+        const Default_ServerPort = '5000'
+        if (WebSite) {
+            return `http://${WebSite}`
+        } else if (IpAddres || Port) {
+            return `http://${IpAddres ? IpAddres : Default_IpAddress}:${Port ? Port : Default_ServerPort}`
         } else {
-            const LocalIp = '127.0.0.1'
-            return `http://${LocalIp}:${ServerPort}`
+            return `http://${Default_IpAddress}:${Default_ServerPort}`
         }
     } catch (err) {
         console.log(err)
@@ -136,15 +140,15 @@ export const First_Time_Use = (UserData, TokoData) => async (dispatch, getState)
     // dispatch({ type: AUTH_LOADED })
 }
 
-export const LogIn = (UserName, Password, NewIp) => async (dispatch) => {
+export const LogIn = (UserName, Password, newIp, newPort, newWebSite) => async (dispatch) => {
     // console.log('Log: LogIn -> UserName', UserName)
     // console.log('Log: LogIn -> Password', Password)
     // console.log('Log: LogIn -> NewIp', NewIp)
     dispatch({ type: AUTH_LOADING })
-    if (NewIp) {
+    if (newIp || newPort || newWebSite) {
         dispatch({
             type: SET_NEW_IP,
-            payload: NewIp
+            payload: { newIp, newPort, newWebSite }
         })
     }
     try {
@@ -165,7 +169,15 @@ export const LogIn = (UserName, Password, NewIp) => async (dispatch) => {
         if (err.message === 'Network Error') {
             dispatch(Create_Error_Messages(null, 'ada kesalahan pada jaringan yang anda coba akses, silakan isi ip adress yang benar jika di client'))
         } else {
-            dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg ? err.response.data.msg : null))
+            dispatch(
+                Create_Error_Messages(
+                    err.response ? (
+                        err.response.status ? err.response.status
+                            : null) : null,
+                    err.response ? (
+                        err.response.data.msg ? err.response.data.msg
+                            : null) : 'anda tidak terhubung dengan server'
+                ))
         }
     }
     dispatch({ type: AUTH_LOADED })
@@ -196,7 +208,15 @@ export const Load_User = () => async (dispatch, getState) => {
                 dispatch({ type: USER_EXPIRED })
                 dispatch({ type: AUTH_LOADED })
             } else {
-                dispatch(Create_Error_Messages(err.response.status ? err.response.status : null, err.response.data.msg ? err.response.data.msg : null))
+                dispatch(
+                    Create_Error_Messages(
+                        err.response ? (
+                            err.response.status ? err.response.status
+                                : null) : null,
+                        err.response ? (
+                            err.response.data.msg ? err.response.data.msg
+                                : null) : 'anda tidak terhubung dengan server'
+                    ))
                 dispatch({ type: AUTH_LOADED })
             }
         } catch (err_err) {

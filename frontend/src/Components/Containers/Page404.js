@@ -2,8 +2,10 @@ import React, { Fragment } from 'react'
 
 import { Typography, Button } from '@material-ui/core'
 
+import logo from '../../IMG/logo.png'
+
 export const HalamanTidakDitemukan = (props) => {
-    const logo = process.env.PUBLIC_URL + '/IMG/logo.png'
+    // const logo = process.env.PUBLIC_URL + '/IMG/logo.png'
     const BackButton = () => {
         window.history.back()
     }

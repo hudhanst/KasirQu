@@ -8,13 +8,13 @@ export const BreadCrumbs = (props) => {
     return (
         <Fragment>
             <Breadcrumbs maxItems={2} aria-label="breadcrumb">
-                <Link href='/' underline='hover' >
+                <Link href='#/' underline='hover' >
                     <Typography color="textPrimary" >
                         <HomeIcon />
                     </Typography>
                 </Link>
                 {props.breadcrumbs.map((breadcrumb, index) => (
-                    <Link href={`/${breadcrumb.link}`} underline='hover' key={index} >
+                    <Link href={`#/${breadcrumb.link}`} underline='hover' key={index} >
                         <Typography color="textPrimary" >
                             {breadcrumb.name}
                         </Typography>

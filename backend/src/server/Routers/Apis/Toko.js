@@ -1,10 +1,13 @@
 const express = require('express')
 const router = express.Router()
 
+const config_StaticFolderPath = require('../../config/keys').StaticFolderPath
+
 const multer = require('multer')
 const storage = multer.diskStorage({
     destination: (req, file, cd) => {
-        cd(null, './uploads/toko/')
+        // cd(null, './uploads/toko/')
+        cd(null, `./${config_StaticFolderPath}/toko/`)
     },
     filename: (req, file, cd) => {
         cd(null, new Date().toISOString().replace(/:/g, '-') + file.originalname)

@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const path = require('path')
+// const path = require('path')
 
 const auth = require('../Middleware/auth')
 
@@ -138,9 +138,10 @@ router.post('/export', auth, async (req, res) => {
         const UserDetail = await Get_UserbyID(UserId)
         const Location = 'History'
         const ExcelFile = await Create_Excel_File(UserDetail.UserName, Location, ExportData)
-        const filePath = path.join(__dirname, `../../../../downloads/${Location}/${ExcelFile}`)
+        // const filePath = path.join(__dirname, `../../../../downloads/${Location}/${ExcelFile}`)
 
-        return res.download(filePath)
+        // return res.download(filePath)
+        return res.download(ExcelFile)
     } catch (err) {
         console.log(`Erorr saat pemanggilan History Export => ${err.errorDetail ? err.errorDetail : typeof err === 'object' ? JSON.stringify(err) : err}`)
         return res.status(400).json({
